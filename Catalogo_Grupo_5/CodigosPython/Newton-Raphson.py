@@ -2,19 +2,19 @@
 # Entradas:
             # func: es la funcion a analizar
             # x0: valor inicial
-            # MAXIT: es la cantidad de iteraciones máximas a realizar
+            # MAXIT: es la cantidad de iteraciones maximas a realizar
             # TOL: es la tolerancia del algoritmo
 # Salidas:
             # xAprox: es la solucion, valor aproximado de x
             # error: pocentaje de error del resultado obtenido
 
-########################################################################################
+###############################################################################
 import math
 import matplotlib.pyplot as plt
 from scipy.misc import derivative
 import numpy as np
 import sys
-########################################################################################
+###############################################################################
 
 def newtonRaphson(func, x0, MAXIT, TOL):
     itera = 0
