@@ -12,46 +12,49 @@
 import math
 import matplotlib.pyplot as plt
 from scipy.misc import derivative
-import numpy as np
-import sys
 ###############################################################################
 
 def newtonRaphson(func, x0, MAXIT, TOL):
-    itera = 0
+    itera = 1
     err = 1
-    iterl = []
-    errl = []
+    iterl = []  #Lista que almacena el numero de iteraciones para graficar
+    errl = []  #Lista que almacena el % de error de cada iteracion para graficar
     xAprox = x0
 
-    while (err > TOL):
+    while (itera < MAXIT):
         xk = xAprox
         fd = derivative(func, xk, dx=1e-6)
         xAprox = xk - (func(xk)) / (fd)
-
         err = (abs(xAprox - xk)) / (abs(xAprox))
-
         iterl.append(itera)
         errl.append(err)
 
-        itera = itera + 1
+        if(err < TOL):
+            plt.plot(iterl, errl, 'bx')
+            plt.title("Metodo de Newton-Raphson")
+            plt.xlabel("Iteraciones")
+            plt.ylabel("% Error")
+            plt.show()
+            return xAprox, err
+        else:
+            itera = itera + 1
 
-    plt.plot(iterl, errl)
+    plt.plot(iterl, errl, 'bx')
+    plt.title("Metodo de Newton-Raphson")
     plt.xlabel("Iteraciones")
     plt.ylabel("% Error")
-    plt.title("Metodo de Newton-Raphson")
     plt.show()
-    return xAprox, itera
-
+    return xAprox, err
 
 if __name__ == '__main__':
     # Valor inicial
-    x0 = 3 / 4
+    x0 = 1
     # Tolerancia
-    TOL = 0.0000000001
+    TOL = 0.0001
     # Maximo iteraciones
     MAXIT = 100
     # Funcion
-    func = lambda x: (math.cos(2 * x)) ** 2 - x ** 2
+    func = lambda x: (math.e)**x - 1/x
     # Llamado de la funcion
-    xAprox, itera = newtonRaphson(func, x0, MAXIT, TOL)
-    print('xAprox = {}\nIteraciones = {}'.format(xAprox, itera))
+    xAprox, err = newtonRaphson(func, x0, MAXIT, TOL)
+    print('xAprox = {}\n%Error = {}'.format(xAprox, err))
