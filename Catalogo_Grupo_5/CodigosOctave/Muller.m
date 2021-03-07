@@ -32,20 +32,17 @@ function [r, err] = muller(func, x0, x1, x2, MAXIT, TOL)
 
         if(discriminante < 0)
             error("Error, la solucion no es real.")
-            return
+            return;
         endif
 
-        r = x2 - (2*c) / (b + (sign(b))*(sqrt(discriminante)))
+        r = x2 - (2*c) / (b + (sign(b))*(sqrt(discriminante)));
         err = (abs(r - x2)) / (abs(r));
         errl(iter) = err;
         iterl(iter) = iter;
         iter = iter + 1;
         
         if(err < TOL)
-            plot(iterl, errl);
-            title("Metodo de Muller");
-            xlabel("Iteraciones");
-            ylabel("% Error");
+            grafica(iterl, errl);
             return;
         endif
 
@@ -61,17 +58,21 @@ function [r, err] = muller(func, x0, x1, x2, MAXIT, TOL)
         x2 =  r;
     endwhile
 
-    plot(iterl, errl);
+    grafica(iterl, errl);
+    return;
+endfunction
+
+function grafica(listaValoresX, listValoresY)
+    plot(listaValoresX, listValoresY, 'bx');
     title("Metodo de Muller");
     xlabel("Iteraciones");
     ylabel("% Error");
-    return;
 endfunction
 
 %Valores iniciales
 x0 = 2;
 x1 = 2.2;
-x2 = 1.8'
+x2 = 1.8;
 %Iteraciones maximas
 MAXIT = 100;
 %Tolerancia

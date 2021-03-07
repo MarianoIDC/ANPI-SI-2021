@@ -40,22 +40,22 @@ function [xAprox, err] = biseccion(f, a, b, MAXIT, TOL)
             err = (b - a) / (2)^(iter-1);
             
             if(err < TOL)
-              plot(iterl, errl, 'bx');
-              title("Metodo de la Biseccion");
-              xlabel("Iteraciones");
-              ylabel("% Error");
+              grafica(iterl, errl);
               return;
             endif
       endwhile
-
-      plot(iterl, errl, 'bx');
-      title("Metodo de la Biseccion");
-      xlabel("Iteraciones");
-      ylabel("% Error");
+      grafica(iterl, errl);
     else
         error("Condiciones en los parametros de entrada no garantizan el cero de la funcion.")
     endif
     return;
+endfunction
+
+function grafica(listaValoresX, listValoresY)
+    plot(listaValoresX, listValoresY, 'bx');
+    title("Metodo de la Biseccion");
+    xlabel("Iteraciones");
+    ylabel("% Error");
 endfunction
 
 %Valores iniciales
