@@ -1,12 +1,12 @@
 # Metodo de Newton-Raphson
 # Entradas:
-            # func: es la funcion a analizar
-            # x0: valor inicial
-            # MAXIT: es la cantidad de iteraciones maximas a realizar
-            # TOL: es la tolerancia del algoritmo
+            #func: es la funcion a analizar
+            #x0: valor inicial
+            #MAXIT: es la cantidad de iteraciones maximas a realizar
+            #TOL: es la tolerancia del algoritmo
 # Salidas:
-            # xAprox: es la solucion, valor aproximado de x
-            # error: pocentaje de error del resultado obtenido
+            #xAprox: es la solucion, valor aproximado de x
+            #error: pocentaje de error del resultado obtenido
 
 ###############################################################################
 import math
@@ -18,7 +18,7 @@ def newtonRaphson(func, x0, MAXIT, TOL):
     itera = 1
     err = 1
     iterl = []  #Lista que almacena el numero de iteraciones 
-    errl = []  #Lista que almacena el % de error de cada iteracion
+    errl = []  #Lista que almacena el % de error de cada iteracion 
     xAprox = x0
 
     while (itera < MAXIT):
@@ -43,7 +43,7 @@ def newtonRaphson(func, x0, MAXIT, TOL):
             #listaValoresX: valores que se graficaran en el eje 'x'
             #listaValoresY: valores que se graficaran en el eje 'y'
 #Salidas:
-            #Grafico con lo valores ingresados
+            #Grafico con los valores ingresados
 def grafica(listaValoresX, listaValoresY):
     plt.plot(listaValoresX, listaValoresY, 'bx')
     plt.title("Metodo de Newton-Raphson")
@@ -52,14 +52,16 @@ def grafica(listaValoresX, listaValoresY):
     plt.show()
 
 if __name__ == '__main__':
-    # Valor inicial
+    #Valor inicial
     x0 = 1
-    # Tolerancia
+    #Tolerancia
     TOL = 0.0001
-    # Maximo iteraciones
+    #Maximo iteraciones
     MAXIT = 100
-    # Funcion
+    #Funcion
     func = lambda x: (math.e)**x - 1/x
-    # Llamado de la funcion
+    #Llamado de la funcion
     xAprox, err = newtonRaphson(func, x0, MAXIT, TOL)
+    print("######################################################")
+    print("Metodo de Newton-Raphson \n")
     print('xAprox = {}\n%Error = {}'.format(xAprox, err))
