@@ -3,8 +3,8 @@ import numpy as np
 
 #Punto Fijo
 #Entradas: funcion - Funcion por aproximar - funcion lambda
-#          valor_inicial - Valor por el cual se empezará a aproximar - int, float, double
-#          iteraciones_maximas - Número máximo de itreaciones - int
+#valor - inicial - Valor por el cual se empezara a aproximar - int, float, double
+#iteraciones - maximas - Numero maximo de itreaciones - int
 #
 #
 
@@ -21,15 +21,15 @@ def punto_fijo(funcion,valor_inicial,iteraciones_maximas):
         iteracion += 1
     
     aproximacion = b
-    plt.plot(lista_error, label='errores por interación')    #Construcción de tabla
+    plt.plot(lista_error, label='errores por interacion')    #Construccion de tabla
     plt.ylabel('Error')
     plt.xlabel('Iteracion')
     
-    plt.axis([0, iteraciones_maximas,0,lista_error[0]])      #Los ejes estan limitados por las iteraciones y el error máximo
+    plt.axis([0, iteraciones_maximas,0,lista_error[0]])      #Los ejes estan limitados por las iteraciones y el error maximo
     plt.title('Punto Fijo')
     plt.legend()
     plt.show()
-    print ('Aproximación: '+ str(aproximacion)+ ', error: '+ str(error))
+    print ('Aproximacion: '+ str(aproximacion)+ ', error: '+ str(error))
     return aproximacion, error
 
 funcion =lambda x: np.exp(-x) 
