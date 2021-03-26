@@ -8,17 +8,20 @@ using namespace GiNaC;
 
 /*Funcion para crear una grafica:
  * Entradas: Pares ordenados en x y y, vectores de las graficas
- * Salidas: Grafica de iteraciones vs error*/
+ * Salidas: Grafica de iteraciones vs error
+*/
 void createGraph(double x1, double x2, double y1, double y2, vector<double> x, vector<double> y) {
     mglGraph graph;
     //Estas funciones convierten los vectores de la entrada en arreglos de datos de la grafica
     mglData xGraph(x);
     mglData yGraph(y);
-    //Se diseña la grafica con los parametros
+  	//Se disena la grafica con los parametros
     graph.Title("Error vs Iteracion");
     graph.SetOrigin(0, 0);
-    graph.SetRanges(x1, x2, y1, y2); //Limites de la grafica
-    graph.Plot(xGraph, yGraph, "o!rgb"); //Valores que va a contener la grafica
+    //Limites de la grafica
+    graph.SetRanges(x1, x2, y1, y2);
+   	//Valores que va a contener la grafica
+    graph.Plot(xGraph, yGraph, "o!rgb");
     graph.Axis();
     graph.Grid();
     //Se exporta la grafica a un archivo PNG
@@ -30,7 +33,7 @@ void createGraph(double x1, double x2, double y1, double y2, vector<double> x, v
    valor inicial, tolerancia y cantidad de iteraciones maximas
  * Salidas: Aproximacion de la solucion, error y cantidad de iteraciones realizadas*/
 ex secante(string express, string firstValue, string secondValue, string tolerance, string iterations) {
-    //Implementación del calculo simbolico
+    //Implementacion del calculo simbolico
     symbol x("x");
     symtab table;
     table["x"] = x;
