@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.misc import derivative
 ###############################################################################
 
-def newtonRaphson(func, x0, MAXIT, TOL):
+def newton_raphson(func, x0, MAXIT, TOL):
     itera = 1
     err = 1
     iterl = []  #Lista que almacena el numero de iteraciones 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     #Funcion
     func = lambda x: (math.e)**x - 1/x
     #Llamado de la funcion
-    xAprox, err = newtonRaphson(func, x0, MAXIT, TOL)
+    xAprox, err = newton_raphson(func, x0, MAXIT, TOL)
     print("######################################################")
     print("Metodo de Newton-Raphson \n")
     print('xAprox = {}\n%Error = {}'.format(xAprox, err))
