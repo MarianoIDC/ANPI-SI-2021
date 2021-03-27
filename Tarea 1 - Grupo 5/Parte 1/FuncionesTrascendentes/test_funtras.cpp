@@ -3,7 +3,6 @@
 
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
 
     double fac, expe, expoNUNO, seno, coseno, tangente, logan, logb, powert, senoh, cosenoh, tanoh, raiz, raizx, aseno, atan;
 
@@ -50,12 +49,24 @@ int main() {
     raizx = root_t(45, a);
     cout << "La raiz " << a<<" de 45 es:"<< raizx;
     cout << "\n";
-    aseno = asin_t(2.1);
-    cout << "El aseno de 2 es: "<< aseno;
+    aseno = asin_t(0.33);
+    cout << "El aseno de 0.33 es: "<< aseno;
     cout << "\n";
-    atan = atan_t(1.37);
-    cout << "El atan de 2 es: "<< atan;
+    atan = atan_t(0.67);
+
+    cout << "El atan de 0.67 es: "<< atan;
+    cout << "\n";
+    cout << "Funcion para punto 1.1:";
     cout << "\n";
 
+    double resultado = root_t((sin_t(3*varM1(7))+ln_t(2)),3)*varM1(sinh_t(sqrt_t(2)))+atan_t(varM1(exp_t(1)));
+    cout << "El resultado de la funcion para el punto 1.1 es: "<<resultado;
+    cout << "\n";
+    double pi = pi_t();
+    cout << "pi es: " << pi;
+    cout << "\n";
+    double acos = acos_t(0.23);
+    cout << "El acos de 0.23 es: " << acos;
+    cout << "\n";
     return 0;
 }

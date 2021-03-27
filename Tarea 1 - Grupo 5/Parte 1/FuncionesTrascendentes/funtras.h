@@ -303,7 +303,8 @@ double asin_t(double a) {
     double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
     while (condParada > TOL && n < MAXITER){
-        Sk0 = (factorial(2 * n) * varM1((pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)))) * pow(a, 2 * n + 1);
+        double x = (pow(4, n) * pow(factorial(n), 2) * (2 * n + 1));
+        Sk0 = (factorial(2 * n) * varM1(x)) * pow(a, 2 * n + 1);
         Sk1 = (factorial(2 * (n+1)) * varM1((pow(4, n+1) * pow(factorial(n+1), 2) * (2 * (n+1) + 1)))) * pow(a, 2 * (n+1) + 1);
         condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
         sum= sum+Sk0;
@@ -329,6 +330,31 @@ double atan_t(double a) {
         n=n+1;
     }
     return sum;
-
 }
+
+double pi_t(){
+    double condParada, pk1 = 0, pk0 = 0, pi = 0;
+    int n = 2;
+
+    pk0 = pk0 + ((pow(-1, 0)) / (2 * 0 + 1));
+    pk1 = pk0 + ((pow(-1, 1)) / (2 * 1 + 1));
+    condParada = abs(pk1 - pk0);
+    pk0 = pk1;
+
+    while(condParada > TOL || n < MAXITER) {
+        pk1 = pk0 + ((pow(-1, n)) * varM1((2 * n + 1)));
+        condParada = abs(pk1 - pk0);
+        pk0 = pk1;
+        n = n + 1;
+    }
+    pi = pk0 * 4;
+    return pi;
+}
+
+double acos_t(double x){
+    double result = pi_t() * varM1(2) - asin_t(x);
+    return result;
+}
+
+
 #endif //FUNCIONESTRASCENDENTES_FUNTRAS_H
