@@ -1,6 +1,7 @@
 import p2_metodo_nuevo as p1
 import parte2_p2 as p2
 import matplotlib.pyplot as plt
+import tkinter as tk
 
 #Grafica
 #Entradas:
@@ -15,19 +16,15 @@ def grafica(listaValoresX, listaValoresY):
     plt.ylabel("% Error")
     plt.show()
 
+root = tk.Tk()
+root.title("Calculadora de Ecuaciones No Lineales")
+e = tk.Entry(root, width = 35, borderwidth = 5)
+e.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
+button_1 = Button(root, text = "Metodo Nuevo", padx = 40, pady = 20, command = p1.metodo_nuevo(f, x0, 15, 0.0001))
+button_2 = Button(root, text = "Metodo Nuevo", padx = 40, pady = 20, command = p1.metodo_nuevo(f, x0, 15, 0.0001))
+button_3 = Button(root, text = "Metodo Nuevo", padx = 40, pady = 20, command = p1.metodo_nuevo(f, x0, 15, 0.0001))
+button_4 = Button(root, text = "Metodo Nuevo", padx = 40, pady = 20, command = p1.metodo_nuevo(f, x0, 15, 0.0001))
+
 if __name__ == '__main__':
-    #Intervalos
-    a = 0
-    b = 2
-    #Tolerancia
-    tol = 0.0001
-    #Maximo iteraciones
-    iterMax = 100
-    #Funcion
-    f = lambda x: p2.math.e**x - x - 2
-    #Llamado de la funcion
-    xk, k, err, iteraciones, errores = p2.falsa_posicion(f, a, b, iterMax, tol)
-    print("Metodo de la Falsa Posicion \n")
-    print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+    root.mainloop()
     print("################################################")
-    grafica(iteraciones, errores)
