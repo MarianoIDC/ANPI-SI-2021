@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-def metodoNuevo(f, x0, iterMax, tol):
+def metodo_nuevo(f, x0, iterMax, tol):
     k = 1
     err = 1
     xk = x0

@@ -2,6 +2,7 @@
 import math
 from scipy.misc import derivative
 print("###############################################")
+import sympy as sp
 ########################################################################################
 
 #Metodo de la Biseccion
@@ -201,7 +202,6 @@ def secante(f, x0, x1, iterMax, tol):
         err = abs(f(xk))
         
         if(err < tol):
-            grafica(k, err)
             return xk, k, err
         else:
             k = k + 1
