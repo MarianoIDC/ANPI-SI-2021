@@ -5,7 +5,6 @@
       @param vars: variables que oomponen la funcion
       @param xk: valores iniciales
       @param MAXIT:  iteraciones maximas
-      @param TOL:  tolerencia del algoritmo
     
     Parametros de Salida
       @return xAprox: valor aproximado de xk

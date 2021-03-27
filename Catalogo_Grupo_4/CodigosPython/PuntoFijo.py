@@ -24,8 +24,8 @@ def punto_fijo(funcion, valor_inicial, iteraciones_maximas):
     plt.plot(lista_error, label = 'errores por interacion') #Construccion de tabla
     plt.ylabel('Error')
     plt.xlabel('Iteracion')
-    
-    plt.axis([0, iteraciones_maximas, 0, lista_error[0]]) #Los ejes estan limitados por las iteraciones y el error maximo
+    #Los ejes estan limitados por las iteraciones y el error maximo
+    plt.axis([0, iteraciones_maximas, 0, lista_error[0]])
     plt.title('Punto Fijo')
     plt.legend()
     plt.show()

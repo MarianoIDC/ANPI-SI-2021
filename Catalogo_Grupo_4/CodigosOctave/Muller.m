@@ -24,8 +24,8 @@ function [r, err] = muller(func, x0, x1, x2, MAXIT, TOL)
 
     while(iter < MAXIT)
 
-        a = ((x1 - x2)*[func(x0) - func(x2)] - (x0 - x2)*[func(x1) - func(x2)]) / ((x0 - x1)*(x0 - x2)*(x1 - x2));
-        b = (((x0 - x2)^2)*[func(x1) - func(x2)] - ((x1 - x2)^2)*[func(x0) - func(x2)]) / ((x0 - x1)*(x0 - x2)*(x1 - x2));
+        a = ((x1-x2)*[func(x0)-func(x2)]-(x0-x2)*[func(x1)-func(x2)])/((x0-x1)*(x0-x2)*(x1-x2));
+        b = (((x0-x2)^2)*[func(x1)-func(x2)]-((x1-x2)^2)*[func(x0)-func(x2)])/((x0-x1)*(x0-x2)*(x1-x2));
         c = func(x2);
 
         discriminante = b^2 - 4*a*c;
