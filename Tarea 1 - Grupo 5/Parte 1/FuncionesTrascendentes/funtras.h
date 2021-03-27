@@ -1,8 +1,10 @@
 #ifndef FUNCIONESTRASCENDENTES_FUNTRAS_H
 #define FUNCIONESTRASCENDENTES_FUNTRAS_H
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
+#include <stdlib.h>
+
 
 using namespace std;
 const double TOL = 0.00000001;
@@ -32,11 +34,11 @@ double factorial(int num) {
  * @return xk0: resultado de la operacion.
  */
 double varM1(double a) {
-    double xk0, xk1, eps = 2.2204E-16, facta, fact0, fact20, fact40, fact60, fact80, fact100, condParada;
+    double xk0, xk1, eps = 2.2204E-16, facta, fact0, fact20, fact40, fact60, fact80, fact100, condParada=1;
     int i = 0;
 
     if (a > 0) {
-        facta = factorial(a);
+        facta = a;
         fact0 = factorial(0);
         fact20 = factorial(20);
         fact40 = factorial(40);
@@ -53,17 +55,16 @@ double varM1(double a) {
         } else if (facta > fact60 && facta <= fact80) {
             xk0 = pow(eps, 11);
         } else if (facta > fact80 && facta <= fact100) {
+
             xk0 = pow(eps, 15);
         }
+        while (condParada>TOL && i < MAXITER){
+            xk0 = xk0 * (2-a*xk0);
+            xk1 = xk0;
+            xk1 = xk1 * (2-a*xk1);
+            condParada = abs((xk1-xk0)/xk1);
+        }
 
-        do {
-            xk1 = xk0 * (2 - a * xk0);
-            condParada = abs((xk1 - xk0) / (xk1));
-            xk0 = xk1;
-            i++;
-        } while (i <= MAXITER && condParada >= TOL);
-    } else {
-        cout << "El numero 'a' debe ser mayor que cero. \n";
     }
     return xk0;
 }
@@ -73,35 +74,41 @@ double varM1(double a) {
  * @param a: exponente al cual se desea elevar e.
  * @return Sk0: resultado de realizar la operacion mediante sumatoria.
  */
-double exp_t(double a) {
+float exp_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    float condiparada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + ((pow(a, n)) / (factorial(n)));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL && n < MAXITER);
-    return Sk0;
+    while (condiparada > TOL && n < MAXITER){
+
+        Sk0 =  (pow(a, n)) * varM1(factorial(n));
+        Sk1 =  ((pow(a, n+1)) * varM1(factorial(n+1)));
+        // sum+ Sk0+Sk1 - (sum+ Sk0))
+        condiparada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+
+    }
+    return sum;
 }
 
 /**
  * Metodo que se encarga de calcular el seno de un numero a.
  * @param a: numero a evaluar.
  * @return Sk0: resultado de realizar la operacion mediante sumatoria.
+ * Poner máximo hasta a = 15.
  */
 double sin_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + pow(-1, n) * pow(a, (2 * n + 1)) / factorial((2 * n + 1));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL && n < MAXITER);
-    return Sk0;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 =  pow(-1, n) * pow(a, (2 * n +1 )) * varM1(factorial((2 * n +1)));
+        Sk1 = pow(-1, n+1) * pow(a, (2 * (n+1) +1 )) * varM1(factorial((2 * (n+1) +1)));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
 }
 
 /**
@@ -111,15 +118,16 @@ double sin_t(double a) {
  */
 double cos_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + pow(-1, n) * pow(a, (2 * n)) / factorial((2 * n));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL && n < MAXITER);
-    return Sk0;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 =  pow(-1, n) * pow(a, (2 * n)) * varM1(factorial((2 * n)));
+        Sk1 = pow(-1, n+1) * pow(a, (2 * (n+1) )) * varM1(factorial((2 * (n+1))));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
 }
 
 /**
@@ -148,19 +156,19 @@ double tan_t(double a) {
  */
 double ln_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    if (a > 0) {
-        do {
-            Sk1 = Sk1 + (2 * (a - 1) / (a + 1)) * ((pow((2 * n + 1), -1)) * (pow((a - 1) / (a + 1), 2 * n)));
-            condParada = abs(Sk1 - Sk0);
-            Sk0 = Sk1;
-            n++;
-        } while (condParada > TOL && n < MAXITER);
-    } else {
-        cout << "El logaritmo natural de un numero menor que cero no se puede determinar.";
+    while (condParada > TOL && n < MAXITER){
+        Sk0 = (1* varM1(2*n+1)) * (pow((a - 1) *  varM1(a + 1), 2 * n));
+        Sk1 = (1* varM1(2*(n+1)+1)) * (pow((a - 1) *  varM1(a + 1), 2 * (n+1)));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
     }
-    return Sk0;
+    sum = (2 * (a - 1) / (a + 1)) * sum;
+    return sum;
+
+
 }
 
 /**
@@ -169,14 +177,14 @@ double ln_t(double a) {
  * @param a: base del logaritmo.
  * @return resultado: solucion de obtener loga(x) a partir de logaritmos naturales.
  */
-double log_t(double x, double a) {
-    double lna, lnx, lnaM1, resultado;
+double log_t(double a, double x) {
+    double lna=0, lnx=0, resultado=0;
     if (x > 0 && a > 0) {
+
+        lnx = ln_t(x);  //??
         lna = ln_t(a);
         lnx = ln_t(x);
-        cout << " ";
-        lnaM1 = varM1(lna);
-        resultado = lnx * lnaM1;
+        resultado = lnx * varM1(lna);
     } else {
         cout << "La base y el exponente deben ser numeros positivos. \n";
     }
@@ -189,7 +197,8 @@ double log_t(double x, double a) {
  * @param a: numero a elevar.
  * @return: resultado de la evauacion
  */
-double power_t(double x, double a) {
+double power_t(double a, double x) {
+    double aa= ln_t(a);
     return exp_t(x * ln_t(a));
 }
 
@@ -200,15 +209,16 @@ double power_t(double x, double a) {
  */
 double sinh_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + ((pow(a, 2 * n + 1)) / (factorial(2 * n + 1)));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL & n < MAXITER);
-    return Sk0;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 =  pow(a, (2 * n +1 )) * varM1(factorial((2 * n +1)));
+        Sk1 = pow(a, (2 * (n+1) +1 )) * varM1(factorial((2 * (n+1) +1)));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
 }
 
 /**
@@ -218,15 +228,16 @@ double sinh_t(double a) {
  */
 double cosh_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + ((pow(a, 2 * n)) / (factorial(2 * n)));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL & n < MAXITER);
-    return Sk0;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 = pow(a, (2 * n)) * varM1(factorial((2 * n)));
+        Sk1 = pow(a, (2 * (n+1) )) * varM1(factorial((2 * (n+1))));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
 }
 
 /**
@@ -235,7 +246,7 @@ double cosh_t(double a) {
  * @return Sk0: resultado de realizar la operacion mediante sumatoria.
  */
 double tanh_t(double a) {
-    return sinh_t(a) / cosh_t(a);
+    return sinh_t(a) * varM1(cosh_t(a));
 }
 
 /**
@@ -252,8 +263,8 @@ double sqrt_t(double a) {
         xk = 0;
     } else {
         do {
-            xk = x0 - (pow(x0, 2) - a) / (2 * x0);
-            condParada = abs((xk - x0) / xk);
+            xk = x0 - (pow(x0, 2) - a) * varM1(2 * x0);
+            condParada = abs((xk - x0) * varM1(xk));
             x0 = xk;
         } while (condParada > TOL);
     }
@@ -274,8 +285,8 @@ double root_t(double x, double a) {
         return 0;
     } else {
         do {
-            xk = x0 - (pow(x0, a) - x) / (a * (pow(x0, a - 1)));
-            condParada = abs((xk - x0) / xk);
+            xk = x0 - (pow(x0, a) - x) * varM1(a * (pow(x0, a - 1)));
+            condParada = abs((xk - x0) * varM1(xk));
             x0 = xk;
         } while (condParada > TOL);
     }
@@ -289,15 +300,16 @@ double root_t(double x, double a) {
  */
 double asin_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + (factorial(2 * n) / ((pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)))) * pow(a, 2 * n + 1);
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL && n < MAXITER);
-    return Sk1;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 = (factorial(2 * n) * varM1((pow(4, n) * pow(factorial(n), 2) * (2 * n + 1)))) * pow(a, 2 * n + 1);
+        Sk1 = (factorial(2 * (n+1)) * varM1((pow(4, n+1) * pow(factorial(n+1), 2) * (2 * (n+1) + 1)))) * pow(a, 2 * (n+1) + 1);
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
 }
 
 /**
@@ -307,15 +319,16 @@ double asin_t(double a) {
  */
 double atan_t(double a) {
     int n = 0;
-    double condParada, Sk1 = 0, Sk0 = 0;
+    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
 
-    do {
-        Sk1 = Sk1 + pow(-1, n) * (pow(a, 2 * n + 1) / (2 * n + 1));
-        condParada = abs(Sk1 - Sk0);
-        Sk0 = Sk1;
-        n++;
-    } while (condParada > TOL & n < MAXITER);
-    return Sk1;
+    while (condParada > TOL && n < MAXITER){
+        Sk0 = pow(-1, n) * (pow(a, 2 * n + 1) *varM1(2 * n + 1));
+        Sk1 = pow(-1, n+1) * (pow(a, 2 * (n+1) + 1) *varM1(2 * (n+1) + 1));
+        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
+        sum= sum+Sk0;
+        n=n+1;
+    }
+    return sum;
+
 }
-
 #endif //FUNCIONESTRASCENDENTES_FUNTRAS_H
