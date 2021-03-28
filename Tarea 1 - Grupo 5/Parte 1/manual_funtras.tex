@@ -1,0 +1,465 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{parskip}
+\author{Jonathan G Araya}
+\begin{document}
+
+	\begin{center}
+		\LARGE Instituto Tecnológico de Costa Rica \\
+		\LARGE Área Académica Ingeniería en Computadores \\
+		\LARGE CE-3201: Análisis Numérico para Ingeniería \\
+	\end{center}
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale = 0.5]{img/TEC.png}
+	\end{figure}
+
+	\begin{center}
+		\huge \textbf{Manual Funtras} \\
+		\vspace{20mm}
+		\LARGE Integrantes \\
+		\vspace{5mm}
+		\large Josué Araya García \\
+		\large Jonathan Guzmán Araya \\	
+		\large Mariano Muñoz Masís \\
+		\large Daniel Prieto Sibaja \\
+		\vspace{5cm}
+		Cartago, Costa Rica \\
+		27 Marzo, 2021
+	\end{center}
+
+	\tableofcontents
+	
+	\section{Introducción}
+	
+	En las matemáticas existen diversos tipos de funciones como lo pueden ser:
+	\begin{itemize}
+		\item Algebraicas
+		\item Trascendentes
+	\end{itemize}
+
+	Para este desarrollo nos enfocaremos en las funciones trascendentes, estas son  las funciones que no satisfacen una ecuación polinomial cuyos coeficientes sean a su vez polinomios; esto contrasta con las funciones algebraicas, las cuales satisfacen dicha ecuación.
+	
+	\subsection{¿Qué es Funtras?}
+	
+	Funtras es una biblioteca de funciones trascendentes desarrolladas en el lenguaje $C^{++}$ con el
+	objetivo de aproximar dichas funciones mediante el uso de métodos iterativos utilizando únicamente operaciones de suma, resta, multiplicación y potencia con una cantidad de iteraciones máximas de 2500 y una tolerancia de $10^{-8}$.
+		
+	\section{Requisitos e Instalación}
+	
+	En esta sección se abarcarán los requisitos mínimos para su ejecución así como una breve guía de instalación de la misma.
+	
+	\subsection{Requisitos}
+	El desarrollo y las pruebas de esta biblioteca se realizaron en el SO Windows 10, por lo tanto como requisitos se tiene:
+	
+	\begin{itemize}
+		\item Sistema operativo Windows 10
+		\item MinGW
+		\item CLion
+	\end{itemize}
+	
+	\subsection{Instalación}
+	
+		
+	\section{Funciones implementadas en Funtras}
+	A continuación se detallan las funciones implementadas en la biblioteca funtras.
+	
+	\subsection{Inverso multiplicativo $a^{-1}$}
+	
+	Esta función calcula el inverso multiplicativo, recíproco o inverso de un número $x$ real positivo, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+			\framebox[4cm][c]{varM1(a)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante el método iterativo que se describe a continuación.
+	
+	\begin{equation}\label{key1}
+		x_{k+1} = x_{k}(2 - a\cdot x_{k})
+	\end{equation}
+		
+	\subsubsection{Valores iniciales}
+	
+	El valor de $x_{0}$ esta dado por:
+	
+	\begin{align*}
+		x_{0} = 
+		\begin{cases}
+			eps^{15}~ si~  80! < a \leq 100! \\
+			eps^{11}~ si~  60! < a \leq 80! \\
+			eps^{8}~~ si~  40! < a \leq 60! \\
+			eps^{4}~~ si~  20! < a \leq 40! \\
+			eps^{2}~~ si~~  0! < a \leq 20!
+		\end{cases}
+	\end{align*}
+	
+	donde eps es una constante ya definida con valor de:
+	
+	\begin{equation}\label{key2}
+		eps = 2.2204x10^{-16}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key3}
+		\left\lvert{\frac{x_{k+1} - x_{k}}{x_{k+1}}}\right\lvert
+	\end{equation}
+
+	Cuando la tolerancia dada sea mayor que esta, entonces devuelve el resultado obtenido.
+	
+	\subsubsection{Ejemplos numérico}
+	
+	\subsection{Exponencial de Euler $e^{x}$}
+	
+	Esta función calcula el exponencial de $e$ elevado a un número natural $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{exp{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key4}
+		S_{k}(a) = \sum_{n=0}^{k}\frac{a^{n}}{n!}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key5}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+
+	\subsection{Seno $\sin(x)$}
+	
+	Esta función calcula el $seno$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{sin{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key6}
+		S_{k}(a) = \sum_{n=0}^{k}(-1)^{n}\frac{a^{2n + 1}}{(2n + 1)!}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key7}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Coseno $\cos()x)$}
+	
+	Esta función calcula el $coseno$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+		\begin{center}
+		\framebox[4cm][c]{cos{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key8}
+		S_{k}(a) = \sum_{n=0}^{k}(-1)^{n}\frac{a^{2n}}{(2n)!}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key9}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Tangente $\tan(x)$}
+	
+	Esta función calcula la $tangente$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{tan{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	La función tangente se puede componer a partir de otras como lo son $seno$ y $coseno$, es por ello que el calculo de la misma se realiza mediante la siguiente ecuación:
+	
+	\begin{equation}\label{key10}
+		tan(x) = sen(x)\cdot cos(x)^{-1}
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Logaritmo natural $\ln(x)$}
+	
+	Esta función calcula el $logaritmo natural$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{ln{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key11}
+		S_{k}(a) = \frac{2(a-1)}{a + 1}\sum_{n=0}^{k}\frac{1}{2n + 1}\left(\frac{a - 1}{a + 1}\right)^{2n}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key12}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Logaritmo $\log_{a}(x)$}
+	
+	Esta función calcula el $logaritmo$ de base $a$ a un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{log{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	La función logaritmo se puede componer a partir de otra como $logaritmo natural$, es por ello que el calculo de la misma se realiza mediante la siguiente ecuación:
+	
+	\begin{equation}\label{key13}
+		\log_{a}(x) = \ln(x)\cdot (\ln(a))^{-1}
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Exponencial $a^{x}$}
+	
+	Esta función calcula el exponencial de un número $a$ elevado a un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{power{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	\subsubsection{Valores iniciales}
+	
+	\subsubsection{Condición de parada}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Seno hiperbólico $\sinh(x)$}
+	
+	Esta función calcula el $seno hiperbólico$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{sinh{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key14}
+		S_{k}(a) = \sum_{n=0}^{k}\frac{a^{2n + 1}}{(2n + 1)!}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key15}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+		
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Coseno hiperbólico $\cosh(x)$}
+	
+	Esta función calcula el $coseno hiperbólico$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{cosh{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+
+	\begin{equation}\label{key16}
+		S_{k}(a) = \sum_{n=0}^{k}\frac{a^{2n}}{(2n)!}
+	\end{equation}
+
+	\subsubsection{Condición de parada}
+
+	La condición de parada de la iteración está dada por: 
+
+	\begin{equation}\label{key17}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Tangente hiperbólico $\tanh(x)$}
+	
+	Esta función calcula la $tangente hiperbólica$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{tanh{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	La función tangente hiperbólico se puede componer a partir de otras como lo son $seno hiperbólico$ y $coseno hiperbólico$, es por ello que el calculo de la misma se realiza mediante la siguiente ecuación:
+	
+	\begin{equation}\label{key18}
+		tanh(x) = senh(x)\cdot cosh(x)^{-1}
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Raíz cuadrada $\sqrt{x}$}
+	
+	Esta función calcula la $raíz cuadrada$ de un número $x$ mediante el método de Newton-Raphson, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{sqrt{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El método de Newton-Raphson se define como:
+	
+	\begin{equation}\label{key19}
+		x_{k+1} = x_{k} - \frac{f(x_{k})}{f'(x_{k})}, ~x_{0} = \alpha
+	\end{equation}
+	
+	Donde para encontrar la p-ésima raíz de a:
+	
+	\begin{equation}\label{key20}
+		\sqrt[p]{a}	
+	\end{equation}
+
+	El cero de la función está dado por:
+	
+	\begin{equation}\label{key21}
+		g(x) = x^{p} - a, ~x_{0} = \frac{a}{2}
+	\end{equation}
+
+	Por lo que resulta en la siguiente iteración:
+	
+	\begin{align*}
+		\centering
+		\begin{cases}
+			x_{0} = \frac{a}{2} \\
+			x_{k+1} = x_{k} - \frac{x_{k}^{2} - a}{2\cdot x_{k}}
+		\end{cases}
+	\end{align*}
+	
+	
+	\subsubsection{Valore inicial}
+	El valor inicial está dado por: $x_{0 = \frac{a}{2}}$.
+	\subsubsection{Condición de parada}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Raíz $\sqrt[a]{x}$}
+	
+	Esta función calcula la $raíz a-ésima$ de un número $x$ mediante el método de Newton-Raphson, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{root{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	\subsubsection{Valores iniciales}
+	
+	\subsubsection{Condición de parada}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Arcoseno $\sin^{-1}(x)$}
+	
+	Esta función calcula el $arcoseno$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{asin{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key22}
+		S_{k}(a) = \sum_{n=0}^{k}\frac{2n!}{4^{n}(n!)^{2}(2n + 1)}a^{2n+1}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key9}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	\subsection{Arcotangente $\tan^{-1}(x)$}
+	
+	Esta función calcula el $arcotangente$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
+	
+	\begin{center}
+		\framebox[4cm][c]{atan{\_}t(x)}
+	\end{center}
+	
+	\subsubsection{Formulación matemática}
+	
+	El cálculo se realiza mediante la sumatoria que se describe a continuación.
+	
+	\begin{equation}\label{key22}
+		S_{k}(a) = \sum_{n=0}^{k}(-1)^{n}\frac{a^{2n+1}}{2n + 1}
+	\end{equation}
+	
+	\subsubsection{Condición de parada}
+	
+	La condición de parada de la iteración está dada por: 
+	
+	\begin{equation}\label{key9}
+		\left\lvert S_{k+1}(a) - S_{k}(a) \right\lvert < tol
+	\end{equation}
+	
+	\subsubsection{Ejemplo numérico}
+	
+	
+\end{document}
