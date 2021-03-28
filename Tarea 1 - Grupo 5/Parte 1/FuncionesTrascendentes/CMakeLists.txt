@@ -3,4 +3,4 @@ project(FuncionesTrascendentes)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(FuncionesTrascendentes test_funtras.cpp FuncionesJonathan.h FuncionesJosue.h funtras.h)
+add_executable(FuncionesTrascendentes test_funtras.cpp funtras.h)
