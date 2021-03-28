@@ -1,6 +1,5 @@
 ########################################################################################
 import math
-from scipy.misc import derivative
 import p2_aux as pa
 ########################################################################################
 
@@ -91,7 +90,7 @@ def falsa_posicion(f, a, b, iterMax, tol):
                 if (err < tol):
                     print("Metodo de la Falsa Posicion \n")
                     print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-                    pa.grafica(iteraciones, error)
+                    pa.grafica(iteraciones, errores)
                     return xk, k, err, iteraciones, errores
                 else:
                     k = k + 1
@@ -101,7 +100,7 @@ def falsa_posicion(f, a, b, iterMax, tol):
                     errores.append(err)
             print("Metodo de la Falsa Posicion \n")
             print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-            pa.grafica(iteraciones, error)
+            pa.grafica(iteraciones, errores)
             return xk, k, err, iteraciones, errores
 
         elif (f(x2) * f(b) < 0):
@@ -111,7 +110,7 @@ def falsa_posicion(f, a, b, iterMax, tol):
                 if (err < tol):
                     print("Metodo de la Falsa Posicion \n")
                     print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-                    pa.grafica(iteraciones, error)
+                    pa.grafica(iteraciones, errores)
                     return xk, k, err, iteraciones, errores
                 else:
                     k = k + 1
@@ -165,7 +164,7 @@ def newton_raphson(f, x0, iterMax, tol):
     errores = []
     while (k < iterMax):
         xkm = xk
-        fd = derivative(f, xkm, dx=1e-6)
+        fd = pa.derivative(f, xkm, dx=1e-6)
         xk = xkm - (f(xkm)) / (fd)
         err = abs(f(xk))
         iteraciones.append(k)
@@ -173,13 +172,13 @@ def newton_raphson(f, x0, iterMax, tol):
         if(err < tol):
             print("Metodo de Newton-Raphson \n")
             print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-            pa.grafica(iteraciones, error)
+            pa.grafica(iteraciones, errores)
             return xk, k, err, iteraciones, errores
         else:
             k = k + 1
     print("Metodo de Newton-Raphson \n")
     print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-    pa.grafica(iteraciones, error)
+    pa.grafica(iteraciones, errores)
     return xk, k, err, iteraciones, errores
 
 ##if __name__ == '__main__':
@@ -221,7 +220,7 @@ def secante(f, x0, x1, iterMax, tol):
         if(err < tol):
             print("Metodo de la Secante \n")
             print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-            pa.grafica(iteraciones, error)
+            pa.grafica(iteraciones, errores)
             return xk, k, err
         else:
             k = k + 1
@@ -231,7 +230,7 @@ def secante(f, x0, x1, iterMax, tol):
             errores.append(err)
     print("Metodo de la Secante \n")
     print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
-    pa.grafica(iteraciones, error)
+    pa.grafica(iteraciones, errores)
     return xk, k, err
 
 ##if __name__ == '__main__':

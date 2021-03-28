@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import sympy as sp
 import numpy as np
+from scipy.misc import derivative
 
 #Grafica
 #Entradas:
