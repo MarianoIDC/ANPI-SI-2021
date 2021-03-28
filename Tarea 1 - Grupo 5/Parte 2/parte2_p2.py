@@ -1,8 +1,7 @@
 ########################################################################################
 import math
 from scipy.misc import derivative
-print("###############################################")
-import sympy as sp
+import p2_aux as pa
 ########################################################################################
 
 #Metodo de la Biseccion
@@ -27,19 +26,23 @@ def biseccion(f, a, b, iterMax, tol):
         while(k < iterMax):
             xk = (a + b) / 2
             fx = f(xk)
-
             if(f(a) * fx  < 0):
                 b = xk
             elif(f(b) * fx < 0):
                 a = xk
-
             err = abs(f(xk))
             if(err < tol):
+                print("Metodo de la Biseccion \n")
+                print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+                pa.grafica(iteraciones, errores)
                 return xk, k, err, iteraciones, errores
             else:
                 k = k + 1
                 iteraciones.append(k)
                 errores.append(err)
+        print("Metodo de la Biseccion \n")
+        print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+        pa.grafica(iteraciones, error)
         return xk, k, err, iteraciones, errores
     else:
         raise ValueError("Las condiciones  no garantizan el cero de la funcion.")
@@ -74,7 +77,6 @@ def biseccion(f, a, b, iterMax, tol):
             #error: pocentaje de error del resultado obtenido
 
 def falsa_posicion(f, a, b, iterMax, tol):
-
     if (f(a) * f(b) < 0):
         k = 1
         err = 1
@@ -87,6 +89,9 @@ def falsa_posicion(f, a, b, iterMax, tol):
                 xk = x2 - ((x2 - a) / (f(x2) - f(a))) * f(x2)
                 err = abs(f(xk))
                 if (err < tol):
+                    print("Metodo de la Falsa Posicion \n")
+                    print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+                    pa.grafica(iteraciones, error)
                     return xk, k, err, iteraciones, errores
                 else:
                     k = k + 1
@@ -94,14 +99,19 @@ def falsa_posicion(f, a, b, iterMax, tol):
                     x2 = xk
                     iteraciones.append(k)
                     errores.append(err)
+            print("Metodo de la Falsa Posicion \n")
+            print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+            pa.grafica(iteraciones, error)
             return xk, k, err, iteraciones, errores
 
         elif (f(x2) * f(b) < 0):
-
             while (k < iterMax):
                 xk = b - ((b - x2) / (f(b) - f(x2))) * f(b)
                 err = abs(f(xk))
                 if (err < tol):
+                    print("Metodo de la Falsa Posicion \n")
+                    print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+                    pa.grafica(iteraciones, error)
                     return xk, k, err, iteraciones, errores
                 else:
                     k = k + 1
@@ -109,6 +119,9 @@ def falsa_posicion(f, a, b, iterMax, tol):
                     b = xk
                     iteraciones.append(k)
                     errores.append(err)
+            print("Metodo de la Falsa Posicion \n")
+            print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+            pa.grafica(iteraciones, error)
             return xk, k, err, iteraciones, errores
         else:
             raise ValueError("Las condiciones no garantizan el cero de la funcion")
@@ -158,9 +171,15 @@ def newton_raphson(f, x0, iterMax, tol):
         iteraciones.append(k)
         errores.append(err)
         if(err < tol):
+            print("Metodo de Newton-Raphson \n")
+            print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+            pa.grafica(iteraciones, error)
             return xk, k, err, iteraciones, errores
         else:
             k = k + 1
+    print("Metodo de Newton-Raphson \n")
+    print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+    pa.grafica(iteraciones, error)
     return xk, k, err, iteraciones, errores
 
 ##if __name__ == '__main__':
@@ -197,11 +216,12 @@ def secante(f, x0, x1, iterMax, tol):
     iteraciones = []
     errores = []
     while(k < iterMax):
-
         xk = x1 - ((x1 - x0) / (f(x1) - f(x0)))  * f(x1)
         err = abs(f(xk))
-        
         if(err < tol):
+            print("Metodo de la Secante \n")
+            print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+            pa.grafica(iteraciones, error)
             return xk, k, err
         else:
             k = k + 1
@@ -209,6 +229,9 @@ def secante(f, x0, x1, iterMax, tol):
             x1 = xk
             iteraciones.append(k)
             errores.append(err)
+    print("Metodo de la Secante \n")
+    print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
+    pa.grafica(iteraciones, error)
     return xk, k, err
 
 ##if __name__ == '__main__':
