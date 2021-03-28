@@ -34,7 +34,7 @@ double factorial(int num) {
  * @return xk0: resultado de la operacion.
  */
 double varM1(double a) {
-    double xk0, xk1, eps = 2.2204E-16, facta, fact0, fact20, fact40, fact60, fact80, fact100, condParada=1;
+    double xk0, xk1, eps = 2.2204E-16, facta, fact0, fact20, fact40, fact60, fact80, fact100, condParada = 1;
     int i = 0;
 
     if (a > 0) {
@@ -58,11 +58,11 @@ double varM1(double a) {
 
             xk0 = pow(eps, 15);
         }
-        while (condParada>TOL && i < MAXITER){
-            xk0 = xk0 * (2-a*xk0);
+        while (condParada > TOL && i < MAXITER) {
+            xk0 = xk0 * (2 - a * xk0);
             xk1 = xk0;
-            xk1 = xk1 * (2-a*xk1);
-            condParada = abs((xk1-xk0)/xk1);
+            xk1 = xk1 * (2 - a * xk1);
+            condParada = abs((xk1 - xk0) / xk1);
         }
 
     }
@@ -76,16 +76,16 @@ double varM1(double a) {
  */
 float exp_t(double a) {
     int n = 0;
-    float condiparada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    float condiparada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condiparada > TOL && n < MAXITER){
+    while (condiparada > TOL && n < MAXITER) {
 
-        Sk0 =  (pow(a, n)) * varM1(factorial(n));
-        Sk1 =  ((pow(a, n+1)) * varM1(factorial(n+1)));
+        Sk0 = (pow(a, n)) * varM1(factorial(n));
+        Sk1 = ((pow(a, n + 1)) * varM1(factorial(n + 1)));
         // sum+ Sk0+Sk1 - (sum+ Sk0))
-        condiparada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+        condiparada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
 
     }
     return sum;
@@ -99,14 +99,14 @@ float exp_t(double a) {
  */
 double sin_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
-        Sk0 =  pow(-1, n) * pow(a, (2 * n +1 )) * varM1(factorial((2 * n +1)));
-        Sk1 = pow(-1, n+1) * pow(a, (2 * (n+1) +1 )) * varM1(factorial((2 * (n+1) +1)));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+    while (condParada > TOL && n < MAXITER) {
+        Sk0 = pow(-1, n) * pow(a, (2 * n + 1)) * varM1(factorial((2 * n + 1)));
+        Sk1 = pow(-1, n + 1) * pow(a, (2 * (n + 1) + 1)) * varM1(factorial((2 * (n + 1) + 1)));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
@@ -118,14 +118,14 @@ double sin_t(double a) {
  */
 double cos_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
-        Sk0 =  pow(-1, n) * pow(a, (2 * n)) * varM1(factorial((2 * n)));
-        Sk1 = pow(-1, n+1) * pow(a, (2 * (n+1) )) * varM1(factorial((2 * (n+1))));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+    while (condParada > TOL && n < MAXITER) {
+        Sk0 = pow(-1, n) * pow(a, (2 * n)) * varM1(factorial((2 * n)));
+        Sk1 = pow(-1, n + 1) * pow(a, (2 * (n + 1))) * varM1(factorial((2 * (n + 1))));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
@@ -156,14 +156,14 @@ double tan_t(double a) {
  */
 double ln_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
-        Sk0 = (1* varM1(2*n+1)) * (pow((a - 1) *  varM1(a + 1), 2 * n));
-        Sk1 = (1* varM1(2*(n+1)+1)) * (pow((a - 1) *  varM1(a + 1), 2 * (n+1)));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+    while (condParada > TOL && n < MAXITER) {
+        Sk0 = (1 * varM1(2 * n + 1)) * (pow((a - 1) * varM1(a + 1), 2 * n));
+        Sk1 = (1 * varM1(2 * (n + 1) + 1)) * (pow((a - 1) * varM1(a + 1), 2 * (n + 1)));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     sum = (2 * (a - 1) / (a + 1)) * sum;
     return sum;
@@ -178,7 +178,7 @@ double ln_t(double a) {
  * @return resultado: solucion de obtener loga(x) a partir de logaritmos naturales.
  */
 double log_t(double a, double x) {
-    double lna=0, lnx=0, resultado=0;
+    double lna = 0, lnx = 0, resultado = 0;
     if (x > 0 && a > 0) {
 
         lnx = ln_t(x);  //??
@@ -198,7 +198,7 @@ double log_t(double a, double x) {
  * @return: resultado de la evauacion
  */
 double power_t(double a, double x) {
-    double aa= ln_t(a);
+    double aa = ln_t(a);
     return exp_t(x * ln_t(a));
 }
 
@@ -209,14 +209,14 @@ double power_t(double a, double x) {
  */
 double sinh_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
-        Sk0 =  pow(a, (2 * n +1 )) * varM1(factorial((2 * n +1)));
-        Sk1 = pow(a, (2 * (n+1) +1 )) * varM1(factorial((2 * (n+1) +1)));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+    while (condParada > TOL && n < MAXITER) {
+        Sk0 = pow(a, (2 * n + 1)) * varM1(factorial((2 * n + 1)));
+        Sk1 = pow(a, (2 * (n + 1) + 1)) * varM1(factorial((2 * (n + 1) + 1)));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
@@ -228,14 +228,14 @@ double sinh_t(double a) {
  */
 double cosh_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
+    while (condParada > TOL && n < MAXITER) {
         Sk0 = pow(a, (2 * n)) * varM1(factorial((2 * n)));
-        Sk1 = pow(a, (2 * (n+1) )) * varM1(factorial((2 * (n+1))));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+        Sk1 = pow(a, (2 * (n + 1))) * varM1(factorial((2 * (n + 1))));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
@@ -300,15 +300,16 @@ double root_t(double x, double a) {
  */
 double asin_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
+    while (condParada > TOL && n < MAXITER) {
         double x = (pow(4, n) * pow(factorial(n), 2) * (2 * n + 1));
         Sk0 = (factorial(2 * n) * varM1(x)) * pow(a, 2 * n + 1);
-        Sk1 = (factorial(2 * (n+1)) * varM1((pow(4, n+1) * pow(factorial(n+1), 2) * (2 * (n+1) + 1)))) * pow(a, 2 * (n+1) + 1);
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+        Sk1 = (factorial(2 * (n + 1)) * varM1((pow(4, n + 1) * pow(factorial(n + 1), 2) * (2 * (n + 1) + 1)))) *
+              pow(a, 2 * (n + 1) + 1);
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
@@ -320,19 +321,19 @@ double asin_t(double a) {
  */
 double atan_t(double a) {
     int n = 0;
-    double condParada=1, Sk1 = 0, Sk0 = 0,sum=0;
+    double condParada = 1, Sk1 = 0, Sk0 = 0, sum = 0;
 
-    while (condParada > TOL && n < MAXITER){
-        Sk0 = pow(-1, n) * (pow(a, 2 * n + 1) *varM1(2 * n + 1));
-        Sk1 = pow(-1, n+1) * (pow(a, 2 * (n+1) + 1) *varM1(2 * (n+1) + 1));
-        condParada = abs(sum+ Sk0+Sk1 - (sum+ Sk0));
-        sum= sum+Sk0;
-        n=n+1;
+    while (condParada > TOL && n < MAXITER) {
+        Sk0 = pow(-1, n) * (pow(a, 2 * n + 1) * varM1(2 * n + 1));
+        Sk1 = pow(-1, n + 1) * (pow(a, 2 * (n + 1) + 1) * varM1(2 * (n + 1) + 1));
+        condParada = abs(sum + Sk0 + Sk1 - (sum + Sk0));
+        sum = sum + Sk0;
+        n = n + 1;
     }
     return sum;
 }
 
-double pi_t(){
+double pi_t() {
     double condParada, pk1 = 0, pk0 = 0, pi = 0;
     int n = 2;
 
@@ -341,7 +342,7 @@ double pi_t(){
     condParada = abs(pk1 - pk0);
     pk0 = pk1;
 
-    while(condParada > TOL || n < MAXITER) {
+    while (condParada > TOL || n < MAXITER) {
         pk1 = pk0 + ((pow(-1, n)) * varM1((2 * n + 1)));
         condParada = abs(pk1 - pk0);
         pk0 = pk1;
@@ -351,7 +352,7 @@ double pi_t(){
     return pi;
 }
 
-double acos_t(double x){
+double acos_t(double x) {
     double result = pi_t() * varM1(2) - asin_t(x);
     return result;
 }
