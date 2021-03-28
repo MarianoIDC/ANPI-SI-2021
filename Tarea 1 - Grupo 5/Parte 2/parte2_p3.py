@@ -6,7 +6,7 @@ x0 = 0
 a = 1/2
 b = (p2.math.pi)/4
 # Tolerancia
-tol = 0.00001
+tol = 1e-10
 # Maximo iteraciones
 iterMax = 100
 # Funcion
