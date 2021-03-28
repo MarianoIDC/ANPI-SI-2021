@@ -120,6 +120,10 @@
 	Cuando la tolerancia dada sea mayor que esta, entonces devuelve el resultado obtenido.
 	
 	\subsubsection{Ejemplos numérico}
+
+	double expe = exp\char`_t(11); \newline
+	cout $<<$ $"$ El resultado de $e^{11}$ es: " $<<$ expe; \newline
+	El resultado de $e^{11}$ es: 59874.1 \newline
 	
 	\subsection{Exponencial de Euler $e^{x}$}
 	
@@ -146,6 +150,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double expoNUNO = varM1(144); \newline
+	cout $<<$ $"$ El resultado de $144^{-1}$ es: " $<<$ expoNUNO; \newline
+	El resultado de $144^{-1}$ es: 0.00694444\newline
 
 	\subsection{Seno $\sin(x)$}
 	
@@ -174,7 +182,11 @@
 	
 	\subsubsection{Ejemplo numérico}
 	
-	\subsection{Coseno $\cos()x)$}
+	double seno = sin{\_}t(2.33); \newline
+	cout $<<$ $"$ El resultado de $sen(2.33)$ es: " $<<$ seno; \newline
+	El resultado de $sen(2.33)$ es: 0.725384\newline
+
+	\subsection{Coseno $\cos(x)$}
 	
 	Esta función calcula el $coseno$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
 	
@@ -199,7 +211,11 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
-	
+
+	double coseno = cos{\_}t(3.78); \newline
+	cout $<<$ $"$ El resultado de $cos(3.78)$ es: " $<<$ coseno; \newline
+	El resultado de $cos(3.78)$ es: -0.803046\newline
+
 	\subsection{Tangente $\tan(x)$}
 	
 	Esta función calcula la $tangente$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
@@ -217,6 +233,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double tangente = tan{\_}t(7); \newline
+	cout $<<$ $"$ El resultado de $tan(7)$ es: " $<<$ tangente; \newline
+	El resultado de $tan(7)$ es: 0.871449\newline
 	
 	\subsection{Logaritmo natural $\ln(x)$}
 	
@@ -243,6 +263,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double logan = ln{\_}t(45); \newline
+	cout $<<$ $"$ El resultado de $ln(45)$ es: " $<<$ logan; \newline
+	El resultado de $ln(45)$ es:3.80666\newline
 	
 	\subsection{Logaritmo $\log_{a}(x)$}
 	
@@ -261,6 +285,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double logb = log{\_}t(33, 43); \newline
+	cout $<<$ $"$ El resultado de logaritmo en base 33 de 43 es: es: " $<<$ logb;
+	El resultado de  logaritmo en base 33 de 43 es: 1.0757\newline
 	
 	\subsection{Exponencial $a^{x}$}
 	
@@ -271,12 +299,25 @@
 	\end{center}
 	
 	\subsubsection{Formulación matemática}
+	Esta función se compone de funciones ya programadas anteriormente, de esta forma podemos ver la siguiente relación:
+	\begin{equation}\label{key13}
+		a^{x} = e^{a \cdot \ln(x)}
+	\end{equation}
+	Por lo tanto para esta función se aplican la función de logaritmo natural y exponencial de euler anteriormente explicadas.
 	
 	\subsubsection{Valores iniciales}
 	
+	Está función no tiene valores iniciales, solo los dependientes a las funciones que la componen.		
+
 	\subsubsection{Condición de parada}
+
+	Esta función no tiene condición de parada como tal, solo las dependientes a las funciones que la componen.
 	
 	\subsubsection{Ejemplo numérico}
+
+	double powert = power{\_}t(2, 11); \newline
+	cout $<<$ $"$ El resultado de 2 elevado a la 11 es: " $<<$ powert; \newline
+	El resultado de 2 elevado a la 11 es: 2048\newline
 	
 	\subsection{Seno hiperbólico $\sinh(x)$}
 	
@@ -303,6 +344,10 @@
 	\end{equation}
 		
 	\subsubsection{Ejemplo numérico}
+
+	double senoh = sinh{\_}t(2.1); \newline
+	cout $<<$ $"$ El resultado de $sinh(2.1)$ es: " $<<$ senoh; \newline
+	El resultado de $sinh(2.1)$ es: 4.02186\newline
 	
 	\subsection{Coseno hiperbólico $\cosh(x)$}
 	
@@ -330,6 +375,10 @@
 	
 	\subsubsection{Ejemplo numérico}
 	
+	double cosenoh = cosh{\_}t(0.89); \newline
+	cout $<<$ $"$ El resultado de $cosh(0.89)$ es: " $<<$ cosenoh; \newline
+	El resultado de $cosh(0.89)$ es: 1.42289\newline
+
 	\subsection{Tangente hiperbólico $\tanh(x)$}
 	
 	Esta función calcula la $tangente hiperbólica$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
@@ -347,6 +396,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double tanoh = tanh{\_}t(0.22); \newline
+	cout $<<$ $"$ El resultado de $tanh(0.22)$ es: " $<<$ tanoh; \newline
+	El resultado de $tanh(0.22)$ es: 0.216518\newline
 	
 	\subsection{Raíz cuadrada $\sqrt{x}$}
 	
@@ -391,7 +444,15 @@
 	El valor inicial está dado por: $x_{0 = \frac{a}{2}}$.
 	\subsubsection{Condición de parada}
 	
+	\begin{equation}\label{key22}
+		\left\lvert (S_{k+1}(a) - S_{k}(a)) / S_{k+1}(a) \right\lvert < tol
+	\end{equation}
+	
 	\subsubsection{Ejemplo numérico}
+	double raiz = sqrt{\_}t(144); \newline
+	cout $<<$ $"$ El resultado de la raíz cuadrada de 144 es: " $<<$ raiz; \newline
+	El resultado de la raíz cuadrada de 144 es:12\newline
+	
 	
 	\subsection{Raíz $\sqrt[a]{x}$}
 	
@@ -402,14 +463,48 @@
 	\end{center}
 	
 	\subsubsection{Formulación matemática}
+
+	El método de Newton-Raphson se define como:
+	
+	\begin{equation}\label{key23}
+		x_{k+1} = x_{k} - \frac{f(x_{k})}{f'(x_{k})}, ~x_{0} = \alpha
+	\end{equation}
+	
+	Donde para encontrar la p-ésima raíz de a:
+	
+	\begin{equation}\label{key24}
+		\sqrt[p]{a}	
+	\end{equation}
+
+	El cero de la función está dado por:
+	
+	\begin{equation}\label{key25}
+		g(x) = x^{p} - a, ~x_{0} = \frac{a}{2}
+	\end{equation}
+
+	Por lo que resulta en la siguiente iteración:
+	
+	\begin{align*}
+		\centering
+		\begin{cases}
+			x_{0} = \frac{a}{2} \\
+			x_{k+1} = x_{k} - \frac{x_{k}^{p} - a}{2\cdot x_{k}}
+		\end{cases}
+	\end{align*}
 	
 	\subsubsection{Valores iniciales}
-	
+	El valor inicial está dado por: $x_{0 = \frac{a}{2}}$.
 	\subsubsection{Condición de parada}
-	
+	\begin{equation}\label{key22}
+		\left\lvert (S_{k+1}(a) - S_{k}(a)) / S_{k+1}(a) \right\lvert < tol
+	\end{equation}
 	\subsubsection{Ejemplo numérico}
 	
-	\subsection{Arcoseno $\sin^{-1}(x)$}
+	double raizx = root{\_}t(45, 7); \newline
+	cout $<<$ $"$ El resultado de la raíz 7 de 45 es: " $<<$ raizx; \newline
+	El resultado de la raíz 7 de 45 es:1.72256\newline
+	
+	\subsection{Arseno $\sin^{-1}(x)$}
 	
 	Esta función calcula el $arcoseno$ de un número $x$, el uso de la misma se realiza de la siguiente manera:
 	
@@ -434,6 +529,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double aseno = asin{\_}t(0.33); \newline
+	cout $<<$ $"$ El resultado de aseno(0.33) es: " $<<$ aseno; \newline
+	El resultado de aseno(0.33) es: 0.336304\newline
 	
 	\subsection{Arcotangente $\tan^{-1}(x)$}
 	
@@ -460,6 +559,10 @@
 	\end{equation}
 	
 	\subsubsection{Ejemplo numérico}
+
+	double atan = atan{\_}t(0.67); \newline
+	cout $<<$ $"$ El resultado de atan(0.67) es: " $<<$ atan; \newline
+	El resultado de atan(0.67) es: 0.590307\newline
 	
 	
 \end{document}
