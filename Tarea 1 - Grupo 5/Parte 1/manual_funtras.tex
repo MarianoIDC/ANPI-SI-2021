@@ -61,13 +61,28 @@
 	El desarrollo y las pruebas de esta biblioteca se realizaron en el SO Windows 10, por lo tanto como requisitos se tiene:
 	
 	\begin{itemize}
-		\item Sistema operativo Windows 10
+		\item Sistema operativo Windows 10 o Linux
 		\item MinGW
-		\item CLion
+		\item Editor de código
 	\end{itemize}
 	
 	\subsection{Instalación}
 	
+	\begin{itemize}
+		\item Crear una carpeta donde se realizará un proyecto nuevo.
+		\item Agregar a esta carpeta los archivos funtras.a y funtras.h.
+		\item Crear un archivo .cpp donde se utilizará la biblioteca.
+		\item En el archivo .cpp anterior aregar el header de la librería a utilizar, de la siguiente manera: include "funtras.h".
+		\item Una vez realizado esto se puede utilizar la biblioteca para prograr alguna función deseada.
+		\item Una vez esto se encuentre listo se deben ejecutar los siguientes comandos:
+		\begin{itemize}
+			\item g++ -c archivo.cpp
+			\item g++ -o archivo archivo.o funtras.a
+			\item archivo
+		\end{itemize}
+		\item Finalmente se mostrara en la terminal el resultado de la operacion utilizada en el archivo .cpp.
+	\end{itemize}
+		
 		
 	\section{Funciones implementadas en Funtras}
 	A continuación se detallan las funciones implementadas en la biblioteca funtras.
