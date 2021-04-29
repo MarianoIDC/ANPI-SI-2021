@@ -1,106 +1,56 @@
 #include <iostream>
 #include <ginac/ginac.h>
-#include "mgl2/mgl.h"
-#include <vector>
 
 using namespace std;
 using namespace GiNaC;
 
-/*Funcion para crear una grafica:
- * Entradas: Pares ordenados en x y y, vectores de las graficas
- * Salidas: Grafica de iteraciones vs error
-*/
-void createGraph(double x1, double x2, double y1, double y2, vector<double> x, vector<double> y) {
-    mglGraph graph;
-    //Estas funciones convierten los vectores de la entrada en arreglos de datos de la grafica
-    mglData xGraph(x);
-    mglData yGraph(y);
-  	//Se disena la grafica con los parametros
-    graph.Title("Error vs Iteracion");
-    graph.SetOrigin(0, 0);
-    //Limites de la grafica
-    graph.SetRanges(x1, x2, y1, y2);
-   	//Valores que va a contener la grafica
-    graph.Plot(xGraph, yGraph, "o!rgb");
-    graph.Axis();
-    graph.Grid();
-    //Se exporta la grafica a un archivo PNG
-    graph.WritePNG("Graph.png");
-}
-
-/*Metodo de la secante:
- * Entradas: Funcion a la que se le va a aplicar el metodo (express), primer valor inicial, segundo
-   valor inicial, tolerancia y cantidad de iteraciones maximas
- * Salidas: Aproximacion de la solucion, error y cantidad de iteraciones realizadas*/
-ex secante(string express, string firstValue, string secondValue, string tolerance, string iterations) {
-    //Implementacion del calculo simbolico
-    symbol x("x");
+/**
+ *
+ * @param funcion: Funcion a evaluar en el metodo
+ * @param x0: primer valor inicial
+ * @param x1: segundo valor inicial
+ * @param MAXIT: cantidad maxima de iteraciones
+ * @param TOL: tolerancia del resultado
+ * @return
+ */
+ex *secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
+    symbol x;
     symtab table;
     table["x"] = x;
     parser reader(table);
-    //Se traducen las entradas a variables de calculo simbolico
-    ex function = reader(express);
-    ex x0 = reader(firstValue);
-    ex x1 = reader(secondValue);
-    ex tol = reader(tolerance);
-    ex iterMax = reader(iterations);
-    //Se definen las variables de la iteracion, solucion y error necesarias
-    int iter = 1;
-    ex xk;
-    ex error = tol + 1;
-    //Vectores para la grafica
-    vector<double> errors;
-    vector<double> iters;
-    //Funciones por evaluar
-    ex f0 = evalf(subs(function, x == x0));
-    ex f1 = evalf(subs(function, x == x1));
-    while (iter < iterMax) {
-        //Ecuacion del metodo de la secante
-        xk = x1 - f1 * ((x1 - x0) / (f1 - f0));
-        error = abs(xk - x1)/abs(xk); //Error de la solucion
-        ex aux = evalf(error);
-        //Se actualizan los valores
-        x0 = x1;
-        x1 = xk;
-        iter++;
-        //Los vectores de iteracion y error reciben valores
-        double m = ex_to<numeric>(aux).to_double();
-        errors.push_back(m);
-        iters.push_back(iter);
-        //Condicion de parada
-        if (error <= tol) {
+    ex f = reader(funcion);
+    ex xk = x1;
+    ex xkm1 = x0;
+    ex xk1;
+    int iter = 0;
+    ex err = TOL + 1;
+    static ex resultado[2];
+
+    while (iter < MAXIT) {
+        xk1 = xk -
+              ((((xk - xkm1)) / ((evalf(subs(f, x == xk))))) - evalf(subs(f, x == xkm1))) * (evalf(subs(f, x == xk)));
+        xkm1 = xk;
+        xk = xk1;
+        err = abs(evalf(subs(f, x == xk)));
+
+        if (err < TOL) {
             break;
+        } else {
+            iter = iter + 1;
         }
     }
-    cout << "Aproximacion: " << xk << endl;
-    cout << "Iteraciones : " << iter << endl;
-    cout << "Error : " << error << endl;
-    //Se crea la grafica respectiva
-    createGraph(0, iter + 1, -ex_to<numeric>(evalf(error)).to_double(), ex_to<numeric>(evalf(error)).to_double(), iters, errors);
-    return xk;
+    resultado[0] = xk;
+    resultado[1] = abs((evalf(subs(f, x == xk))));
+    return resultado;
 }
 
-int main() {
-    //Se define la funcion por evaluar
-    string express;
-    cout << "Escriba la funcion: " << endl;
-    cin >> express;
-    //Se definen los valores iniciales
-    string x0;
-    cout << "Escriba el primer valor inicial: " << endl;
-    cin >> x0;
-    string x1;
-    cout << "Escriba el segundo valor inicial: " << endl;
-    cin >> x1;
-    //Se define la tolerancia
-    string tol;
-    cout << "Escriba la tolerancia: " << endl;
-    cin >> tol;
-    //Se define el numero maximo de iteraciones
-    string iterMax;
-    cout << "Escriba el numero de iteraciones: " << endl;
-    cin >> iterMax;
-    //Metodo de la secante
-    secante(express, x0, x1, tol, iterMax);
+/**
+ * Ejemplo numerico
+ */
+int main(void) {
+    ex *testS;
+    testS = secante("exp(-pow(x, 2)) - x", 0, 1, 100, 0.001);
+    cout << "Aproximacion: " << *testS << endl;
+    cout << "Error: " << *(testS + 1) << endl;
     return 0;
 }
