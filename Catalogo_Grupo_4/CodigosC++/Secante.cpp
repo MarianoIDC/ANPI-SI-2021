@@ -5,15 +5,14 @@ using namespace std;
 using namespace GiNaC;
 
 /**
- *
  * @param funcion: Funcion a evaluar en el metodo
  * @param x0: primer valor inicial
  * @param x1: segundo valor inicial
  * @param MAXIT: cantidad maxima de iteraciones
  * @param TOL: tolerancia del resultado
- * @return
+ * @return tuple<ex, ex>: valor aproximado, error del valor aproximado
  */
-ex *secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
+tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
     symbol x;
     symtab table;
     table["x"] = x;
@@ -24,7 +23,6 @@ ex *secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
     ex xk1;
     int iter = 0;
     ex err = TOL + 1;
-    static ex resultado[2];
 
     while (iter < MAXIT) {
         xk1 = xk -
@@ -39,18 +37,14 @@ ex *secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
             iter = iter + 1;
         }
     }
-    resultado[0] = xk;
-    resultado[1] = abs((evalf(subs(f, x == xk))));
-    return resultado;
+    xk;
+    err = abs((evalf(subs(f, x == xk))));
+    return make_tuple(xk, err);
 }
 
-/**
- * Ejemplo numerico
- */
 int main(void) {
-    ex *testS;
-    testS = secante("exp(-pow(x, 2)) - x", 0, 1, 100, 0.001);
-    cout << "Aproximacion: " << *testS << endl;
-    cout << "Error: " << *(testS + 1) << endl;
+    tuple<ex, ex> testS = secante("exp(-pow(x, 2)) - x", 0, 1, 100, 0.001);
+    cout << "Aproximacion: " << get<0>(testS) << endl;
+    cout << "Error: " << get<1>(testS) << endl;
     return 0;
 }
