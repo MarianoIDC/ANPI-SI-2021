@@ -38,7 +38,7 @@ def relajacion(A,b,maxI,tol,w):
     plt.xlabel('Iteracion')
     #Los ejes estan limitados por las iteraciones y el error maximo
     plt.axis([0, maxI, 0, lista_error[0]])
-    plt.title('Relajación')
+    plt.title('Relajacion')
     plt.legend()
     plt.show()
     return x,error
