@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/toshi/Downloads/ANPI/ANPI-SI-2021/Tarea 1 - Grupo 5/Parte 1/FuncionesTrascendentes/funtras.h
+cmath
+-
+iostream
+-
+stdlib.h
+-
+
+C:/Users/toshi/Downloads/ANPI/ANPI-SI-2021/Tarea 1 - Grupo 5/Parte 1/FuncionesTrascendentes/test_funtras.cpp
+iostream
+-
+funtras.h
+C:/Users/toshi/Downloads/ANPI/ANPI-SI-2021/Tarea 1 - Grupo 5/Parte 1/FuncionesTrascendentes/funtras.h
+
