@@ -11,7 +11,7 @@ import scipy.linalg as la
 ###############################################################################
 
 def fact_lu(matrizD, matrizI):
-    if np.linalg.det(matrizD)==0:
+    if(np.linalg.det(matrizD) == 0):
         print("La matriz no es singular")
         return
     else:
