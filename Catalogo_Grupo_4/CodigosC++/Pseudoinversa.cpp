@@ -23,17 +23,18 @@ tuple<vec, double> pseudoinversas(mat A, vec b, int MAXIT, double TOL){
     // Se definie el valor de alpha para el metodo iterativo de Schlutz
     int alpha = eig_sym(A*trans(A)).max();
     //Se genera la el vector inicial
-    vec xk = (1/alpha)*trans(A);
+    mat xk = (1/alpha)*trans(A);
     //matriz identidad
-    vec I = eye(A.n_cols);
+    // vec I = eye(A.n_cols);
 
+    mat I (A.n_cols, A.n_cols, fill::eye);
     //variable para la interacion
-    vec xk1;
+    mat xk1;
     
      while(iter < MAXIT) {
         xk1 = xk*(2*I-A*xk);
         xk = xk1;
-        err = norm(A*xk*A-A,);
+        err = norm(A*xk*A-A, 2);
 
         if(err < TOL) {
             break;
@@ -42,7 +43,10 @@ tuple<vec, double> pseudoinversas(mat A, vec b, int MAXIT, double TOL){
             iter = iter + 1;
         }
     }
-    return make_tuple(xk, err);
+    mat A_pseudo = xk;
+    vec x = A_pseudo*b;
+
+    return make_tuple(x, err);
 
 
 }
@@ -51,8 +55,11 @@ tuple<vec, double> pseudoinversas(mat A, vec b, int MAXIT, double TOL){
  * Ejemplo numerico
  */
 int main() {
-    tuple<vec, double> testJ = pseudoinversas("5 1 1; 1 5 1; 1 1 5", "7 7 7", 100, 0.000001);
-    cout << "Aproximacion: \n" << get<0>(testJ) << endl;
-    cout << "Error: " << get<1>(testJ) << endl;
+
+    // Mat <double> A = {{}, {}, {}};
+    Col <double> b = {1, 4, 5,};
+    tuple<vec, double> testP = pseudoinversas("1 2 -1; -3 1 5; 1 2 3", b, 100, 0.0001);
+    cout << "Aproximacion: \n" << get<0>(testP) << endl;
+    cout << "Error: " << get<1>(testP) << endl;
     return 0;
 }
