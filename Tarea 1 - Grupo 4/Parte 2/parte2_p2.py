@@ -21,9 +21,9 @@ def metodo_nuevo(f, x0, iterMax, tol):
     errores = []
     while(k < iterMax):
         wk = xk + f(xk)
-        yk = xk - f(xk)/(f(xk)*f(wk))
-        xk = yk - f(yk)/(f(xk)*f(yk) + f(yk)*f(wk) - f(xk)*f(wk))
-        err = abs(xk)
+        yk = xk - f(xk)/(f(xk)/f(wk))
+        xk = yk - f(yk)/(f(xk)/f(yk) + f(yk)/f(wk) - f(xk)/f(wk))
+        err = abs(f(xk)) 
         if (err < tol):
             print("Metodo de Ren \n")
             print('xk = {}\nk = {}\nerror = {}'.format(xk, k, err))
