@@ -18,7 +18,34 @@ pkg load symbolic;
 format long;
 warning('off', 'all');
 
+function estrDiag(A)
+    n=length(A);
+    m=length(A(0));
+    for i=1:n
+      suma=0
+      for j=0:m
+        if n==m:
+          d=A(i,j)
+        endif
+      else
+        suma=suma+(A(i,j)).^2
+        
+      endfor
+      if abs(d)<sqrt(suma)
+        return false
+      endif
+    endfor
+    return true
+
 function [xAprox, err] = gaussSeidel(matrizD, matrizI, x, MAXIT, TOL)
+  
+    if(estrDiag(matrizD)==false)
+      printf('La matriz no es estrictamente diagonal dominante')
+      return
+      endif
+    else
+    
+    
     L = tril(matrizD, -1);
     D = diag(diag(matrizD));
     U = triu(matrizD, 1);
