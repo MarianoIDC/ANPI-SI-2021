@@ -35,15 +35,15 @@ mat cholesky(mat A) {
 // Una matriz L que es la factorización de Cholesky de otra matriz
 // Un vector d que es el vector de términos independientes
 //Salidas: Un vector y que es la solución de este sistema de ecuaciones
-colvec sust_atras(mat L, colvec d) {
+colvec sust_atras(mat L, colvec y) {
     int n = L.n_rows;
-    colvec y(L.n_rows, fill::zeros);
+    colvec x(L.n_rows, fill::zeros);
     for (int i = n - 1; i > 0; i--) {
         int suma = 0;
         for (int j = i + 1; j < n; j++) {
-            suma += L(i, j) * y(j);
+            suma += L(i, j) * x(j);
         }
-        y(i) = (d(i) - suma)/L(i, i);
+        x(i) = (y(i) - suma)/L(i, i);
     }
     return y;
 }
@@ -53,17 +53,17 @@ colvec sust_atras(mat L, colvec d) {
 // Una matriz L que es la transpuesta de la factorización de Cholesky de otra matriz
 // Un vector y que es el vector de términos independientes
 //Salidas: Un vector x que es la solución de este sistema de ecuaciones
-colvec sust_adelante(mat L, colvec y) {
+colvec sust_adelante(mat L, colvec d) {
     int n = L.n_rows;
-    colvec x(L.n_rows, fill::zeros);
+    colvec y(L.n_rows, fill::zeros);
     for (int i = n - 1; i > 0; i--) {
         int suma = 0;
         for (int j = 1; j < i - 1; j++) {
-            suma += L(i, j) * x(j);
+            suma += L(i, j) * y(j);
         }
-        x(i) = (y(i) - suma)/L(i, i);
+        y(i) = (d(i) - suma)/L(i, i);
     }
-    return x;
+    return y;
 }
 
 //Función que realiza la sustitución hacia atrás
@@ -82,8 +82,8 @@ colvec fact_Cholesky(mat A, colvec b) {
     }
     //Llama a las demás funciones y las guarda en variables
     mat L = cholesky(A);
-    colvec y = sust_atras(L, b);
-    colvec x = sust_adelante(trans(L), y);
+    colvec y = sust_adelante(L, b);
+    colvec x = sust_atras(trans(L), y);
     return x;
 }
 
