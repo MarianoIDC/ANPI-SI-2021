@@ -14,60 +14,33 @@
 
 clc;
 clear;
-pkg load symbolic;
-format long;
 warning('off', 'all');
 
-function estrDiag(A)
-    n=length(A);
-    m=length(A(0));
-    for i=1:n
-      suma=0
-      for j=0:m
-        if n==m:
-          d=A(i,j)
-        endif
-      else
-        suma=suma+(A(i,j)).^2
-        
-      endfor
-      if abs(d)<sqrt(suma)
-        return false
-      endif
-    endfor
-    return true
-
 function [xAprox, err] = gaussSeidel(matrizD, matrizI, x, MAXIT, TOL)
-  
-    if(estrDiag(matrizD)==false)
-      printf('La matriz no es estrictamente diagonal dominante')
-      return
-      endif
-    else
-    
-    
+
+  if(estrDiag(matrizD) == 0)
+    disp("La matriz no es estrictamente diagonal dominante");
+    return;
+  else
     L = tril(matrizD, -1);
     D = diag(diag(matrizD));
     U = triu(matrizD, 1);
     b = matrizI';
     iter = 0;
     xAprox = x';
-    err = 1;
+    xAnt = xAprox;
+    err = TOL + 1;
     M = L + D;
     inversa = inv(M);
-    iterl = []; % Lista que almacena el numero de iteraciones para despues graficar
-    errl = []; % Lista que almacena el % de error de cada iteracion para despues graficar
+    iterl = [];
+    errl = [];
 
     while(iter < MAXIT)
-        xAprox = (-inversa*U*xAprox)+(inversa*b);
-
+        xAprox = (-inversa*U*xAnt)+(inversa*b);
         iterl(iter+1) = iter;
         errl(iter+1) = err;
-        
-        err = norm(xAprox);
-
-        %iter = iter + 1;
-
+        err = norm(xAprox - xAnt);
+        xAnt = xAprox;
         if(err < TOL)
             grafica(iterl, errl);
             return;
@@ -77,6 +50,38 @@ function [xAprox, err] = gaussSeidel(matrizD, matrizI, x, MAXIT, TOL)
     endwhile
     grafica(iterl, errl);
     return;
+  endif
+endfunction
+
+%{
+    Parametros de Entrada
+        @param A: matriz a determinar si es tridiagonal dominante o no.
+
+    Parametros de Salida
+        @return ft: retorna un valor de 1 o 0 si la matriz es dominante o no.
+%}
+function ft = estrDiag(A)
+  n = length(A);
+  m = length(A(1));
+  d = 0;
+
+  for(i = 1 : n)
+    suma = 0;
+    for(j = 1 : m)
+      if(i == j)
+        d = A(i, j);
+      else
+        suma = suma + (A(i, j)).^2;
+      endif
+    endfor
+
+    if abs(d) < sqrt(suma)
+      ft = 0;
+      return;
+    endif
+  endfor
+  ft = 1;
+  return;
 endfunction
 
 %{
@@ -99,7 +104,7 @@ x = [0 0 0];
 %Iteraciones maximas
 MAXIT = 10;
 %Tolerancia
-TOL = 0.0001;
+TOL = 0.000001;
 %Matriz de coeficientes
 A = [5 1 1; 1 5 1; 1 1 5];
 %Vector de terminos independientes

@@ -10,36 +10,33 @@
 
 clc;
 clear;
-pkg load symbolic;
-format long;
 warning('off', 'all');
 
 function X = gaussiana(matrizD, matrizI)
-  
   [n, m] = size(matrizD);
   if (n ~= m)
     disp("La matrizD debe ser cuadrada");
-  end
+  endif
 
   n = length(matrizD);
   X = [matrizD, matrizI];
   % Por cada argumento de la matriz
-  for i=1:n
+  for(i = 1 : n)
     pivot = X(i, i);
     pivotRow = X(i, :);
     % Multiplica los vectores
     M = zeros(1, n - i);
     m = length(M);
     % Obtiene cada fila multiplicada
-    for k=1:m
+    for(k = 1 : m)
       M(k) = X(i + k, i) / pivot;
     endfor
     % Modifica cada fila
-    for k=1:m
+    for(k = 1 : m)
       X(i + k, :) = X(i + k, :) - pivotRow*M(k);
     endfor
   endfor
-  X = sustitucionAtras(X(1:n, 1:n), X(:,n+1));
+  X = sustitucionAtras(X(1 : n, 1 : n), X(:, n + 1));
 endfunction
 
 %{
@@ -54,16 +51,16 @@ endfunction
 %}
 
 function X = sustitucionAtras(matrizA, matrizB)
-    n = length(matrizB);
-    X = zeros(n, 1);
-    X(n) = matrizB(n)/matrizA(n, n);
+  n = length(matrizB);
+  X = zeros(n, 1);
+  X(n) = matrizB(n)/matrizA(n, n);
     
-    for(k = n-1 : -1 : 1)
-        div = matrizA(k, k);
+  for(k = n-1 : -1 : 1)
+    div = matrizA(k, k);
     if (div != 0)
-        X(k) = (matrizB(k) - matrizA(k, k+1:n)*X(k+1:n))/matrizA(k, k);
+      X(k) = (matrizB(k) - matrizA(k, k + 1 : n)*X(k + 1 : n))/matrizA(k, k);
     else
-        disp("Error: se ha producido una division por cero");
+      disp("Error: se ha producido una division por cero");
     endif
   endfor
 endfunction
