@@ -5,9 +5,9 @@
 using namespace std;
 using namespace arma;
 
-/**Función que realiza la factorización de Cholesky
-Entradas: Una matriz A de cualquier tamaño, simétrica y positiva definida
-Salidas: Una matriz L que es la factorización de la matriz A**/
+/**Funcion que realiza la factorizacion de Cholesky
+Entradas: Una matriz A de cualquier tamaño, simetrica y positiva definida
+Salidas: Una matriz L que es la factorizacion de la matriz A**/
 mat cholesky(mat A) {
     mat L(A.n_rows, A.n_cols, fill::zeros);
     for (int i = 0; i < A.n_rows; i++) {
@@ -29,11 +29,11 @@ mat cholesky(mat A) {
     return L;
 }
 
-/**Función que realiza la sustitución hacia atrás
+/**Funcion que realiza la sustitucion hacia atras
 Entradas:
-1) Una matriz L que es la factorización de Cholesky de otra matriz
-2) Un vector d que es el vector de términos independientes
-Salidas: Un vector y que es la solución de este sistema de ecuaciones**/
+1) Una matriz L que es la factorizacion de Cholesky de otra matriz
+2) Un vector d que es el vector de terminos independientes
+Salidas: Un vector y que es la solucion de este sistema de ecuaciones**/
 colvec sust_atras(mat L, colvec y) {
     colvec x(L.n_rows, fill::zeros);
     for (int i = L.n_rows - 1; i > -1; i--) {
@@ -46,11 +46,11 @@ colvec sust_atras(mat L, colvec y) {
     return x;
 }
 
-/**Función que realiza la sustitución hacia atrás
+/**Funcion que realiza la sustitucion hacia atras
 Entradas:
-1) Una matriz L que es la transpuesta de la factorización de Cholesky de otra matriz
-2) Un vector y que es el vector de términos independientes
-Salidas: Un vector x que es la solución de este sistema de ecuaciones**/
+1) Una matriz L que es la transpuesta de la factorizacion de Cholesky de otra matriz
+2) Un vector y que es el vector de terminos independientes
+Salidas: Un vector x que es la solucion de este sistema de ecuaciones**/
 colvec sust_adelante(mat L, colvec b) {
     colvec y(L.n_rows, fill::zeros);
     for (int i = 0; i < L.n_rows; i++) {
@@ -63,18 +63,18 @@ colvec sust_adelante(mat L, colvec b) {
     return y;
 }
 
-/**Función que realiza la sustitución hacia atrás
+/**Funcion que realiza la sustitucion hacia atras
 Entradas:
 1) Una matriz A de cualquier tamaño
-2) Un vector d que es el vector de términos independientes
-Salidas: Un vector x que es la solución del sistema de ecuaciones**/
+2) Un vector d que es el vector de terminos independientes
+Salidas: Un vector x que es la solucion del sistema de ecuaciones**/
 void fact_Cholesky(mat A, colvec b) {
-    //Revisa si es simétrica positiva definida con una función propia de Armadillo
+    //Revisa si es simetrica positiva definida con una funcion propia de Armadillo
     if (!A.is_sympd()) {
         A = A * trans(A);
         b = b * trans(A);
     }
-    //Llama a las demás funciones y las guarda en variables
+    //Llama a las demas funciones y las guarda en variables
     cout << "Matriz: \n" << A << endl;
     cout << "Vector: \n" << b << endl;
     mat L = cholesky(A);
@@ -82,15 +82,15 @@ void fact_Cholesky(mat A, colvec b) {
     colvec y = sust_adelante(L, b);
     cout << "Vector independiente: \n" << y << endl;
     colvec x = sust_atras(trans(L), y);
-    cout << "Solución del sistema: \n" << x << endl;
+    cout << "Solucion del sistema: \n" << x << endl;
 }
 
 int main() {
-    //Matriz A que es simétrica positiva definida
+    //Matriz A que es simetrica positiva definida
     mat A = "25 15 -5 -10; 15 10 1 -7; -5 1 21 4; -10 -7 4 18";
-    //Vector d de términos independientes
+    //Vector de terminos independientes
     colvec d = "-25 -19 -21 -5";
-    //Realiza la factorización de Cholesky
+    //Realiza la factorizacion de Cholesky
     fact_Cholesky(A, d);
     return 0;
 }
