@@ -10,6 +10,34 @@ import numpy as np
 ########################################################################################
 
 def thomas(matrizC, vectorTI):
+    A = matrizC
+    for i in range(len(A)):
+        for j in range(len(A[0])):
+            i0= j-1
+            i1= j+1
+            if (i==j):
+                if i0<0 or i0>=len(A[0]):
+                    if A[i][j]<0 or A[i1][j]<0:
+                        print(1)
+                        print("La matriz no es tridiagonal")
+                        return
+                elif i1<0 or i1>=len(A[0]):
+                    if A[i][j]<0 or A[i0][j]<0:
+                        print(2)
+                        print("La matriz no es tridiagonal")
+                        return
+                else:
+                    if A[i][j]<0 or A[i0][j]<0 or A[i1][j]<0 :
+                        print(3)
+                        print("La matriz no es tridiagonal")
+                        return
+            else:
+                if abs(i-j)>1:
+                    if A[i][j]!=0:
+                        print(i)
+                        print(j)
+                        print("La matriz no es tridiagonal")
+                        return
     xn = []
     ci = 0
     di = 0

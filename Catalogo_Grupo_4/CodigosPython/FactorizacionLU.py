@@ -7,9 +7,15 @@
 
 ###############################################################################
 import numpy as np
+import scipy.linalg as la
 ###############################################################################
 
 def fact_lu(matrizD, matrizI):
+    if np.linalg.det(matrizD)==0:
+        print("La matriz no es singular")
+        return
+    else:
+        pass
     n = len(matrizD)
     L = np.eye(n)
     U = matrizD
