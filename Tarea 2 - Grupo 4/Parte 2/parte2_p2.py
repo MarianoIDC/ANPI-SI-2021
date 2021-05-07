@@ -13,10 +13,13 @@ from sympy import sympify, Symbol, diff
     #jacobiano: matriz jacobiana de la solución
 def jacobiano(func, var, val):
     jacobiano = np.zeros((func.size, var.size), dtype = float) #Crea la matriz jacobiana de la solución
+    replace = []
     for i in range(func.size): #Itera sobre las filas de la matriz jacobiana
         func[i] = sympify(func[i])
-        for j in range(var.size): #Itera sobre las columnas de la matriz jacobiana
-            jacobiano[i][j] = diff(func[i], var[j]).subs(Symbol(var[j]), val[j]) #Realiza la derivada parcial y sustituye
+        for j in range(var.size):#Itera sobre las columnas de la matriz jacobiana
+            for k in range(var.size):
+                replace += [[var[k], val[k]]]
+            jacobiano[i][j] = diff(func[i], var[j]).subs(replace) #Realiza la derivada parcial y sustituye
     return jacobiano
 
 #Simétrica Positiva Definida
@@ -144,10 +147,7 @@ def fact_lu(A, b):
             except:
                 U[i + k - 1] = U[i + k - 1] - (np.multiply(pivotRow, M))
                 L[i + k - 1][i - 1] = M
-    print(L)
-    print(U)
     y = sust_adelante(L, b)
-    print(y)
     x = sust_atras(U, y)
     return x
 
@@ -155,7 +155,6 @@ x = np.array(['x', 'y', 'z'], dtype = object)
 fx = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
 valores = np.array([1/2, 1/2, 1/2], dtype = float)
 jacobo = jacobiano(fx, x, valores)
-print(jacobo)
 valFunc = np.array([-1/4, -5/4, -1], dtype = float)
 y = fact_lu(jacobo, valFunc)
 print(y)
