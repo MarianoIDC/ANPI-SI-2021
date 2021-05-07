@@ -15,7 +15,6 @@ def jacobiano(func, var, val):
     jacobiano = np.zeros((func.size, var.size), dtype = float) #Crea la matriz jacobiana de la solución
     replace = []
     for i in range(func.size): #Itera sobre las filas de la matriz jacobiana
-        func[i] = sympify(func[i])
         for j in range(var.size):#Itera sobre las columnas de la matriz jacobiana
             for k in range(var.size):
                 replace += [[var[k], val[k]]]
@@ -23,10 +22,10 @@ def jacobiano(func, var, val):
     return jacobiano
 
 #Simétrica Positiva Definida
-##Entradas:
-###A: Matriz a evaluar
-##Salidas:
-###Verdadero o falso
+#Entradas:
+    #A: Matriz a evaluar
+#Salidas:
+    #Verdadero o falso
 def es_pos_def(A):
     #Esta comparación garantiza que la matriz es simétrica mediante el método array_equal
     if np.array_equal(A, np.transpose(A)):
@@ -37,10 +36,11 @@ def es_pos_def(A):
         return False
 
 #Factorización de Cholesky
-##Entradas:
-###A: Matriz a factorizar
-###n: Tamaño de la matriz
-###L: Matriz realizada
+#Entradas:
+    #A: Matriz a factorizar
+    #n: Tamaño de la matriz
+#Salidas:
+    #L: Matriz realizada
 def fact_cholesky(A, n):
     L = np.zeros(shape = (A.shape[0], A.shape[1]), dtype = object)
     for i in range(n):
@@ -58,11 +58,11 @@ def fact_cholesky(A, n):
     return L
 
 #Sustitución hacia atrás
-##Entradas:
-###L: Matriz a factorizar
-###d: Tamaño de la matriz
-##Salidas
-###y: Sustitución de las ecuaciones
+#Entradas:
+    #L: Matriz a factorizar
+    #d: Tamaño de la matriz
+#Salidas
+    #y: Sustitución de las ecuaciones
 def sust_atras(L, b):
     #Se escoge el tamaño de la matriz
     N = L.shape[0]
@@ -76,12 +76,11 @@ def sust_atras(L, b):
     return y
 
 #Sustitución hacia adelante
-##Entradas:
-###L: Matriz a factorizar
-###d: Tamaño de la matriz
-###L: Sustitución de las ecuaciones
-##Salidas:
-###x: Sustitución de las ecuaciones
+#Entradas:
+    #L: Matriz a factorizar
+    #d: Tamaño de la matriz
+#Salidas:
+    #x: Sustitución de las ecuaciones
 def sust_adelante(L, b):
     #Se escoge el tamaño de la matriz
     N = L.shape[0]
@@ -98,10 +97,11 @@ def sust_adelante(L, b):
     return x
 
 #Método de factorización de Cholesky
-##Entradas:
-###A: Matriz a factorizar
-###d: Vector a comparar
-###L: Sustitución de las ecuaciones
+#Entradas:
+    #A: Matriz a factorizar
+    #d: Vector a comparar
+#Salida:
+    #x: Sustitución de las ecuaciones
 def cholesky(A, b):
     #Se escoge el tamaño de la matriz
     N = A.shape[0]
@@ -121,6 +121,12 @@ def cholesky(A, b):
     x = sust_adelante(np.transpose(L), y)
     return x
 
+#Método de factorización LU
+#Entradas:
+    #A: Matriz a factorizar
+    #d: Vector a comparar
+#Salida:
+    #x: Sustitución de las ecuaciones
 def fact_lu(A, b):
     if(np.linalg.det(A) == 0):
         print("La matriz no es singular")
@@ -151,13 +157,69 @@ def fact_lu(A, b):
     x = sust_atras(U, y)
     return x
 
+#Gráfica
+#Entradas:
+    #listaValoresX: valores que se graficarán en el eje 'x'
+    #listaValoresY: valores que se graficarán en el eje 'y'
+#Salidas:
+    #Gráfico con los valores ingresados
+def grafica(listaValoresX, listaValoresY):
+    plt.plot(listaValoresX, listaValoresY, 'bx')
+    plt.title("Metodo de Newton-Raphson")
+    plt.xlabel("Iteraciones")
+    plt.ylabel("% Error")
+    plt.show()
+
+  
+# Método de Newton-Raphson
+# Entradas:
+    #f: es el vector de funciones a analizar
+    #x: es el vector de variables en las funciones
+    #x0: valor inicial
+    #iterMax: es la cantidad de iteraciones maximas a realizar
+    #tol: es la tolerancia del algoritmo
+# Salidas:
+    #xk: es la solucion, valor aproximado del vector x
+    #error: vector de pocentaje de error de los resultados obtenidos
+    #k: cantidad de iteraciones sobre las que se realizaron el método
+def newton_raphson(x, f, x0, tol, iterMax):
+    itera = 1
+    error = 1
+    listaIter = []
+    listaError = []
+    xk = x0
+    valores = np.zeros(x.size, dtype = float)
+    replace = []
+    while(itera < iterMax):
+        xAprox = xk
+        for i in range(x.size):
+            for k in range(x.size):
+                replace += [[x[k], xAprox[k]]]
+            f[i] = sympify(f[i])
+            valores[i] = f[i].subs(replace)
+        jacobo = jacobo = jacobiano(f, x, xAprox)
+        xk = xAprox - fact_lu(jacobo, valores)
+        error = np.linalg.norm(valores)
+        print(itera)
+        print(error)
+        listaIter.append(itera)
+        listaError.append(error)
+        if (error < tol):
+            grafica(listaIter, listaError)
+            return xk, itera, error
+        else:
+            itera += 1
+    grafica(listaIter, listaError)
+    return xk, itera, error
+        
 x = np.array(['x', 'y', 'z'], dtype = object)
-fx = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
-valores = np.array([1/2, 1/2, 1/2], dtype = float)
-jacobo = jacobiano(fx, x, valores)
-valFunc = np.array([-1/4, -5/4, -1], dtype = float)
-y = fact_lu(jacobo, valFunc)
-print(y)
+f = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
+x0 = np.array([1/2, 1/2, 1/2], dtype = float)
+tol = 0.0001
+iterMax = 10
+xAprox, k, err = newton_raphson(x, f, x0, tol, iterMax)
+print("Método de Newton-Raphson \n")
+print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
 
 
         
