@@ -213,7 +213,9 @@ def newton_raphson(x, f, x0, tol, iterMax):
             itera += 1
     grafica(listaIter, listaError)
     return xk, itera, error
-        
+
+
+
 x = np.array(['x', 'y', 'z'], dtype = object)
 f = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
 x0 = np.array([1/2, 1/2, 1/2], dtype = float)
