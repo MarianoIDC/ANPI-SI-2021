@@ -197,8 +197,10 @@ def newton_raphson(x, f, x0, tol, iterMax):
                 replace += [[x[k], xAprox[k]]]
             f[i] = sympify(f[i])
             valores[i] = f[i].subs(replace)
-        jacobo = jacobo = jacobiano(f, x, xAprox)
+        replace = []
+        jacobo = jacobiano(f, x, xAprox)
         xk = xAprox - fact_lu(jacobo, valores)
+        print(valores)
         error = np.linalg.norm(valores)
         print(itera)
         print(error)
@@ -217,8 +219,8 @@ f = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype =
 x0 = np.array([1/2, 1/2, 1/2], dtype = float)
 tol = 0.0001
 iterMax = 10
-xAprox, k, err = newton_raphson(x, f, x0, tol, iterMax)
 print("Método de Newton-Raphson \n")
+xAprox, k, err = newton_raphson(x, f, x0, tol, iterMax)
 print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
 
 
