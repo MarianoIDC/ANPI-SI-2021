@@ -43,9 +43,9 @@ f = np.array([
     '39.6*0.155*x3 + ((39.6*(0.155**2)*(x3**2))/(1-0.155*x3)) - (39.6*0.155*x4) - ((39.6*(0.155**2)*(x4**2))/(1-0.155*x4)) + (6.0*x5) + ((6.0*(x5**2))/(1-x5)) - (6.0*x4) - ((6.0*(x4**2))/(1-x4))',
     '39.6*0.155*x4 + ((39.6*(0.155**2)*(x4**2))/(1-0.155*x4)) - (39.6*0.155*x5) - ((39.6*(0.155**2)*(x5**2))/(1-0.155*x5)) + (6.0*(0.12/0.155)) + ((6.0*((0.12/0.155)**2))/(1-(0.12/0.155))) - (6.0*x5) - ((6.0*(x5**2))/(1-x5))'], 
     dtype = object)
-tol = 0.0001
+tol = 0.001
 iterMax = 10
 print("Método de Newton-Raphson para el problema ingenieril \n")
 xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
-print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
 grafica(iter1, err1)
