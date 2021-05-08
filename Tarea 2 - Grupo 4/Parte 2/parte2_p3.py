@@ -36,6 +36,7 @@ def funcionD(x0, iterMax, tol):
     xk, itera, error, listaIter, listaError = newton_raphson(x, f, x0, tol, iterMax)
     return xk, itera, error, listaIter, listaError
 
+select = int(input('Escoja un número del 1 al 5: '))
 x0 = np.array([0.8, 0.8])
 iterMax = 10
 tol = 0.0001
