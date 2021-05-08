@@ -28,7 +28,7 @@ def jacobiano(func, var, val):
 #Salidas:
     #Gráfico con los valores ingresados
 def grafica(listaValoresX, listaValoresY):
-    plt.plot(listaValoresX, listaValoresY, 'bx')
+    plt.plot(listaValoresX, listaValoresY, 'r-')
     plt.title("Metodo de Newton-Raphson")
     plt.xlabel("Iteraciones")
     plt.ylabel("% Error")
