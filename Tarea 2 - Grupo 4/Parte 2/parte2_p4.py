@@ -1,49 +1,64 @@
 import numpy as np
-## Problema: Columna de Absorcion de 5 Platos, con el gas especifico de Touleno
-## Pagina 356 Problema 4.8
+## Problema: Recubrimiento de Conductores Electricos
+## Pagina 353 Problema 4.6
 ## Nieves H. A, Dominguez S. F. (2014), Metodos Numericos Aplicados a la Ingenieria 4a Edicion. Universidad Iberoamericana
 ## Grupo Editorial Patria, D.F., Mexico. 
 
-
 from parte2_p2 import *
-#Corriente de Gas, Moles de Gas sin Tolueno
-#V0 = 39.6 #moles/min
 
-#Corriente de Gas con aceite
-#L0 = 6.0 #moles/min
+"""
+Para el recubrimiento de conductores eléctricos se utiliza una mezcla plástica viscosa,
+cuya preparación se lleva a cabo en mezcladores que trabajan por lotes.
+De datos experimentales y su correlación se tiene que el tiempo de residencia en el mezclador puede aproximarse por
 
-#Los moles de tolueno/min que entran a la columna de gas y el aceite son respecivamente
-#TV0 = 5.4 #moles/min
-#LT0 = 0.0 #moles/min
-#m = 0.155
+t = 14800*(sqr(S)/P)
 
-#Fraccion de mol tolueno
-#y0 = 0.12
-#x0 = 0.77
+donde 
 
-#Funciones Auxiliares
-#yi = (TVi) / (TVi + V0)
-#TVi = (V0*mi*xi)/(1-m*xi)
-#Tli = (L0*xi)/(1-xi)
+t = tiempo del proceso hr/lote
+S = Capacidad útil del mezclador Kg/lote
+P = potencia del agitador KW
 
-#Sistema de ecuaciones no linea
+Adicionalmente se sabe que 
+CE = costo de la electricidad: 0.43 $/KW hr
+CM = costo del mezclador: 9500*sqr(S) S/anio
+CI = costos indirectos 810*P $/anio
 
-## 'V0*y0 + ((V0*(y0**2))/(1-y0)) - (V0*m*x1) - ((V0*(m**2)*(x1**2))/(1-m*x1)) + (L0*x2) + ((L0*(x2**2))/(1-x2)) - (L0*x1) - ((L0*(x1**2))/(1-x1))', 
-## 'V0*m*x1 + ((V0*(m**2)*(x1**2))/(1-m*x1)) - (V0*m*x2) - ((V0*(m**2)*(x2**2))/(1-m*x2)) + (L0*x3) + ((L0*(x3**2))/(1-x3)) - (L0*x2) - ((L0*(x2**2))/(1-x2))', 
-## 'V0*m*x2 + ((V0*(m**2)*(x2**2))/(1-m*x2)) - (V0*m*x3) - ((V0*(m**2)*(x2**2))/(1-m*x3)) + (L0*x4) + ((L0*(x4**2))/(1-x4)) - (L0*x3) - ((L0*(x3**2))/(1-x3))',
-## 'V0*m*x3 + ((V0*(m**2)*(x3**2))/(1-m*x3)) - (V0*m*x4) - ((V0*(m**2)*(x2**2))/(1-m*x4)) + (L0*x5) + ((L0*(x5**2))/(1-x5)) - (L0*x4) - ((L0*(x4**2))/(1-x4))',
-## 'V0*m*x4 + ((V0*(m**2)*(x4**2))/(1-m*x4)) - (V0*m*x5) - ((V0*(m**2)*(x2**2))/(1-m*x5)) + (L0*x0) + ((L0*(x0**2))/(1-x0)) - (L0*x5) - ((L0*(x5**2))/(1-x5))'
+Produccion necesaria 500 000 Kg/anio
 
-x = np.array(['x1','x2','x3','x4','x5'], dtype = object)
-x0 = np.array([0.4,0.3,0.2,0.1,0.05], dtype = float)
+Calcule la capacidad optima del mezclador S*, la potencia optima del agitador P* y el costo total del proceso CT
+
+                CT = CE + CM + CI
+
+donde CE = 0.43*P*t*N [$/anio]
+
+con N como el numero de lotes por anio y dado por 
+
+                N = 5000 000/S [lote/anio]
+
+por lo que      CE = 3.182*10exp(9) / (P*sqr(S)) [$/anio]
+
+por lo tanto    CT =  3.182*10exp(9) / (P*sqr(S)) + 9500*sqr(S) + 810*P
+
+
+Derindo parcialmente a CT con respecto a P y S se obtiene
+
+        CTP = ((3.182*10exp(9))/((P**2)*sqr(S)))+810
+
+        CTS = ((1.519*10exp(9))/((P*S)*sqr(S)))+(4750/sqr(S))
+
+
+"""
+
+x = np.array(['x1','x2','x3'], dtype = object)
+x0 = np.array([0.7,0.2,0.1], dtype = float)
 f = np.array([
-    '39.6*0.12     + ((39.6*(0.12**2))/(1-0.12))         - (39.6*0.155*x1) - ((39.6*(0.155**2)*(x1**2))/(1-0.155*x1)) + (6.0*x2) + ((6.0*(x2**2))/(1-x2)) - (6.0*x1) - ((6.0*(x1**2))/(1-x1))', 
-    '39.6*0.155*x1 + ((39.6*(0.155**2)*(x1**2))/(1-0.155*x1)) - (39.6*0.155*x2) - ((39.6*(0.155**2)*(x2**2))/(1-0.155*x2)) + (6.0*x3) + ((6.0*(x3**2))/(1-x3)) - (6.0*x2) - ((6.0*(x2**2))/(1-x2))', 
-    '39.6*0.155*x2 + ((39.6*(0.155**2)*(x2**2))/(1-0.155*x2)) - (39.6*0.155*x3) - ((39.6*(0.155**2)*(x3**2))/(1-0.155*x3)) + (6.0*x4) + ((6.0*(x4**2))/(1-x4)) - (6.0*x3) - ((6.0*(x3**2))/(1-x3))',
-    '39.6*0.155*x3 + ((39.6*(0.155**2)*(x3**2))/(1-0.155*x3)) - (39.6*0.155*x4) - ((39.6*(0.155**2)*(x4**2))/(1-0.155*x4)) + (6.0*x5) + ((6.0*(x5**2))/(1-x5)) - (6.0*x4) - ((6.0*(x4**2))/(1-x4))',
-    '39.6*0.155*x4 + ((39.6*(0.155**2)*(x4**2))/(1-0.155*x4)) - (39.6*0.155*x5) - ((39.6*(0.155**2)*(x5**2))/(1-0.155*x5)) + (6.0*0.77) + ((6.0*(0.77**2))/(1-0.77)) - (6.0*x5) - ((6.0*(x5**2))/(1-x5))'], 
+    '((x1+x2)(x1-x3))-(5.97*(1-x1-x2)*(1+x1+x2))',
+    '((x2+x3)*x2)-(0.27*(1+x1+x2)*(1+x1+x2))',
+    '((x1+x3)*x3)-(2.8*(x1-x3)*(x2-x3))'
+    ], 
     dtype = object)
-tol = 0.00001
+tol = 0.0001
 iterMax = 10
 print("Método de Newton-Raphson para el problema ingenieril \n")
 xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
