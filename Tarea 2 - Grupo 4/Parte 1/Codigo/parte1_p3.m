@@ -57,7 +57,7 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
 %---------------------------------------------------------------------%
 %--------------------------Metodo BFGS--------------------------------%
 %---------------------------------------------------------------------%
-    while(iter < MAXIT && err > TOL)
+    while(err > TOL)
         gxk = subs(g, vars, xk);
         pk = inv(B)*(-gxk);
 %---------------------------Wolf-type---------------------------------%
@@ -83,14 +83,14 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
         skt = transpose(sk);
         ykt = transpose(yk);
         Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
-        xk = xk1
+        xk = double(xk1)
         err = double(norm(subs(g, vars, xk)));
         iter++;
     endwhile
 %---------------------------------------------------------------------%
 %------------------------Fin Metodo BFGS------------------------------%
 %---------------------------------------------------------------------%
-    xk = double(xk);
+    % xk = double(xk);
     return;
 endfunction
 
@@ -105,7 +105,7 @@ f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 18
 # Tolerancia
 tolerancia = 0.00001;
 # MAXIT
-iterMax = 3;
+iterMax = 20;
 
 [xk, err, iter] = bfgs(f, variables, iterMax, tolerancia);
 printf("############################################ \n");
