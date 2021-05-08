@@ -68,7 +68,7 @@ def newton_raphson(x, f, x0, tol, iterMax):
         #Se calcula el jacobiano
         jacobo = jacobiano(f, x, xAprox)
         #Se realiza la iteración y el error
-        xk = xAprox - fact_lu(jacobo, valores) #Es una función de Numpy que calcula sistemas de ecuaciones
+        xk = xAprox - np.linalg.solve(jacobo, valores) #Es una función de Numpy que calcula sistemas de ecuaciones
         error = np.linalg.norm(valores)
         listaIter.append(itera)
         listaError.append(error)
