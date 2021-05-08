@@ -15,7 +15,7 @@ f = np.array([
     dtype = object)
 
 
-tol = 0.00001
+tol = 0.0001
 iterMax = 10
 print("Método de Newton-Raphson para el problema ingenieril \n")
 xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
