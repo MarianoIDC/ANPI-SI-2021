@@ -79,13 +79,14 @@ def newton_raphson(x, f, x0, tol, iterMax):
             itera += 1
     #Se retorna la aproximación de la solución, el número de iteraciones, el error y las listas de la gráfica
     return xk, itera, error, listaIter, listaError
-        
-##x = np.array(['x', 'y', 'z'], dtype = object)
-##f = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
-##x0 = np.array([1/2, 1/2, 1/2], dtype = float)
-##tol = 0.00001
-##iterMax = 10
-##print("Método de Newton-Raphson \n")
-##xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
-##print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
-##grafica(iter1, err1)
+"""        
+x = np.array(['x', 'y', 'z'], dtype = object)
+f = np.array(['x**2+y**2+z**2-1', '2*x**2+y**2-4*z', '3*x**2-4*y+z**2'], dtype = object)
+x0 = np.array([1/2, 1/2, 1/2], dtype = float)
+tol = 0.00001
+iterMax = 10
+print("Método de Newton-Raphson \n")
+xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
+print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+grafica(iter1, err1)
+"""
