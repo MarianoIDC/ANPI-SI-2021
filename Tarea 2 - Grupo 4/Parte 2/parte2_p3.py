@@ -42,42 +42,42 @@ if (select == 1):
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionA(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 elif (select == 2):
     x0 = np.array([1.5, 2])
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionB(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 elif (select == 3):
     x0 = np.array([3, 2])
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionC(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 elif (select == 4):
     x0 = np.array([-1, -2])
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionD(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 elif (select == 5):
     x0 = np.array([1.2, -1.5])
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionE(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 elif (select == 6):
     x0 = np.array([2, 2, 2, 0])
     iterMax = 10
     tol = 0.0001
     xAprox, k, err, iter1, err1 = funcionG(x0, iterMax, tol)
-    print('xAprox = {}\n%Error = {}\n%Iteraciones = {}'.format(xAprox, err, k))
+    print('xAprox = {}\nError = {}\nIteraciones = {}'.format(xAprox, err, k))
     grafica(iter1, err1)
 else:
     print('Por favor digite un número correcto')

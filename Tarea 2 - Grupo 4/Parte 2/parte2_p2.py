@@ -72,7 +72,7 @@ def newton_raphson(x, f, x0, tol, iterMax):
         error = np.linalg.norm(valores)
         listaIter.append(itera)
         listaError.append(error)
-        print(xk, itera)
+        print(xk, itera, error)
         if (error < tol):
             return xk, itera, error, listaIter, listaError 
         else:

@@ -53,12 +53,12 @@ Derindo parcialmente a CT con respecto a P y S se obtiene
 x = np.array(['x1','x2','x3'], dtype = object)
 x0 = np.array([0.7,0.2,0.1], dtype = float)
 f = np.array([
-    '((x1+x2)(x1-x3))-(5.97*(1-x1-x2)*(1+x1+x2))',
-    '((x2+x3)*x2)-(0.27*(1+x1+x2)*(1+x1+x2))',
+    '76*((x1+x2)*(x1-x3))-(5.97*(1-x1-x2)*(1+x1+x2))',
+    '76*((x2+x3)*x2)-(0.27*(1+x1+x2)*(1+x1+x2))',
     '((x1+x3)*x3)-(2.8*(x1-x3)*(x2-x3))'
     ], 
     dtype = object)
-tol = 0.0001
+tol = 0.00001
 iterMax = 10
 print("Método de Newton-Raphson para el problema ingenieril \n")
 xAprox, k, err, iter1, err1 = newton_raphson(x, f, x0, tol, iterMax)
