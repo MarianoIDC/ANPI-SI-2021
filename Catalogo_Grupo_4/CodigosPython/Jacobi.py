@@ -1,5 +1,15 @@
+###############################################################################
 import numpy as np
+###############################################################################
 def jacobi(A, b, x0, tol):
+    '''
+    Metodo de Jacobi
+    :param A: matriz de coeficientes
+    :param b: vector de terminos independientes
+    :param x0: vector de valores iniciales
+    :param tol: tolerancia de la respuesta
+    :return: x: vector solucion
+    '''
     n = len(A)
     A = np.array(A)
     b = np.array(b)
@@ -19,7 +29,6 @@ def jacobi(A, b, x0, tol):
     x = np.array(x0)
     error = np.linalg.norm(np.dot(A, x) - b)
     i = 0
-
     m_inv = np.linalg.inv(D)
     m_times_n = np.dot(m_inv, (-1 * (L + U)))
     m_times_b = np.dot(m_inv, b)

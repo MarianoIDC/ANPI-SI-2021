@@ -1,3 +1,4 @@
+###############################################################################
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,8 +6,15 @@ import sympy
 import sympy as sym
 from sympy import symbols
 from Jacobi import jacobi
+###############################################################################
 
 def trazador_cubico(func, S):
+    '''
+    Metodo del Trazador Cubico
+    :param func: funcion sobre la que se realizara el calculo
+    :param S: rango de puntos en los que se divide el trazador cubico
+    :return: Sx: trazadores cubicos
+    '''
     # Procedemos a evaluar los puntos 'x'
     # para encontrar su valor 'y'
     valoresY = []
@@ -29,7 +37,7 @@ def trazador_cubico(func, S):
     A, u = [], []
     # Cantidad de puntos -1 (n)
     k = delta_hk.shape[0]
-    
+
     for i in range(1, k):
         # Primer caso Ms[1] = 0
         if i == 1:
@@ -38,7 +46,8 @@ def trazador_cubico(func, S):
         elif i == k - 1:
             A.append([0] * (k - 3) + [delta_hk[i - 1], 2 * (delta_hk[i - 1] + delta_hk[i])])
         else:
-            A.append([0] * (i - 2) + [delta_hk[i - 1], 2 * (delta_hk[i - 1] + delta_hk[i]), delta_hk[i]] + [0] * (k - 2 - i))
+            A.append(
+                [0] * (i - 2) + [delta_hk[i - 1], 2 * (delta_hk[i - 1] + delta_hk[i]), delta_hk[i]] + [0] * (k - 2 - i))
         # Creando el vector u
         u.append(6 * (delta_yk[i] / delta_hk[i] - delta_yk[i - 1] / delta_hk[i - 1]))
     # Convirtiendolo a numpy array
@@ -46,7 +55,7 @@ def trazador_cubico(func, S):
     u = np.array(u)
     # Resolviendo el sistema mediante Thomas, LU o Jacobi
     x0 = np.zeros(u.shape)
-    Ms = jacobi(A, u, u*0, 0.0000001)
+    Ms = jacobi(A, u, u * 0, 0.0000001)
     # Append Ms[1] = 0 and Ms[n+1] = 0
     Ms = np.append(0, np.append(Ms, 0))
     # Coeficientes
@@ -60,7 +69,7 @@ def trazador_cubico(func, S):
         b.append(Ms[i] / 2)
         c.append((yk[i + 1] - yk[i]) / delta_hk[i] - (2 * delta_hk[i] * Ms[i] + delta_hk[i] * Ms[i + 1]) / 6)
         d.append(yk[i])
-    
+
     # Convirtiendo
     a = np.array(a)
     b = np.array(b)
@@ -71,29 +80,25 @@ def trazador_cubico(func, S):
     Sxi = []
     x, x0 = symbols('x x0')
     for i in range(len(a)):
-        Sx.append(a[i]*(math.pow(S[i+1] - S[i], 3)) + b[i]*(math.pow(S[i+1] - S[i], 2)) + c[i]*(S[i+1] - S[i]) + d[i])
-        Sxi.append(a[i]*((x-x0)**3) + b[i]*((x-x0)**2) + c[i]*(x-x0) + d[i])
+        Sx.append(
+            a[i] * (math.pow(S[i + 1] - S[i], 3)) + b[i] * (math.pow(S[i + 1] - S[i], 2)) + c[i] * (S[i + 1] - S[i]) + d[i])
+        Sxi.append(a[i] * ((x - x0) ** 3) + b[i] * ((x - x0) ** 2) + c[i] * (x - x0) + d[i])
 
     # Polinomio trazador
     x = sympy.Symbol('x')
     px_tabla = []
-    for i in range(0, len(S)-1, 1):
+    for i in range(0, len(S) - 1, 1):
         pxtramo = a[i] * (x - S[i]) ** 3 + b[i] * (x - S[i]) ** 2
         pxtramo = pxtramo + c[i] * (x - S[i]) + d[i]
         pxtramo = pxtramo.expand()
         px_tabla.append(pxtramo)
 
     # Polinomios por tramos
-    # print('Polinomios por tramos: ')
-    # for tramo in range(1, len(S)-1, 1):
-    #     print(' x = [' + str(S[tramo - 1]) + ',' + str(S[tramo]) + ']')
-    #     print(str(px_tabla[tramo - 1]))
-
-    # print("Sx0 es:\n", Sxi[0], "\n")
-    # print("Sx1 es:\n", Sxi[1], "\n")
-    # print("Sx2 es:\n", Sxi[2], "\n")
-    # print("Sx3 es:\n", Sxi[3], "\n")
-    # print("Sx4 es:\n", Sxi[4], "\n")
+    print("######################################################")
+    print('Trazadores cubicos por tramos \n')
+    for tramo in range(1, len(S)-1, 1):
+        print(' Sxi = [' + str(S[tramo - 1]) + ',' + str(S[tramo]) + ']')
+        print(str(px_tabla[tramo - 1]))
 
     xtraza = np.array([])
     ytraza = np.array([])
@@ -103,12 +108,10 @@ def trazador_cubico(func, S):
         x0 = S[tramo - 1]
         x1 = S[tramo]
         xtramo = np.linspace(x0, x1, 100)
-
         # Evalua polinomio del tramo
         pxtramo = px_tabla[tramo - 1]
         pxt = sym.lambdify('x', pxtramo)
         ytramo = pxt(xtramo)
-
         # Vectores de trazador en x,y
         xtraza = np.concatenate((xtraza, xtramo))
         ytraza = np.concatenate((ytraza, ytramo))
@@ -118,18 +121,17 @@ def trazador_cubico(func, S):
     grafica(S, valoresY, xtraza, ytraza);
     return a, b, c, d, Sx
 
-
-#Grafica
-#Entradas:
-            #listaPuntosX: valores que se graficaran en el eje 'x'
-            #listaPuntosY: valores que se graficaran en el eje 'y'
-            #trazaX:
-            #trazay:
-#Salidas:
-            #Grafico con los valores ingresados
 def grafica(listaPuntosX, listaPuntosY, trazaX, trazaY):
-    plt.plot(listaPuntosX, listaPuntosY, 'ro', label = 'puntos')
-    plt.plot(trazaX, trazaY, label = 'trazador', color = 'blue')
+    '''
+    Grafica
+    :param listaPuntosX: valores que se graficaran en el eje 'x' 
+    :param listaPuntosY: valores que se graficaran en el eje 'y' 
+    :param trazaX: traza de los valores en x 
+    :param trazaY:  traza de los valores en y
+    :return: Grafico con los valores ingresados 
+    '''
+    plt.plot(listaPuntosX, listaPuntosY, 'ro', label='puntos')
+    plt.plot(trazaX, trazaY, label='trazador', color='blue')
     plt.title('Trazadores Cubicos Naturales')
     plt.xlabel('xi')
     plt.ylabel('S(xi)')

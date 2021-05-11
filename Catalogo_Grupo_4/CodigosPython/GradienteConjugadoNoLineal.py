@@ -1,13 +1,3 @@
-# Metodo del Gradiente Conjugado No Lineal
-# Entradas:
-            #func: string con la funcion a evaluar
-            #vars: lista con las variables de la ecuacion
-            #xk: vector con los valores iniciales
-            #MAXIT: es la cantidad de iteraciones maximas a realizar
-# Salidas:
-            #xAprox: es la solucion, valor aproximado de x
-            #error: pocentaje de error del resultado obtenido
-
 ###############################################################################
 import math
 import matplotlib.pyplot as plt
@@ -17,10 +7,19 @@ from numpy import linalg, array
 ###############################################################################
 
 def gradiente(func, variables, xk, MAXIT):
+    '''
+    Metodo del Gradiente Conjugado No Lineal
+    :param func: string con la funcion a evaluar
+    :param variables: lista con las variables de la ecuacion
+    :param xk: vector con los valores iniciales
+    :param MAXIT: es la cantidad de iteraciones maximas a realizar
+    :return: xAprox: es la solucion, valor aproximado de x
+    :return: error: pocentaje de error del resultado obtenido
+    '''
     funcion = sympify(func) #Obtenemos la funcion del string
     itera = 0
-    iterl = [] #Lista que almacena el numero de iteraciones 
-    errl = [] #Lista que almacena el % de error de cada iteracion 
+    iterl = [] #Lista que almacena el numero de iteraciones
+    errl = [] #Lista que almacena el % de error de cada iteracion
 
     if(len(variables) != len(xk)): #Comprueba la cantidad de variables en xk
         return "Variables y xk deben ser del mismo tamano"
@@ -63,14 +62,14 @@ def gradiente(func, variables, xk, MAXIT):
     grafica(iterl, errl)
     return vecx, norma
 
-# Evaluar Gradiente
-# Entradas:
-            #gradiente: gradiente a evaluar
-            #:vars: lista con las variables de la ecuacion
-            #:xk: vector con los valores iniciales
-# Salidas:
-            #gradResult: resultado de evaluar el vector en el gradiente
 def evaluarGradiente(gradiente, variables, xk):
+    '''
+    Evaluar Gradiente
+    :param gradiente: gradiente a evaluar
+    :param variables: lista con las variables de la ecuacion
+    :param xk: vector con los valores iniciales
+    :return: gradResult: resultado de evaluar el vector en el gradiente
+    '''
     n = len(variables)
     gradResult = []
     #Se recorre cada una de las derivadas parciales en el gradiente
@@ -82,14 +81,16 @@ def evaluarGradiente(gradiente, variables, xk):
         gradResult += [funcion.doit()]
     return gradResult
 
-# Calcular alpha k
-# Entradas:
-            #gradiente: gradiente a evaluar
-            #:vars: lista con las variables de la ecuacion
-            #:xk: vector con los valores iniciales
-# Salidas:
-            #gradResult: resultado de evaluar el vector en el gradiente
 def calcularAlphaK(func, variables, xk, dk, gk):
+    '''
+    Calcular alpha k
+    :param func: funcion en la que se evaluar
+    :param variables: lista con las variables de la ecuacion
+    :param xk: vector con los valores iniciales
+    :param dk:
+    :param gk: gradiente a evaluar
+    :return: gradResult: resultado de evaluar el vector en el gradiente
+    '''
     a = 1
     while 1:
         adk = [i * a for i in dk] #Se calcula la multiplicacion de ak * dk
@@ -112,29 +113,27 @@ def calcularAlphaK(func, variables, xk, dk, gk):
         a /= 2
     return a
 
-# Evaluar en la funcion
-# Entradas:
-            #func: string con la funcion a evaluar
-            #:vars: lista con las variables de la ecuacion
-            #:xk: vector con los valores iniciales
-# Salidas:
-            #func: resultado de evaluar en la funcion
 def evaluarFuncion(func, variables, xk):
+    '''
+    Evaluar en la funcion
+    :param func: string con la funcion a evaluar
+    :param variables: lista con las variables de la ecuacion
+    :param xk: vector con los valores iniciales
+    :return: func: resultado de evaluar en la funcion
+    '''
     n = len(variables)
     #Se sustituyen cada una de las variables por el valor en el vector
     for i in range(0, n):
         func = func.subs(variables[i], xk[i])
     return func
 
-# Calcular beta k
-# Entradas:
-            #gk: vector gk
-            #prevGK: vector gk de la iteracion anterior
-            #dk: vector dk
-            #reglaBK: regla utilizada para calcular el BK
-# Salidas:
-            #b: valor del Bk canculado
 def calcularBetaK(gk, prevGK):
+    '''
+    Calcular beta k
+    :param gk: vector gk
+    :param prevGK: vector gk de la iteracion anterior
+    :return: b: valor del Bk canculado
+    '''
     #Se calcula la norma 2 del vector actual
     normagk = linalg.norm(array(gk, dtype='float'), 2)
     #Se calcula la norma 2 del vector anterior
@@ -142,13 +141,13 @@ def calcularBetaK(gk, prevGK):
     b = (pow(normagk, 2)) / (pow(normaprevGK, 2))
     return b
 
-#Grafica
-#Entradas:
-            #listaValoresX: valores que se graficaran en el eje 'x'
-            #listaValoresY: valores que se graficaran en el eje 'y'
-#Salidas:
-            #Grafico con lo valores ingresados
 def grafica(listaValoresX, listaValoresY):
+    '''
+    Grafica
+    :param listaValoresX: valores que se graficaran en el eje 'x'
+    :param listaValoresY: valores que se graficaran en el eje 'y'
+    :return: Grafico con lo valores ingresados
+    '''
     plt.plot(listaValoresX, listaValoresY, 'bx')
     plt.title("Metodo del Gradiente Conjugado No Lineal")
     plt.xlabel("Iteraciones")

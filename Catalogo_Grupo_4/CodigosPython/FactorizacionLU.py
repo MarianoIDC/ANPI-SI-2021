@@ -1,16 +1,15 @@
-# Metodo de la Factorizacion LU
-    # Entradas:
-        # matrizD: matriz de coeficientes
-        # matrizI: matriz de terminos independientes
-    # Salidas:
-        # X: solucion del sistema
-
 ###############################################################################
 import numpy as np
 import scipy.linalg as la
 ###############################################################################
 
 def fact_lu(matrizD, matrizI):
+    '''
+    Metodo de la Factorizacion LU
+    :param matrizD: matriz de coeficientes
+    :param matrizI: matriz de terminos independientes
+    :return: X: solucion del sistema
+    '''
     if(np.linalg.det(matrizD) == 0):
         print("La matriz no es singular")
         return
@@ -53,4 +52,4 @@ if __name__ == '__main__':
     X = fact_lu(A, B)
     print("######################################################")
     print("Metodo de la Factorizacion LU\n")
-    print('X = {}\n'.format(X))
+    print('X = {}\n'.format(X)) 
