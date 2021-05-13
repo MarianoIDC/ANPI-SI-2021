@@ -34,11 +34,13 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
     errl = [];
 %------------------------Calculando los valores de xi----------------%
 # -10 <= xi <= 10
-    while(i <= n)
-        % x0 = [x0 1/randi(100)]; % Esto es probando con el f93
-        x0 = [x0 randi(10)]; % Esto es probando con el f99
-        i++;
-    endwhile
+    % while(i <= n)
+    %     % x0 = [x0 1/randi(100)]; % Esto es probando con el f93
+    %     x0 = [x0 randi(0)]; % Esto es probando con el f99
+    %     i++;
+    % endwhile
+    x0(1) = 0;
+    x0(2) = 0;
     double(x0);
     x0 = reshape(x0, n, 1)  %Vector ahora como matriz
 %---------------------Definiendo constantes del metodo----------------%
@@ -50,8 +52,8 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
     Bk = B;         % es por esto que se utiliza la Midentidad
 %-----------------------Calculando valores inicilaes------------------%
     g = gradient(f, vars);
-    gxk = subs(g, vars, xk)
-    err = double(norm(subs(g, vars, xk)))
+    gxk = subs(g, vars, xk);
+    err = double(norm(subs(g, vars, xk)));
     k = 1;
     iter = 0;
     epsilon = 1;
@@ -69,7 +71,7 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
         % gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
 
         while(!(fizquierda <= fderecha))
-            lambdak = double(lambdak**k)
+            lambdak = double(lambdak**k);
             if(lambdak < TOL)
                 break;
             endif
@@ -86,20 +88,20 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
         skt = transpose(sk);
         ykt = transpose(yk);
 
-        condright = double((ykt*sk)/(norm(sk))**2)
-        condleft = double(norm(subs(g, vars, xk), 2))
+        condright = double((ykt*sk)/(norm(sk))**2);
+        condleft = double(norm(subs(g, vars, xk)));
         if(condright > condleft)
             Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
             Bk = Bk1;
             xk = double(xk1)
-            err = double(norm(subs(g, vars, xk)))
-            iter++
+            err = double(norm(subs(g, vars, xk)));
+            iter++;
             k = 1;
         else
             Bk
-            xk = double(xk1)
-            err = double(norm(subs(g, vars, xk)))
-            iter++
+            xk = double(xk1);
+            err = double(norm(subs(g, vars, xk)));
+            iter++;
             k = 1;
         endif
     endwhile
@@ -117,7 +119,8 @@ syms x1 x2;                   % Esto es probando con el f99
 variables = [x1 x2];          % Esto es probando con el f99
 # Funcion
 % f = '(x1)**2 + (x2)**3 + (x3)**4 + (x4)**4 + (x5)**6'; % Esto es probando con el f93
-f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 182.25*x1*x2'; % Esto es probando con el f99
+% f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 182.25*x1*x2'; % Esto es probando con el f99
+f = 'exp(x1-1) + exp(-x2 +1) + (x1 - x2)**2'
 # Tolerancia
 tolerancia = 0.00001;
 # MAXIT
