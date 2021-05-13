@@ -42,18 +42,20 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
     double(x0);
     x0 = reshape(x0, n, 1)  %Vector ahora como matriz
 %---------------------Definiendo constantes del metodo----------------%
-    lambdak = 1;    % Al utilizar Wolf-type se define lambdak = 1
-    sigma1 = 0.0025;  % Se debe cumplir que sigma1 < sigma 2
-    sigma2 = 0.050;  % Se debe cumplir qur sigma2 < 1
+    lambdak = 0.5;    % Al utilizar Wolf-type se define lambdak = 1
+    sigma = 0.025;  % Se debe cumplir que sigma existe en (0,1)
+    % sigma2 = 0.050;  % Se debe cumplir qur sigma2 < 1
     xk = x0;
     B = eye(n, n);  % Debe ser una matriz definina positiva
     Bk = B;         % es por esto que se utiliza la Midentidad
 %-----------------------Calculando valores inicilaes------------------%
     g = gradient(f, vars);
-    gxk = subs(g, vars, xk);
-    err = double(norm(subs(g, vars, xk)));
+    gxk = subs(g, vars, xk)
+    err = double(norm(subs(g, vars, xk)))
     k = 1;
     iter = 0;
+    epsilon = 1;
+    alpha = 1;
 %---------------------------------------------------------------------%
 %--------------------------Metodo BFGS--------------------------------%
 %---------------------------------------------------------------------%
@@ -62,19 +64,20 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
         pk = inv(B)*(-gxk);
 %---------------------------Wolf-type---------------------------------%
         fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-        fderecha = double(subs(f, vars, xk)) + sigma1 * lambdak * double(transpose(gxk) * pk);
-        gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
-        gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
+        fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk) * pk);
+        % gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
+        % gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
 
-        while(!((fizquierda <= fderecha) && (gizquierda >= gderecha)))
-            lambdak = double(lambdak/2);
-            if(lambdak < TOL);
+        while(!(fizquierda <= fderecha))
+            lambdak = double(lambdak**k)
+            if(lambdak < TOL)
                 break;
             endif
             fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-            fderecha = double(subs(f, vars, xk)) + sigma1 * lambdak * double(transpose(gxk) * pk);
-            gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
-            gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
+            fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk) * pk);
+            % gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
+            % gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
+            k++;
         endwhile
 %----------------------------Wolf-type--------------------------------%
         xk1 = xk + lambdak*pk;
@@ -82,10 +85,23 @@ function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
         yk = double(subs(g, vars, xk1) - subs(g, vars, xk));
         skt = transpose(sk);
         ykt = transpose(yk);
-        Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
-        xk = double(xk1)
-        err = double(norm(subs(g, vars, xk)));
-        iter++;
+
+        condright = double((ykt*sk)/(norm(sk))**2)
+        condleft = double(norm(subs(g, vars, xk), 2))
+        if(condright > condleft)
+            Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
+            Bk = Bk1;
+            xk = double(xk1)
+            err = double(norm(subs(g, vars, xk)))
+            iter++
+            k = 1;
+        else
+            Bk
+            xk = double(xk1)
+            err = double(norm(subs(g, vars, xk)))
+            iter++
+            k = 1;
+        endif
     endwhile
 %---------------------------------------------------------------------%
 %------------------------Fin Metodo BFGS------------------------------%
