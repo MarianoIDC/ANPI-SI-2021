@@ -10,7 +10,7 @@ using namespace arma;
 /**
  * @param xv: Un vector de cualquier tamaño que corresponde al eje X del polinomio
  * @param k: La cantidad de puntos que se han evaluado en el polinomio
- * @return q: La función de Lagrange que se le suma al polinomio de interpolacion
+ * @return q: La funcion de Lagrange que se le suma al polinomio de interpolacion
  * */
 ex Lk(vec xv, int k) {
     //Se carga la variable simbolica
@@ -23,7 +23,7 @@ ex Lk(vec xv, int k) {
     ex q = 1;
     for (int i = 0; i < m; i++) {
         if (i != k) {
-            //Se realiza la multiplicatoria de la función de Lagrange
+            //Se realiza la multiplicatoria de la funcion de Lagrange
             q *= (x - xv(i))/(xv(k) - xv(i));
         } else {
             continue;
@@ -58,8 +58,8 @@ int main() {
     //Vectores x y y tomados como ejemplo
     vec xv = "-2 0 1";
     vec yv = "0 1 -1";
-    //Se carga la función y se ejecuta el ejemplo
+    //Se carga la funcion y se ejecuta el ejemplo
     ex pol_int = lagrange(xv, yv);
-    cout << "Polinomio de interpolación : " << pol_int << endl;
+    cout << "Polinomio de interpolacion : " << pol_int << endl;
     return 0;
 }
