@@ -29,9 +29,11 @@ function [error] = cota_poly_inter(func, puntos)
 
 %devuelve la cantidad de puntos
 n = length(puntos)
+puntos = sort(puntos)
 
 a = 1/factorial(n+1)
-%
+%falta por definir
+
 p = 1
 
 %Encontrar el maximo de la funcion en un intervalo
