@@ -5,8 +5,8 @@ import sympy
 import sympy as sym
 
 '''
-Cota de error para Trazador Cúbico Natural
-param func: función con al menos 4ta deriva
+Cota de error para Trazador Cubico Natural
+param func: funcion con al menos 4ta deriva
 param S: Lista de puntos
 return cota_error: Cota de error
 '''
@@ -14,7 +14,7 @@ return cota_error: Cota de error
 def cota_tras_cubico(func, S):
     h=0
     x = sym.symbols('x')      
-    f = sym.sympify(func)     # La función se castea en x
+    f = sym.sympify(func)     # La funcion se castea en x
     f4 = sym.diff(f,x,4)      # La 4ta derivada
     norm = 0
     for i in range(len(S)):           # Norma infinira
