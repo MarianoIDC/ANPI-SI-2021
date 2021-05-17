@@ -16,6 +16,7 @@
 \usepackage{url}
 \usepackage{listings}
 \usepackage{geometry}
+\usepackage{hyperref}%
 
 \renewcommand{\figurename}{Figura}
 \renewcommand{\lstlistingname}{Código}
@@ -34,6 +35,7 @@
 
 \author{Jonathan G Araya}
 \title{Ecuaciones no Lineales}
+\makeindex
 \begin{document}
 	%Encabezado
 	Instituto Tecnológico de Costa Rica \hfill CE-3102: Análisis Numérico para Ingeniería\\
@@ -52,32 +54,33 @@
 	\end{itemize}
 
 	\tableofcontents
+	\printindex
 	
 	\section{Tema 1: Ecuaciones no Lineales}
 	
-		\subsection{Método 1: Bisección}
+	\subsection{Método 1: Bisección}
 	
-		\lstinputlisting[style=Matlab-editor, basicstyle=\mlttfamily\normalsize, caption={Lenguaje M.}]{CodigosOctave/Biseccion.m}
+	\lstinputlisting[style=Matlab-editor, basicstyle=\mlttfamily\normalsize, caption={Lenguaje M.}]{CodigosOctave/Biseccion.m}
 	
-		\subsection{Método 2: Newton-Raphson}
+	\subsection{Método 2: Newton-Raphson}
 		
-		\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/Newton-Raphson.py}
+	\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/Newton-Raphson.py}
 	
-		\subsection{Método 3: Secante}
+	\subsection{Método 3: Secante}
 	
-		\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Secante.cpp}
+	\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Secante.cpp}
 		
-		\subsection{Método 4: Falsa Posición}
+	\subsection{Método 4: Falsa Posición}
 		
-		\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Secante.cpp}
+	\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Secante.cpp}
 	
-		\subsection{Método 5: Punto Fijo}
+	\subsection{Método 5: Punto Fijo}
 		
-		\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/PuntoFijo.py}
+	\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/PuntoFijo.py}
 	
-		\subsection{Método 6: Muller}
+	\subsection{Método 6: Muller}
 	
-		\lstinputlisting[style=Matlab-editor, basicstyle=\mlttfamily\normalsize, caption={Lenguaje M.}]{CodigosOctave/Muller.m}
+	\lstinputlisting[style=Matlab-editor, basicstyle=\mlttfamily\normalsize, caption={Lenguaje M.}]{CodigosOctave/Muller.m}
 		
 	\section{Optimización}
 	
@@ -125,8 +128,8 @@
 	\section{Polinomio de Interpolación}
 	
 	\subsection{Método 1: Método de Lagrange}
-	
-	\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Lagrange.cpp}
+
+	\lstinputlisting[basicstyle=\normalsize\ttfamily\color{black}, commentstyle=\color{mygray}, frame=single, numbersep=5pt, numberstyle=\tiny\color{mygray}, keywordstyle=\color{mygreen}, showspaces=false, showstringspaces=false, stringstyle=\color{myorange}, tabsize=2, language=C++, caption={Lenguaje C++.}]{CodigosC++/Lagrange.cpp}	
 	
 	\subsection{Método 2: Método de Diferencias Divididas de Newton}
 	
@@ -134,11 +137,13 @@
 	
 	\subsection{Método 3: Trazador Cúbico Natural}
 	
-		\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/TrazadorCubicoNatural.py}
+	\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/TrazadorCubicoNatural.py}
 	
 	\subsection{Método 4: Cota Error Polinomio de Interpolación}
 	
 	\subsection{Método 5: Cota Error Trazador Cúbico Natural}
+
+	\lstinputlisting[language=Python, basicstyle=\ttfamily\normalsize, keywordstyle=\color{violet}\ttfamily, frame=single, commentstyle=\color{gray}\ttfamily, showstringspaces=false, caption={Lenguaje Python.}]{CodigosPython/CotaErrorTrazadorCubicoNatural.py}
 	
 	\section{Integración Númerica}
 	

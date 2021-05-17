@@ -12,7 +12,8 @@ using namespace GiNaC;
  * @param MAXIT: cantidad maxima de iteraciones
  * @return tuple<ex, ex>: valor aproximado, error del valor encontrado
  */
-tuple<ex, ex> falsaPosicion(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
+tuple<ex, ex> falsaPosicion(string funcion, ex x0, ex x1, ex MAXIT, ex TOL)
+{
 
     symbol x("x");
     symtab table;
@@ -28,31 +29,41 @@ tuple<ex, ex> falsaPosicion(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
 
     int iter = 1;
 
-    while (iter < MAXIT) {
+    while (iter < MAXIT)
+    {
         fxk = evalf(subs(f, x == xk));
-        if (f0 * fxk < 0) {
+        if (f0 * fxk < 0)
+        {
             xk = xk - ((xk - x0) / (fxk - evalf(subs(f, x == x0)))) * fxk;
             x1 = xk;
             error = abs(evalf(subs(f, x == xk)));
 
-            if(error < TOL) {
+            if (error < TOL)
+            {
                 break;
             }
-            else {
+            else
+            {
                 iter = iter + 1;
             }
-        } else if (fxk * f1 < 0) {
+        }
+        else if (fxk * f1 < 0)
+        {
             xk = xk - ((xk - x0) / (fxk - evalf(subs(f, x == x1)))) * fxk;
             x0 = xk;
             error = abs(evalf(subs(f, x == xk)));
 
-            if(error < TOL) {
+            if (error < TOL)
+            {
                 break;
             }
-            else {
+            else
+            {
                 iter = iter + 1;
             }
-        } else {
+        }
+        else
+        {
             cout << "No es posible de resolver mediante Falsa Posicion" << endl;
         }
     }
@@ -63,7 +74,8 @@ tuple<ex, ex> falsaPosicion(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
     return make_tuple(xk, error);
 }
 
-int main() {
+int main()
+{
 
     tuple<ex, ex> testFP = falsaPosicion("cos(x)-x", 1 / 2, Pi / 4, 100, 0.0001);
     cout << "Aproximacion: " << get<0>(testFP) << endl;

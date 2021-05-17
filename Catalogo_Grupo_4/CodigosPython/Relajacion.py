@@ -4,6 +4,7 @@ import scipy.linalg as la
 import matplotlib.pyplot as plt
 ###############################################################################
 
+
 def relajacion(A, b, maxI, tol, w):
     '''
     Metodo de Relajacion
@@ -73,7 +74,8 @@ def relajacion(A, b, maxI, tol, w):
             x0 = np.transpose(x)
             M = w ** -1 * (w * L + D)
             N = w ** -1 * ((1 - w) * D - w * U)
-            x = np.matmul(np.matmul(np.linalg.inv(M), N), x0) + np.matmul(np.linalg.inv(M), b)
+            x = np.matmul(np.matmul(np.linalg.inv(M), N), x0) + \
+                np.matmul(np.linalg.inv(M), b)
             errorM = b - np.matmul(A, np.transpose(x))
             errorM = np.transpose(errorM)
             error = 0
@@ -85,7 +87,8 @@ def relajacion(A, b, maxI, tol, w):
                 break
             k = k + 1
 
-        plt.plot(lista_error, label='errores por interacion')  # Construccion de tabla
+        # Construccion de tabla
+        plt.plot(lista_error, label='errores por interacion')
         plt.ylabel('Error')
         plt.xlabel('Iteracion')
         # Los ejes estan limitados por las iteraciones y el error maximo
@@ -96,18 +99,19 @@ def relajacion(A, b, maxI, tol, w):
         print('x: ' + str(x) + ', error: ' + str(error))
         return x, error
 
+
 if __name__ == '__main__':
-    #Constante w
+    # Constante w
     w = 1.24
-    #Maximo iteraciones
+    # Maximo iteraciones
     MAXIT = 5
-    #Tolerancia
+    # Tolerancia
     TOL = 0.0001
-    #Matriz de cofactores
+    # Matriz de cofactores
     A = [[4, 3, 0], [3, 4, -1], [0, -1, 4]]
-    #Vector de respuestas
+    # Vector de respuestas
     b = [7, 7, 7]
-    #Llamado de la funcion
+    # Llamado de la funcion
     print("######################################################")
     print("Metodo del Punto Fijo \n")
     relajacion(A, b, MAXIT, TOL, w)

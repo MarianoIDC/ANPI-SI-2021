@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ###############################################################################
 
+
 def punto_fijo(funcion, valor_inicial, iteraciones_maximas):
     '''
     Metodo del punto fijo
@@ -23,7 +24,8 @@ def punto_fijo(funcion, valor_inicial, iteraciones_maximas):
         iteracion += 1
 
     aproximacion = b
-    plt.plot(lista_error, label='errores por interacion')  # Construccion de tabla
+    # Construccion de tabla
+    plt.plot(lista_error, label='errores por interacion')
     plt.ylabel('Error')
     plt.xlabel('Iteracion')
     # Los ejes estan limitados por las iteraciones y el error maximo
@@ -34,14 +36,15 @@ def punto_fijo(funcion, valor_inicial, iteraciones_maximas):
     print('Aproximacion: ' + str(aproximacion) + ', error: ' + str(error))
     return aproximacion, error
 
+
 if __name__ == '__main__':
-    #Valor inicial
+    # Valor inicial
     x0 = 0
-    #Maximo iteraciones
+    # Maximo iteraciones
     MAXIT = 100
-    #Funcion
-    funcion = lambda x: np.exp(-x)
-    #Llamado de la funcion
+    # Funcion
+    def funcion(x): return np.exp(-x)
+    # Llamado de la funcion
     print("######################################################")
     print("Metodo del Punto Fijo \n")
     punto_fijo(funcion, x0, MAXIT)

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.misc import derivative
 ###############################################################################
 
+
 def newton_raphson(func, x0, MAXIT, TOL):
     '''
     Metodo de Newton-Raphson
@@ -16,8 +17,8 @@ def newton_raphson(func, x0, MAXIT, TOL):
     '''
     itera = 1
     err = 1
-    iterl = []  #Lista que almacena el numero de iteraciones
-    errl = []  #Lista que almacena el % de error de cada iteracion
+    iterl = []  # Lista que almacena el numero de iteraciones
+    errl = []  # Lista que almacena el % de error de cada iteracion
     xAprox = x0
 
     while (itera < MAXIT):
@@ -37,6 +38,7 @@ def newton_raphson(func, x0, MAXIT, TOL):
     grafica(iterl, errl)
     return xAprox, err
 
+
 def grafica(listaValoresX, listaValoresY):
     '''
     Grafica
@@ -50,17 +52,18 @@ def grafica(listaValoresX, listaValoresY):
     plt.ylabel("% Error")
     plt.show()
 
+
 if __name__ == '__main__':
-    #Valor inicial
+    # Valor inicial
     x0 = 1
-    #Tolerancia
+    # Tolerancia
     TOL = 0.0001
-    #Maximo iteraciones
+    # Maximo iteraciones
     MAXIT = 100
-    #Funcion
-    func = lambda x: (math.e)**x - 1/x
-    #Llamado de la funcion
+    # Funcion
+    def func(x): return (math.e)**x - 1/x
+    # Llamado de la funcion
     xAprox, err = newton_raphson(func, x0, MAXIT, TOL)
     print("######################################################")
     print("Metodo de Newton-Raphson \n")
-    print('xAprox = {}\n%Error = {}'.format(xAprox, err)) 
+    print('xAprox = {}\n%Error = {}'.format(xAprox, err))
