@@ -3,6 +3,9 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import sympy
+import numpy as np
+from math import *
+from sympy import *
 import sympy as sym
 from sympy import symbols
 from Jacobi import jacobi
@@ -68,10 +71,9 @@ def traz_cubico(xk, yk):
     x = sympy.Symbol('x')
     Sx_tabla = []
     for i in range(0, len(xk) - 1, 1):
-        pxtramo = a[i] * (x - xk[i]) ** 3 + b[i] * (x - xk[i]) ** 2
-        pxtramo = pxtramo + c[i] * (x - xk[i]) + d[i]
-        pxtramo = pxtramo.expand()
-        Sx_tabla.append(pxtramo)
+        with evaluate(False):
+            pxtramo = a[i] * (x - xk[i]) ** 3 + b[i] * (x - xk[i]) ** 2 + c[i] * (x - xk[i]) + d[i]
+            Sx_tabla.append(pxtramo)
 
     print('Trazadores cubicos por tramos \n')
     for tramo in range(1, len(xk), 1):
