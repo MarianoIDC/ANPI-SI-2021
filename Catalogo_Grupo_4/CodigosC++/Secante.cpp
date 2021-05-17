@@ -12,7 +12,8 @@ using namespace GiNaC;
  * @param TOL: tolerancia del resultado
  * @return tuple<ex, ex>: valor aproximado, error del valor aproximado
  */
-tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
+tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL)
+{
     symbol x;
     symtab table;
     table["x"] = x;
@@ -24,16 +25,20 @@ tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
     int iter = 0;
     ex err = TOL + 1;
 
-    while (iter < MAXIT) {
+    while (iter < MAXIT)
+    {
         xk1 = xk -
               ((((xk - xkm1)) / ((evalf(subs(f, x == xk))))) - evalf(subs(f, x == xkm1))) * (evalf(subs(f, x == xk)));
         xkm1 = xk;
         xk = xk1;
         err = abs(evalf(subs(f, x == xk)));
 
-        if (err < TOL) {
+        if (err < TOL)
+        {
             break;
-        } else {
+        }
+        else
+        {
             iter = iter + 1;
         }
     }
@@ -42,7 +47,8 @@ tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL) {
     return make_tuple(xk, err);
 }
 
-int main(void) {
+int main(void)
+{
     tuple<ex, ex> testS = secante("exp(-pow(x, 2)) - x", 0, 1, 100, 0.001);
     cout << "Aproximacion: " << get<0>(testS) << endl;
     cout << "Error: " << get<1>(testS) << endl;

@@ -2,6 +2,7 @@
 import numpy as np
 ########################################################################################
 
+
 def thomas(matrizC, vectorTI):
     '''
     Metodo de Thomas
@@ -61,6 +62,7 @@ def thomas(matrizC, vectorTI):
     else:
         print("Error: el vector y la matriz deben ser del mismo tamano")
 
+
 def creaTridiagonal(N, a, b, c):
     '''
     Funcion para crear la matriz tridiagonal
@@ -78,6 +80,7 @@ def creaTridiagonal(N, a, b, c):
         matriz[i + 1][i] = a
     return matriz
 
+
 def creaD(N, ext, inte):
     '''
     Funcion para crear el vector d
@@ -94,6 +97,7 @@ def creaD(N, ext, inte):
         else:
             d.append(inte)
     return d
+
 
 if __name__ == '__main__':
     # Creacion de la matriz tridiagonal

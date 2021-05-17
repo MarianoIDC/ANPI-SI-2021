@@ -3,6 +3,7 @@ import numpy as np
 import scipy.linalg as la
 ###############################################################################
 
+
 def fact_lu(matrizD, matrizI):
     '''
     Metodo de la Factorizacion LU
@@ -33,7 +34,8 @@ def fact_lu(matrizD, matrizI):
 
         for k in range(1, m):
             try:
-                U[i + k - 1] = U[i + k - 1] - (np.multiply(pivotRow, M[i - 1][k - 1]))
+                U[i + k - 1] = U[i + k - 1] - \
+                    (np.multiply(pivotRow, M[i - 1][k - 1]))
                 L[i + k - 1][i - 1] = M[i - 1][k - 1]
             except:
                 U[i + k - 1] = U[i + k - 1] - (np.multiply(pivotRow, M))
@@ -42,6 +44,7 @@ def fact_lu(matrizD, matrizI):
     Y = ((np.linalg.inv(L)).dot(np.transpose(matrizI)))
     X = (np.linalg.inv(U)).dot(Y)
     return X
+
 
 if __name__ == '__main__':
     # Matriz de coeficientes
@@ -52,4 +55,4 @@ if __name__ == '__main__':
     X = fact_lu(A, B)
     print("######################################################")
     print("Metodo de la Factorizacion LU\n")
-    print('X = {}\n'.format(X)) 
+    print('X = {}\n'.format(X))

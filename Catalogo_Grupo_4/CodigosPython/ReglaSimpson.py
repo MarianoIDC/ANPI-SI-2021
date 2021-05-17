@@ -3,6 +3,7 @@ from numpy import double
 from sympy import symbols, sympify, diff
 ###############################################################################
 
+
 def simpson(funcion, a, b):
     '''
     Metodo de la Regla de Simpson
@@ -24,14 +25,15 @@ def simpson(funcion, a, b):
     error = double(((((b - a)/2)**5)/(90))*(vmax))
     return xAprox, error
 
+
 if __name__ == '__main__':
-    #Intervalo inferior
+    # Intervalo inferior
     a = 2
-    #Intervalo superior
+    # Intervalo superior
     b = 5
-    #Funcion
+    # Funcion
     funcion = "ln(x)"
-    #Llamado de la funcion
+    # Llamado de la funcion
     print("######################################################")
     print("Metodo de la Regla de Simpson \n")
     xAprox, error = simpson(funcion, a, b)
