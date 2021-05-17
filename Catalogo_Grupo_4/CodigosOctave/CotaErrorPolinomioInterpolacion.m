@@ -37,12 +37,16 @@ p = '';
 
 %Haciendo el polinomio p
 for i = 1:length(puntos)
+  var = int2str(puntos(i))
+  class(var)
   if i == 1
-     p = [p, '(x-',int2str(puntos(i)),')'];
+     p = [p, '(x-',var,')'];
   else
-      p = [p, '*(x-',int2str(puntos(i)),')'];
+      p = [p, '*(x-',var,')'];
   end
 end
+
+
 
 %Se pasa la funcion a simbolico
 h = sym(p);
