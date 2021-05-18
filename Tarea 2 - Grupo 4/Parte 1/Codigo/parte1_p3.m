@@ -4,132 +4,120 @@
     Esta funcion aplica el metodo BFGS para la optimizacion en varias
     variables.
 
-    Sintaxis: bfgs(funcion, vars, MAXIT, TOL)
+    Sintaxis: bfgs(funcion, MAXIT, TOL)
 
     Parametros de entrada
         @param funcion: funcion a la cual se le aplicara el algoritmo
-        @param vars: variables a utilizar en la funcion
-        @param MAXIT: cantidad maxima de iteraciones a realizar
+        @param vars: cantidad de variables en la funcion
         @param TOL: tolerancia de la solucion
 
     Parametros de Salida
-        @return xk: aproximacion al punto minimo
-        @return iteraciones: cantidad de iteraciones realizadas
+        @return x: vector de la aproximacion al punto minimo
+        @return n: cantidad de iteraciones realizadas
         @return err: error final de la solucion
 %}
 
 clc;
 clear;
+close all;
 warning('off', 'all');
-pkg load symbolic;
 
-
-function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
-%---------------------------Preparando utilitarios--------------------%
-    n = length(vars);
-    f = sym(funcion);
+function [x, err, n, f] = bfgs(funcion, vars, TOL)
+%------------------------Calculando los valores de x0-----------------%
     x0 = [];
-    i = 1;
     iterl = [];
     errl = [];
-%------------------------Calculando los valores de xi----------------%
-# -10 <= xi <= 10
-    % while(i <= n)
-    %     % x0 = [x0 1/randi(100)]; % Esto es probando con el f93
-    %     x0 = [x0 randi(0)]; % Esto es probando con el f99
-    %     i++;
-    % endwhile
-    x0(1) = 0;
-    x0(2) = 0;
-    double(x0);
-    x0 = reshape(x0, n, 1)  %Vector ahora como matriz
+    %Vector con la cantidad de numeros random en el rango especifico
+    x0 = randi([-10, 10], vars, 1);
+    x0
+    %Guardando los valores de x0 en el vector X que tendra la solucion
+    x(:, 1) = x0;
 %---------------------Definiendo constantes del metodo----------------%
-    lambdak = 0.5;    % Al utilizar Wolf-type se define lambdak = 1
-    sigma = 0.025;  % Se debe cumplir que sigma existe en (0,1)
-    % sigma2 = 0.050;  % Se debe cumplir qur sigma2 < 1
-    xk = x0;
-    B = eye(n, n);  % Debe ser una matriz definina positiva
-    Bk = B;         % es por esto que se utiliza la Midentidad
-%-----------------------Calculando valores inicilaes------------------%
-    g = gradient(f, vars);
-    gxk = subs(g, vars, xk);
-    err = double(norm(subs(g, vars, xk)));
-    k = 1;
-    iter = 0;
-    epsilon = 1;
-    alpha = 1;
+    b = 0.8;            % Valor para reducir el lambdak
+    sigma = 0.4;        % Se debe cumplir que sigma existe en (0,1)
+    Bk = eye(vars, vars)      % Debe ser una matriz definina positiva
 %---------------------------------------------------------------------%
 %--------------------------Metodo BFGS--------------------------------%
 %---------------------------------------------------------------------%
+    i = 1;
+    err = TOL + 1;
+    iterl(i) = i;
+    errl(i) = err;
     while(err > TOL)
-        gxk = subs(g, vars, xk);
-        pk = inv(B)*(-gxk);
-%---------------------------Wolf-type---------------------------------%
-        fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-        fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk) * pk);
-        % gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
-        % gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
-
-        while(!(fizquierda <= fderecha))
-            lambdak = double(lambdak**k);
-            if(lambdak < TOL)
-                break;
-            endif
-            fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-            fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk) * pk);
-            % gizquierda = double(double(transpose(subs(g, vars, xk + lambdak * pk))) * pk);
-            % gderecha = double(double(transpose(subs(g, vars, xk))) * pk) * sigma2;
-            k++;
+%-----------------------Calculando valores inicilaes------------------%    
+        [~, g] = funcion(x(:, i));
+        pk = -inv(Bk) * g;
+        lambdak = 1;
+        xk1 = x(:, i) + lambdak * pk;
+        fizquierda = funcion(xk1);
+        fderecha = funcion(x(:, i));
+%--------------------------Armijo-type--------------------------------%
+%---------------------------------------------------------------------%
+        while(fizquierda > fderecha + sigma * lambdak * g' * pk)
+            lambdak = lambdak * b;
+            xk1 = x(:, i) + lambdak * pk;
+            fizquierda = funcion(xk1);
         endwhile
-%----------------------------Wolf-type--------------------------------%
-        xk1 = xk + lambdak*pk;
-        sk = xk1 - xk;
-        yk = double(subs(g, vars, xk1) - subs(g, vars, xk));
-        skt = transpose(sk);
-        ykt = transpose(yk);
+%---------------------------------------------------------------------%
+%---------------------------------------------------------------------%
+        x(:, i + 1) = xk1;
+        [~, gk] = funcion(x(:, i));
+        [~, gk1] = funcion(x(:, i + 1));
+        yk = gk1 - gk;
+        sk = x(:, i + 1) - x(:, i);
+        err =  norm(gk1);
 
-        condright = double((ykt*sk)/(norm(sk))**2);
-        condleft = double(norm(subs(g, vars, xk)));
-        if(condright > condleft)
-            Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
+        if(((yk'*sk)/(norm(sk))) > norm(gk))
+            Bk1 = Bk - (Bk*(sk)*sk'*Bk)/(sk'*Bk*sk) + (yk*yk')/(yk'*sk);
             Bk = Bk1;
-            xk = double(xk1)
-            err = double(norm(subs(g, vars, xk)));
-            iter++;
-            k = 1;
         else
-            Bk
-            xk = double(xk1);
-            err = double(norm(subs(g, vars, xk)));
-            iter++;
-            k = 1;
+            Bk = Bk;
         endif
+        i = i + 1;
+        iterl(i) = i;
+        errl(i) = err;
+        % Bk1 = Bk - (Bk*(sk)*sk'*Bk)/(sk'*Bk*sk) + (yk*yk')/(yk'*sk);
+        % Bk = Bk1;
     endwhile
 %---------------------------------------------------------------------%
 %------------------------Fin Metodo BFGS------------------------------%
 %---------------------------------------------------------------------%
-    % xk = double(xk);
-    return;
+    grafica(iterl, errl);
+    n = i;
+    f = funcion(x(:, end));
 endfunction
 
-# Variables
-% syms x1 x2 x3 x4 x5;            % Esto es probando con el f93
-% variables = [x1 x2 x3 x4 x5];   % Esto es probando con el f93
-syms x1 x2;                   % Esto es probando con el f99
-variables = [x1 x2];          % Esto es probando con el f99
-# Funcion
-% f = '(x1)**2 + (x2)**3 + (x3)**4 + (x4)**4 + (x5)**6'; % Esto es probando con el f93
-% f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 182.25*x1*x2'; % Esto es probando con el f99
-f = 'exp(x1-1) + exp(-x2 +1) + (x1 - x2)**2'
+%{
+    Parametros de Entrada
+        @param listaValoresX: valores del eje 'x'
+        @param listaValoresY: valores del eje 'y'
+    
+    Parametros de Salida
+        @return: Grafico de los datos ingresados
+%}
+function grafica(listaValoresX, listaValoresY)
+    plot(listaValoresX, listaValoresY, 'g-');
+    title("Metodo de la Biseccion");
+    xlabel("Iteraciones");
+    ylabel("% Error");
+endfunction
+
+function [f, g] = funcionObjetivo(X)
+    f = -3803.84 - 138.08 * X(1) - 232.92 * X(2) + 128.08 * ((X(1))^2) + 203.64 * ((X(2))^2) + 182.25 * X(1) * X(2);
+    g = [(6404/25)*X(1) + (729/4)*X(2) - (3452/25); (729/4)*X(1) + (10182/25)*X(2) - (5823/25)];
+    % f = X(1)^2 + X(2)^3 + X(3)^4 + X(4)^5 + X(5)^6;
+    % g = [2*X(1), 3*X(2)^2, 4*X(3)^3, 5*X(4)^4, 6*X(5)^5];
+endfunction
+# Cantidad de Variables
+vars = 2;
 # Tolerancia
 tolerancia = 0.00001;
-# MAXIT
-iterMax = 20;
 
-[xk, err, iter] = bfgs(f, variables, iterMax, tolerancia);
+[x, err, n, f] = bfgs(@funcionObjetivo, vars, tolerancia);
 printf("############################################ \n");
 printf("Metodo BFGS \n");
-printf('xAprox = %f\n', xk);
+printf('xAprox = %f\n', x);
 printf('%%Error = %f\n', err);
-printf('Iteraciones = %f\n', iter);
+printf('Iteraciones = %f\n', n);
+printf('Punto minimo = %f\n', f);
 printf("############################################ \n");
