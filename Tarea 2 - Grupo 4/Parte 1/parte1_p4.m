@@ -17,7 +17,7 @@ tolerancia = 0.00001;
 [x, err, n, f] = @bfgs(@funcionObjetivo, vars, tolerancia);
 printf("############################################ \n");
 printf("Metodo BFGS Aplicado a Eonomia\n");
-printf('xAprox = %f\n', x);
+printf('xAprox = %f\n', abs(x));
 printf('%%Error = %f\n', err);
 printf('Iteraciones = %f\n', n);
 printf('Punto minimo = %f\n', f);
