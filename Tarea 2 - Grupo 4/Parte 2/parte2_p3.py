@@ -11,8 +11,8 @@ from parte2_p2 import *
 # error: Error generado por el algoritmo
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (2.3, 2.3), (1.8, 1.8), (0.8, 0.8)
+# Converge a: (1.41, 1.41), (0, 0)
 def funcionA(x0, iterMax, tol):
     x = np.array(['x1', 'x2'], dtype=object)
     f = np.array(['exp(x1**2) - exp(sqrt(2)*x1)', 'x1 - x2'], dtype=object)
@@ -21,8 +21,8 @@ def funcionA(x0, iterMax, tol):
     return xk, itera, error, listaIter, listaError
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (1.5, 2), (0.3, 0.5)
+# Converge a: (0, 0)
 def funcionB(x0, iterMax, tol):
     x = np.array(['x1', 'x2'], dtype=object)
     f = np.array(['x1 + exp(x2) - cos(x2)',
@@ -32,8 +32,8 @@ def funcionB(x0, iterMax, tol):
     return xk, itera, error, listaIter, listaError
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (3, 2), (1.6, 0)
+# Converge a: (1.90, 0.31)
 def funcionC(x0, iterMax, tol):
     x = np.array(['x1', 'x2'], dtype=object)
     f = np.array(['x1**2 - 2*x1 - x2 + 0.5',
@@ -43,8 +43,8 @@ def funcionC(x0, iterMax, tol):
     return xk, itera, error, listaIter, listaError
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (0.7, 1.2), (-1, -2)
+# Converge a: (0.5, 0.87), (-0.5, -0.87)
 def funcionD(x0, iterMax, tol):
     x = np.array(['x1', 'x2'], dtype=object)
     f = np.array(['x1**2 + x2**2 - 1', 'x1**2 - x2**2 + 0.5'], dtype=object)
@@ -53,8 +53,8 @@ def funcionD(x0, iterMax, tol):
     return xk, itera, error, listaIter, listaError
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (1.2, -1.5), (-0.6, 0.6)
+# Converge a: (0, 0)
 def funcionE(x0, iterMax, tol):
     x = np.array(['x1', 'x2'], dtype=object)
     f = np.array(['sin(x1) + x2*cos(x1)', 'x1 - x2'], dtype=object)
@@ -63,8 +63,8 @@ def funcionE(x0, iterMax, tol):
     return xk, itera, error, listaIter, listaError
 
 # Función correspondiente: (e^(x1^2) - e^(raíz(2)x1), x1 - x2)
-
-
+# Valores iniciales: (-1, -1, -1, -1), (2, 2, 2, 0) 
+# Converge a: (-0.58, -0.58, -0.58, 0.29), (0.58, 0.58, 0.58, -0.29)
 def funcionG(x0, iterMax, tol):
     x = np.array(['x1', 'x2', 'x3', 'x4'], dtype=object)
     f = np.array(['x2*x3 + x4*(x2 + x3)', 'x1*x3 + x4*(x1 + x3)',
@@ -78,6 +78,7 @@ def funcionG(x0, iterMax, tol):
 select = int(input('Escoja un número del 1 al 6: '))
 # Función A
 if (select == 1):
+    #Valores iniciales
     x0 = np.array([2.3, 2.3])
     iterMax = 10
     tol = 0.0001
@@ -86,6 +87,7 @@ if (select == 1):
     grafica(iter1, err1)
 # Función B
 elif (select == 2):
+    #Valores iniciales
     x0 = np.array([1.5, 2])
     iterMax = 10
     tol = 0.0001
@@ -94,6 +96,7 @@ elif (select == 2):
     grafica(iter1, err1)
 # Función C
 elif (select == 3):
+    #Valores iniciales
     x0 = np.array([3, 2])
     iterMax = 10
     tol = 0.0001
@@ -110,6 +113,7 @@ elif (select == 4):
     grafica(iter1, err1)
 # Función E
 elif (select == 5):
+    #Valores iniciales
     x0 = np.array([1.2, -1.5])
     iterMax = 10
     tol = 0.0001
@@ -118,6 +122,7 @@ elif (select == 5):
     grafica(iter1, err1)
 # Función G
 elif (select == 6):
+    #Valores iniciales
     x0 = np.array([2, 2, 2, 0])
     iterMax = 10
     tol = 0.0001

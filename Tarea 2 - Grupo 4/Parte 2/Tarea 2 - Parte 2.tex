@@ -1,0 +1,460 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{blindtext, graphicx}
+\usepackage{listings}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{amsmath}
+\lstset { %
+    language=C++,
+    numbers=left,
+    breaklines=true,
+    xleftmargin=4em,
+    resetmargins=true,
+    basicstyle=\footnotesize,
+    numberstyle=\footnotesize,
+}
+\usepackage{graphicx}
+\usepackage{multirow}
+\hyphenation{op-tical net-works semi-conduc-tor}
+%Pacote para acentos [Por TIAGO]
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{float}
+\usepackage{cite}
+\usepackage{mathtools}
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Método Iterativo de Newton-Raphson}
+
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}
+\author{
+	\IEEEauthorblockN
+	{
+		Jonathan Guzmán Araya,
+		Mariano Muñoz Masís,
+		Luis Daniel Prieto Sibaja,
+		Josué Araya García
+	}
+	\IEEEauthorblockA{\\Instituto Tecnológico de Costa Rica}
+	\IEEEauthorblockA{\\Área Académica Ingeniería en Computadores}
+	
+	\IEEEauthorblockN{\email{jonathana1196@gmail.com}}
+	\IEEEauthorblockN{\email{marianomm1301@gmail.com}}
+	\IEEEauthorblockN{\email{prieto.luisdaniel@gmail.com}}
+	\IEEEauthorblockN{\email{jdag98228@gmail.com}}
+}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+\markboth{Análisis Numérico para Ingeniería, I-Semestre 2021}%
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2015 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract or keywords.
+\begin{abstract}
+In the following document, an iterative method to solve non-linear equations will be explained in detail and solved mathematically. Initially, the document shall introduce Newton-Raphson's method to solve non-linear equations using several iterations. This method's mathematical formulation will be explained in detail in the following section. Some examples will be provided to ease the understanding of this method, including the initial values used for its solution. A pseudocode of the iterative method will be provided to ensure a good future computational implementation. Finally, a famous engineering problem which requires this method's execution shall be discussed and solved.   
+\end{abstract}
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+Newton-Raphson, iteration, equation, matrix, error tolerance.
+\end{IEEEkeywords}
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introducción}
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps.
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by the IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+\IEEEPARstart{E}{ste} informe se encarga de explicar el método de Newton-Raphson, el cual es un método iterativo cuyo propósito es resolver ecuaciones no lineales mediante una aproximación a su solución, con cierto margen de error.\\
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+\indent El problema que se desea resolver es la obtención de la solución de ecuaciones no lineales, las cuales presentan la siguiente forma:
+\begin{equation}
+f(x) = 0
+\label{eq:func}
+\end{equation}
+\indent En el planteamiento anterior, \(f(x)\) es cualquier función representada por una ecuación no lineal. Para el método de Newton-Raphson, la solución se aproxima mediante una sucesión de elementos aproximados mediante iteraciones generadas por la siguiente fórmula:
+\begin{equation}
+x_{k} = x_{k - 1} - \frac{f(x_{k - 1})}{f'(x_{k - 1})}
+\label{eq: metodoNR}
+\end{equation}
+\indent En la fórmula anterior, el término del denominador se refiere a la primera derivada de la función con la que se desea evaluar el elemento de la sucesión. En caso de no poder calcularse la derivada de forma automática con una implementación computacional, la misma se puede aproximar mediante la definición de la derivada, la cual es la siguiente:
+\begin{equation}
+f'(a) =  \lim_{x\to a} \frac{f(x) - f(a)}{x - a}
+\label{eq:aproxDerivada}
+\end{equation}
+\indent Sin embargo, si \(x\to a \) se aproxima a cero, la ecuación anterior se puede reescribir como:
+\begin{equation}
+f'(a) =  \frac{f(x) - f(a)}{x - a}
+\label{eq:aproxDerivada2}
+\end{equation}
+\indent El método de Newton-Raphson es un método iterativo el cual genera un error muy pequeño, por eso es de los métodos iterativos para aproximar ecuaciones no lineales más populares. En muy pocas iteraciones puede llegar a la solución del problema, gracias a la exactitud del mismo, una de las ventajas de utilizar las derivadas en dicha ecuación. Para calcular el error del método iterativo, se puede aproximar como el valor absoluto de la función evaluando la iteración respectiva:
+\begin{equation}
+Error = \lvert f(x_{k}) \rvert = \lvert  \frac{x_{k} - x_{k - 1}}{x_{k}} \rvert
+\label{eq:errorAbs}
+\end{equation}
+\indent La condición de parada de este método es la misma que los demás métodos iterativos, la cual es simplemente que el error absoluto de la iteración sea menor que la tolerancia del método:
+\begin{equation}
+Error < Tol
+\label{eq:condParada}
+\end{equation}
+\indent El método de Newton-Raphson se usa mayoritariamente para ecuaciones no lineales de una variable. Pero existe una variante del método que puede resolver sistemas de ecuaciones no lineales. El objetivo del presente documento es presentar la variante del método de Newton-Raphson que puede resolver estos sistemas de ecuaciones, como se verá en el siguiente apartado.
+
+\section{Formulación Matemática}
+En este apartado se expondrá la formulación matemática del método de Newton-Raphson, dando un resumen de los pasos para obtener la solución del método. Primero se va a realizar el resumen para ecuaciones no lineales de una variable, y luego para sistemas de ecuaciones no lineales en varias variables.
+
+\subsection{Una Incógnita}
+Realizando un resumen de lo que fue expuesto en la introducción, se puede simplificar el método de Newton-Raphson a los siguientes pasos:
+\begin{itemize}
+    \item Se realiza la primera iteración con el valor inicial \(x^0\) cuyo valor numérico es dado previamente. 
+    \item Se realiza la primera iteración con le ecuación del método de Newton-Raphson.
+    \item Se calcula el error de la iteración utilizando el valor absoluto de la función evaluando el valor de la iteración.
+    \item Si este error es menor a la tolerancia, se detiene el algoritmo, si no lo es, se regresa al paso 2.
+\end{itemize}
+
+Los pasos anteriores generalizan la forma de calcular el método de Newton-Raphson para cualquier ecuación no lineal de la forma f(x) = 0. Sin embargo, para realizar el método de Newton-Raphson sobre un sistema de ecuaciones, se requieren pasos adicionales, los cuales serán explicados a continuación.
+
+\subsection{N Cantidad de Incógnitas}
+El método de Newton-Raphson descrito en la sección anterior puede expandirse para un número cualquiera de variables, dado de esta forma:
+\begin{equation}
+    \begin{cases}
+      f_{1}(x_{1}, x_{2},..., x_{n}) = 0\\
+      f_{2}(x_{1}, x_{2},..., x_{n}) = 0\\
+        .\\
+        .\\
+        .\\
+      f_{n}(x_{1}, x_{2},..., x_{n}) = 0\\
+    \end{cases}\,.
+    \label{eq: sisEqs}
+\end{equation}
+
+\indent Este sistema de ecuaciones lineales se puede generalizar como \(f_{i}(x) = 0\) donde cada \(f(x)\) es una función diferenciable. Para resolver este tipo de sistemas de ecuaciones no lineales, se le realizan algunas modificaciones al método de Newton-Raphson. Para calcular la aproximación de las soluciones mediante este método, se debe modificar el método iterativo de Newton con la siguiente recursión, sustituyendo la recursión original:
+
+\begin{equation}
+x_{k} = x_{k - 1} - [J_{f}(x_{k - 1})]^{-1} \cdot f(x_{k - 1})
+\label{eq:NRvarvar}
+\end{equation}
+\indent Nótese que para resolver este método iterativo, se debe primero calcular la matriz Jacobiana de la función a calcular mediante el método. La matriz Jacobiana se define por un conjunto de funciones \(f_{i}(x)\) cuyas primeras derivadas parciales existen en el vector c, el cual está definido por \(c = (x_{1}, x_{2}, ..., x_{n})^t\) en el conjunto de los reales. El jacobiano está definido entonces como:
+
+\begin{equation}
+[J_{f}(x_{k})]_{i, j} = \frac{\partial f_{i}}{\partial x_{j}}
+\label{eq:jacobiano}
+\end{equation}
+\indent En el proceso iterativo, el término que está restando se puede calcular como \(y = [J_{f}(x_{k})]^{-1} \cdot f(x_{k})\), esto es equivalente a resolver el siguiente sistema de ecuaciones:
+\begin{equation}
+J_{f}(x_{k}) \cdot y = f(x)
+\label{eq:f(x)}
+\end{equation}
+\indent Una vez calculado este sistema, simplemente se pueden realizar las iteraciones necesarias para encontrar la solución de la siguiente forma:
+\begin{equation}
+x_{k} = x_{k - 1} - y
+\label{eq:NRSimp}
+\end{equation}
+\indent Para estos métodos iterativos, las aproximaciones del error son relativas, no absolutas, por lo que se pueden calcular simplemente mediante la fórmula:
+\begin{equation}
+Error = \|f(x_{k})\| 
+\label{eq:errorRel}
+\end{equation}
+\indent Al ser un método iterativo, la condición de parada es la misma, que el error calculado anteriormente sea menor que la tolerancia dada al principio.\\
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that the IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command,
+% and the \label for the overall figure must come after \caption.
+% \hfil is used as a separator to get equal spacing.
+% Watch out that the combined width of all the subfigures on a 
+% line do not exceed the text width or a line break will occur.
+%
+%\begin{figure*}[!t]
+%\centering
+%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
+%\label{fig_second_case}}
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat[]), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
+% labels, the optional argument to \subfloat must be present. If a
+% subcaption is not desired, just leave its contents blank,
+% e.g., \subfloat[].
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table and, given that table
+% captions serve much like titles, are usually capitalized except for words
+% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
+% and up, which are usually not capitalized unless they are the first or
+% last word of the caption. Table text will default to \footnotesize as
+% the IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that the IEEE does not put floats in the very first column
+% - or typically anywhere on the first page for that matter. Also,
+% in-text middle ("here") positioning is typically not used, but it
+% is allowed and encouraged for Computer Society conferences (but
+% not Computer Society journals). Most IEEE journals/conferences use
+% top floats exclusively. 
+% Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the
+% \fnbelowfloat command of the stfloats package.
+
+\section{Implementación}
+La implementación computacional del método de Newton-Rapshon para múltiples variables se da bajo ecuación dada en \ref{eq:eqNR}
+\begin{equation}
+    x^{(v + 1)} = x^{(v)} - [J^{(v)}]^{-1} \cdot f(x^{(v)})
+    \label{eq:eqNR}
+\end{equation}
+La ecuación anterior se puede resolver mediante una serie de pasos los cuales se describen a continuación:  
+\begin{itemize}
+    \item Paso 0: Se inicializa el contador de iteraciones (v = 0) y se provee un valor inicial para el vector x, por ejemplo x = $x^{(v)}$ = $x^{(0)}$
+    \item Paso 1: Se realiza la computación matemática del Jacobiano mediante la ecuación \ref{eq:jacobiano}. 
+    \item Paso 2: Calcular $x^{(v+1)}$ mediante la ecuación \ref{eq:eqNR}
+    \item Paso 3: Revisar sí se cumple con la ecuación \ref{eq:errorRel}
+    \begin{itemize}
+        \item Si se ha cumplido con lo establecido en la ecuación \ref{eq:errorRel} entonces se dice que el algoritmo converge y la solución esta dada por $x^{(v+1)}$
+        \item Sino, continúa el paso 4. 
+    \end{itemize}
+    \item Paso 4: Actualizar el valor del contador de iteraciones $v \leftarrow v+1$ y continuar con el paso 1. 
+\end{itemize}
+
+El pseudocódigo se puede apreciar en la figura \ref{fig:NRP}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width = 0.8\columnwidth]{img/Diagrama en blanco.png}
+	\caption{Pseudocódigo del Método de Newton-Raphson para varias variables}
+	\label{fig:NRP}
+\end{figure}
+
+Newton Rapshon(x, f, x0, tol, iterMax)\\
+\indent itera = 1\\
+\indent error = 1\\
+\indent xk = x0\\
+\indent valore = vector de zeros de las mismas dimensiones de x\\
+\indent replace = vector auxiliar\\
+\indent MIENTRAS itera sea menor que iteraMax\\
+\indent \indent xAprox=xk\\
+\indent \indent DESDE i HASTA el tamanio de x\\
+\indent \indent \indent DESDE k HASTA el tamanio de x\\
+\indent \indent \indent \indent replace += [x[k], xAprox[k]]\\
+\indent \indent \indent CONVERTIR A SIMBOLICO LA FUNCION f[i]\\
+\indent \indent \indent \indent	valores[i] = reemplazar con replace los valores de f[i]\\
+\indent \indent \indent \indent	SE LLENA EL VECTOR DEL VALOR NUMERICO DE f(x)\\
+\indent \indent \indent \indent SE REINICIA replace = []\\
+\indent \indent \indent \indent SE CALCULA EL JACOBIANO\\
+\indent \indent \indent \indent \indent Jacobiano (func, var, valores)\\   \indent \indent \indent \indent \indent DESIGNADO jacobo\\
+\indent \indent \indent \indent \indent \indent jacobiano = matriz de zeros\\ \indent \indent \indent \indent \indent \indent de tamanio func x var\\
+\indent \indent \indent \indent \indent \indent replace = []\\
+\indent \indent \indent \indent \indent \indent DESDE n HASTA el tamanio de func\\
+\indent \indent \indent \indent \indent \indent \indent DESDE M HASTA el tamanio de var\\
+\indent \indent \indent \indent \indent \indent \indent \indent replace += [var[m], val[m]]\\
+\indent \indent \indent \indent \indent \indent \indent jacobiano[n][m] = DERIVADA DE func[n] CON RESPECTO A var[m] REEMPLAZANDO CON LOS VALORES DE replace\\
+\indent \indent \indent \indent xk = xAprox - MENOS LA SOLUCION DEL SISTEMA DE ECUACIONES de jacobo y valores\\
+\indent \indent \indent \indent error = NORMA DE valores\\
+\indent \indent \indent \indent SI error ES MENOR QUE tol\\
+\indent \indent \indent \indent \indent TERMINA LA FUNCION\\
+\indent \indent \indent \indent SINO \\
+\indent \indent \indent \indent \indent SE AUMENTA LA ITERACION\\
+\indent \indent \indent \indent \indent itera +=1\\
+
+
+
+
+\section{Problema Presente en Ingeniería: Canal de Descarga de Flujo}
+
+El problema presente es calcular la forma de un canal de descarga de flujo gravitacional que minimice el tiempo de tránsito de partículas granulares descargadas. El canal esta compuesto de cuatro segmentos, con ángulos determinados por un cierto valor de $\theta$.  El mismo se observa en la figura \ref{fig:canalDesc}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width = 0.8\columnwidth]{img/flujodedescarga.png}
+	\caption{Canal de Descarga}
+	\label{fig:canalDesc}
+\end{figure}
+
+
+Para este caso r = ($\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$)$^t$ y se procede a resolver el sistema de ecuaciones \ref{eq: sisEqsPro}. 
+\begin{equation}
+    \begin{cases}
+        f_{1}(r)= \frac{\sin{\theta_2}}{5.08}-\frac{\sin{\theta_1}}{3.59}  \\
+        f_{2}(r)= \frac{\sin{\theta_3}}{6.22}-\frac{\sin{\theta_2}}{5.08} \\
+        f_{3}(r)= \frac{\sin{\theta_4}}{7.18}-\frac{\sin{\theta_3}}{6.22}  \\
+        f_{4}(r)= 0,2 (\tan (\theta_1) + \tan (\theta_2) + \\ \tan (\theta_3) + \tan (\theta_4)) - 2
+    \end{cases}\,.
+    \label{eq: sisEqsPro}\\
+\end{equation}
+
+El sistema de ecuaciones se resuelve para $r^{(0)}$ = (1, -1, 1, -1)$^t$, el método converge para una cantidad de iteraciones N = 5 y produce
+\begin{equation*}
+    r^{(5)} = (0.51748398, 0.77541715, 1.02961840, 1.42484470)^t
+\end{equation*}
+
+\section{Conclusiones}
+El método de newton es eficiente en la solución de
+sistemas de ecuaciones no lineales, converge muy
+rápidamente y proporciona una muy buena precisión en
+los resultados. El método se emplea en la solución de
+problemas académicos y en problemas propios del
+mundo real. \cite{proble}
+
+El método de Newton-Rapshon, ofrece una amplia variedad de modificaciones las cuales optimizan el código, por ejemplo existe una modificación para acelerar la convergencia, en este caso el método original es modificado para resolver problemas de sistemas de ecuaciones no lineales, que dada la investigación que se realizó, es bastante usado en la industria, por ejemplo en la producción de químicos mediante torres de destilación o platos recolectores, también en la química en la formulación de ecuaciones químicas de compuestos, o en la industria y la administración. 
+
+A pesar de las ventajas proveídas por el método de Newton-Raphson, este no es infalible, hay restricciones que este debe cumplir. Por lo que si un sistema de ecuaciones no cumple con estas restricciones, no puede ser solucionado por el método iterativo. En el caso del método de Newton-Raphson, una condición que se debe cumplir es que el Jacobiano debe ser invertible, por lo que solo se puede resolver este sistema. Es posible que el Jacobiano se convierta en una matriz singular, lo cual haría imposible que el sistema de ecuaciones se resuelva mediante el método de Newton-Raphson. Por lo tanto, el método no es infalible ya que hay sistemas de ecuaciones que no pueden ser resueltos por el mismo.
+
+\begin{thebibliography}{10}
+
+\bibitem{IEEEhowto:kopka}
+H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+
+\bibitem{proble}
+Bravo Bolivar, J. E., Botero Arango, A. J., & Botero Arbeláez , M. 
+\textit{EL MÉTODO DE NEWTON-RAPHSON - LA ALTERNATIVA DEL INGENIERO PARA RESOLVER.}.
+Scientia Et Technica, XI(27), 221-224. (2005).
+
+\end{thebibliography}
+
+
+
+\end{document}
+
+
