@@ -25,13 +25,14 @@ function [gradiente] = vergradiente(funcion, vars)
 endfunction
 
 # Variables
-syms x1 x2 x3 x4 x5;            % Esto es probando con el f93
-variables = [x1 x2 x3 x4 x5];   % Esto es probando con el f93
-% syms x1 x2;                   % Esto es probando con el f99
-% variables = [x1 x2];          % Esto es probando con el f99
+% syms x1 x2 x3 x4 x5;            % Esto es probando con el f93
+% variables = [x1 x2 x3 x4 x5];   % Esto es probando con el f93
+syms x1 x2;                   % Esto es probando con el f99
+variables = [x1 x2];          % Esto es probando con el f99
 # Funcion
-f = '(x1)**2 + (x2)**3 + (x3)**4 + (x4)**5 + (x5)**6'; % Esto es probando con el f93
+% f = '(x1)**2 + (x2)**3 + (x3)**4 + (x4)**5 + (x5)**6'; % Esto es probando con el f93
 % f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 182.25*x1*x2'; % Esto es probando con el f99
+f = '0.04*x1**2 + 0.01*x1*x2 + 0.01*x2**2 + 4*x1 + 2*x2 + 500';
 
 printf("############################################ \n");
 printf("Encuentra Gradiente \n");

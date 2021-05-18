@@ -41,43 +41,42 @@ function [x, err, n, f] = bfgs(funcion, vars, TOL)
 %---------------------------------------------------------------------%
     i = 1;
     err = TOL + 1;
-    iterl(i) = i;
-    errl(i) = err;
+    iterl(i) = i;   %Lista para almacenar la cantidad de iteraciones requeridas
+    errl(i) = err;  %Lista para almacenar el error obtenido por iteracion
     while(err > TOL)
 %-----------------------Calculando valores inicilaes------------------%    
-        [~, g] = funcion(x(:, i));
-        pk = -inv(Bk) * g;
-        lambdak = 1;
+        [~, g] = funcion(x(:, i));  %Se evaluac el gradiente de la funcion
+        pk = -inv(Bk) * g;          %Se realiza el respectivo despeje de pk dado por 2.2
+        lambdak = 1;                %Se inicializa el valor de lambdak
         xk1 = x(:, i) + lambdak * pk;
         fizquierda = funcion(xk1);
         fderecha = funcion(x(:, i));
 %--------------------------Armijo-type--------------------------------%
 %---------------------------------------------------------------------%
-        while(fizquierda > fderecha + sigma * lambdak * g' * pk)
+%Se itera la desigualdad para elcontrar el valor de lambdak menor que la satisfaga
+        while(fizquierda > fderecha + sigma * lambdak * g' * pk) % Desigualdad 2.6
             lambdak = lambdak * b;
             xk1 = x(:, i) + lambdak * pk;
             fizquierda = funcion(xk1);
         endwhile
 %---------------------------------------------------------------------%
 %---------------------------------------------------------------------%
-        x(:, i + 1) = xk1;
-        [~, gk] = funcion(x(:, i));
-        [~, gk1] = funcion(x(:, i + 1));
-        yk = gk1 - gk;
-        sk = x(:, i + 1) - x(:, i);
-        err =  norm(gk1);
+        x(:, i + 1) = xk1;                  %Se actualiza el valor de xk1 en el vector
+        [~, gk] = funcion(x(:, i));         %Se calcula el gradiente en xk
+        [~, gk1] = funcion(x(:, i + 1));    %Se calcula el gradiente en xk1
+        yk = gk1 - gk;                      %Valor de yk dado por 2.3
+        sk = x(:, i + 1) - x(:, i);         %Valor de sk dado por 2.3
+        err =  norm(gk1);                   %Se calcula el error dado por el documento
 
-        if(((yk'*sk)/(norm(sk))) > norm(gk))
+        if(((yk'*sk)/(norm(sk))) > norm(gk))%Desigualdad 2.7 para calcular Bk1
             Bk1 = Bk - (Bk*(sk)*sk'*Bk)/(sk'*Bk*sk) + (yk*yk')/(yk'*sk);
             Bk = Bk1;
         else
-            Bk = Bk;
+            Bk = Bk;                        %En caso de no cumplirse la desigualdad se conserva Bk
         endif
         i = i + 1;
         iterl(i) = i;
         errl(i) = err;
-        % Bk1 = Bk - (Bk*(sk)*sk'*Bk)/(sk'*Bk*sk) + (yk*yk')/(yk'*sk);
-        % Bk = Bk1;
     endwhile
 %---------------------------------------------------------------------%
 %------------------------Fin Metodo BFGS------------------------------%
@@ -105,11 +104,13 @@ endfunction
 function [f, g] = funcionObjetivo(X)
     f = -3803.84 - 138.08 * X(1) - 232.92 * X(2) + 128.08 * ((X(1))^2) + 203.64 * ((X(2))^2) + 182.25 * X(1) * X(2);
     g = [(6404/25)*X(1) + (729/4)*X(2) - (3452/25); (729/4)*X(1) + (10182/25)*X(2) - (5823/25)];
-    % f = X(1)^2 + X(2)^3 + X(3)^4 + X(4)^5 + X(5)^6;
+    % f = (X(1))^2 + (X(2))^3 + (X(3))^4 + (X(4))^5 + (X(5))^6;
     % g = [2*X(1), 3*X(2)^2, 4*X(3)^3, 5*X(4)^4, 6*X(5)^5];
 endfunction
+
 # Cantidad de Variables
 vars = 2;
+% vars = 5;
 # Tolerancia
 tolerancia = 0.00001;
 
