@@ -4,117 +4,92 @@
     Esta funcion aplica el metodo BFGS para la optimizacion en varias
     variables.
 
-    Sintaxis: bfgs(funcion, vars, MAXIT, TOL)
+    Sintaxis: bfgs(funcion, MAXIT, TOL)
 
     Parametros de entrada
         @param funcion: funcion a la cual se le aplicara el algoritmo
-        @param vars: variables a utilizar en la funcion
-        @param MAXIT: cantidad maxima de iteraciones a realizar
+        @param MAXIT: cantidad maxima de iaciones a realizar
         @param TOL: tolerancia de la solucion
 
     Parametros de Salida
-        @return xk: aproximacion al punto minimo
-        @return iteraciones: cantidad de iteraciones realizadas
+        @return x: vector de la aproximacion al punto minimo
+        @return n: cantidad de iteraciones realizadas
         @return err: error final de la solucion
 %}
 
 clc;
 clear;
+close all;
 warning('off', 'all');
-pkg load symbolic;
 
-
-function [xk, err, iter] = bfgs(funcion, vars, MAXIT, TOL)
-%---------------------------Preparando utilitarios--------------------%
-    n = length(vars);
-    f = sym(funcion);
+function [x, err, n, f] = bfgs(funcion, MAXIT, TOL)
+%------------------------Calculando los valores de x0-----------------%
     x0 = [];
-    iterl = [];
-    errl = [];
-%------------------------Calculando los valores de xi-----------------%
     %Vector con la cantidad de numeros random en el rango especifico
-    x0 = randi([-10, 10], n, 1) 
-    double(x0);
+    x0 = randi([-10, 10], 2, 1);
+    x0
+    %Guardando los valores de x0 en el vector X que tendra la solucion
+    x(:, 1) = x0; 
 %---------------------Definiendo constantes del metodo----------------%
-    lambdak = 0.9;    % Al utilizar Wolf-type se define lambdak = 1
-    sigma = 0.25;  % Se debe cumplir que sigma existe en (0,1)
-    xk = x0;
-    Bk = eye(n, n)  % Debe ser una matriz definina positiva
-%-----------------------Calculando valores inicilaes------------------%
-    g = gradient(f, vars);
-    gxk = subs(g, vars, xk);
-    err = double(norm(subs(g, vars, xk)));
-    k = 1;
-    iter = 0;
+    b = 0.8;            % Valor para reducir el lambdak
+    sigma = 0.4;        % Se debe cumplir que sigma existe en (0,1)
+    Bk = eye(2, 2)      % Debe ser una matriz definina positiva
 %---------------------------------------------------------------------%
 %--------------------------Metodo BFGS--------------------------------%
 %---------------------------------------------------------------------%
-    while(err > TOL && iter < MAXIT)
-        gxk = double(subs(g, vars, xk));
-        mgk = -gxk;
-        pk = linsolve(Bk, mgk);
-%-----------------------Inicio Armijo-type----------------------------%
-        fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-        fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk)) * pk;
-
-        while(fizquierda <= fderecha)
-            lambdak = double(lambdak**k);
-            if(lambdak < TOL)
-                break;
-            endif
-            fizquierda = double(subs(f, vars, (xk + lambdak * pk)));
-            fderecha = double(subs(f, vars, xk)) + sigma * lambdak * double(transpose(gxk)) * pk;
-            k++;
+    for (i = 1 : MAXIT)
+%-----------------------Calculando valores inicilaes------------------%    
+        [~, g] = funcion(x(:, i));
+        pk = -inv(Bk) * g;
+        lambdak = 1;
+        xk1 = x(:, i) + lambdak * pk;
+        fizquierda = funcion(xk1);
+        fderecha = funcion(x(:, i));
+%--------------------------Armijo-type--------------------------------%
+%---------------------------------------------------------------------%
+        while fizquierda > fderecha + sigma * lambdak * g' * pk
+            lambdak = lambdak * b;
+            xk1 = x(:, i) + lambdak * pk;
+            fizquierda = funcion(xk1);
         endwhile
-%------------------------Final Armijo-type----------------------------%
-        xk1 = xk + lambdak * pk;
-        sk = xk1 - xk;
-        yk = double(subs(g, vars, xk1) - subs(g, vars, xk));
-        skt = transpose(sk);
-        ykt = transpose(yk);
+%---------------------------------------------------------------------%
+%---------------------------------------------------------------------%
+        x(:, i + 1) = xk1;
+        [~, gk] = funcion(x(:, i));
+        [~, gk1] = funcion(x(:, i + 1));
+        yk = gk1 - gk;
+        sk = x(:, i + 1) - x(:, i);
+        Bk1 = Bk - (Bk*(sk)*sk'*Bk)/(sk'*Bk*sk) + (yk*yk')/(yk'*sk);
+        Bk = Bk1;
+        err =  norm(gk1);
 
-        condleft = double((ykt*sk)/(norm(sk, 2)))
-        condright = double(norm(subs(g, vars, xk)))
-
-        if(condleft >= condright)
-            Bk1 = Bk - ((Bk*sk*skt*Bk)/(skt*Bk*sk)) + ((yk*ykt)/(ykt*sk));
-            Bk = Bk1;
-            xk = double(xk1)
-            err = double(norm(subs(g, vars, xk)));
-            iter++;
-            k = 1;
-        else
-            xk = double(xk1);
-            err = double(norm(subs(g, vars, xk)));
-            iter++;
-            k = 1;
+        if(err < TOL)
+            break;
         endif
-    endwhile
+    endfor
 %---------------------------------------------------------------------%
 %------------------------Fin Metodo BFGS------------------------------%
 %---------------------------------------------------------------------%
-    xk = double(xk);
-    return;
+    n = i;
+    f = funcion(x(:, end));
 endfunction
 
-# Variables
-% syms x1 x2 x3 x4 x5;            % Esto es probando con el f93
-% variables = [x1 x2 x3 x4 x5];   % Esto es probando con el f93
-syms x1 x2;                   % Esto es probando con el f99
-variables = [x1 x2];          % Esto es probando con el f99
-# Funcion
-% f = '(x1)**2 + (x2)**3 + (x3)**4 + (x4)**4 + (x5)**6'; % Esto es probando con el f93
-f = '-3803.84 - 138.08*x1 - 232.92*x2 + 128.08*((x1)**2) + 203.64*((x2)**2) + 182.25*x1*x2'; % Esto es probando con el f99
-% f = 'exp(x1-1) + exp(-x2 +1) + (x1 - x2)**2'
+
+function [f, g] = funcionObjetivo(X)
+    f = -3803.84 - 138.08 * X(1) - 232.92 * X(2) + 128.08 * ((X(1))^2) + 203.64 * ((X(2))^2) + 182.25 * X(1) * X(2);
+    g = [(6404/25)*X(1) + (729/4)*X(2) - (3452/25); (729/4)*X(1) + (10182/25)*X(2) - (5823/25)];
+endfunction
+
 # Tolerancia
 tolerancia = 0.00001;
 # MAXIT
-iterMax = 10;
+iterMax = 100;
 
-[xk, err, iter] = bfgs(f, variables, iterMax, tolerancia);
+[x, err, n, f] = bfgs(@funcionObjetivo, iterMax, tolerancia);
 printf("############################################ \n");
 printf("Metodo BFGS \n");
-printf('xAprox = %f\n', xk);
+printf('xAprox = %f\n', x);
 printf('%%Error = %f\n', err);
-printf('Iteraciones = %f\n', iter);
+printf('Iteraciones = %f\n', n);
+printf('Punto minimo = %f\n', f);
 printf("############################################ \n");
