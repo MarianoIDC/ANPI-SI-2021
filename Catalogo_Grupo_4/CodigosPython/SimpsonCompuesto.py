@@ -1,19 +1,15 @@
-import math
-import numpy as np
-import matplotlib.pyplot as plt
-import sympy
+###############################################################################
 import sympy as sym
-
-
-'''
-Metodo de Simpson Compuesto para calculo de integrales
-param funcion: funcion con al menos 4ta deriva
-param numero_puntos: Cantidad de puntos a utilizar
-para intervalo: lista con valor inicial a final que define los limites de la integral
-return integral, error: Resultado de integral y error
-'''
+###############################################################################
 
 def simpson_compuesto(funcion,numero_puntos,intervalo):
+    '''
+    Metodo de Simpson Compuesto para calculo de integrales    
+    :param funcion: funcion con al menos 4ta deriva 
+    :param numero_puntos: Cantidad de puntos a utilizar 
+    :param intervalo: lista con valor inicial a final que define los limites de la integral 
+    :return: integral, error: Resultado de integral y error 
+    '''
     x = sym.symbols('x')      
     f = sym.sympify(funcion)
     suma_pares=0
@@ -45,6 +41,7 @@ def simpson_compuesto(funcion,numero_puntos,intervalo):
 
 if __name__ == '__main__':
     funcion = 'ln(x)'
+    # Llamado de la funcion
+    print("######################################################")
+    print("Metodo de Simpson Compuesto y Cota de Error \n")
     simpson_compuesto(funcion,7,[2,5])
-
-        
