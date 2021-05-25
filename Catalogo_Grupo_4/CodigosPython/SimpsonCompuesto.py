@@ -6,7 +6,7 @@ import sympy as sym
 
 
 '''
-Metodo de Simpson Compuesto para cálculo de integrales
+Metodo de Simpson Compuesto para calculo de integrales
 param funcion: funcion con al menos 4ta deriva
 param numero_puntos: Cantidad de puntos a utilizar
 para intervalo: lista con valor inicial a final que define los limites de la integral
