@@ -1,7 +1,8 @@
 %{
-    Metodo de la Regla del Trapezio
+    Metodo de la Cuadratura Gaussiana
     Parametros de Entrada
         @param func: funcion a la cual se le calculara el area
+        @param n: orden del polinomio
         @param a: valor inferior
         @param b: valor superior
     
