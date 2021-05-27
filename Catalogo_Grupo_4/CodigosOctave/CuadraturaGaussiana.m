@@ -16,9 +16,9 @@ clc;
 clear;
 warning("off","all");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#Se utiliza el paquete miscellaneous, este se puede
-#instalar utilizando el comando:
-% pkg install -forge miscellaneous
+# Se utiliza el paquete miscellaneous, este se puede
+# instalar utilizando el comando:
+# pkg install -forge miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [xAprox, err] = cuad_gaussiana(funcion, a, b, n)
