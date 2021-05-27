@@ -20,6 +20,17 @@ function [xAprox, err] = cuad_gaussiana(func, n, a, b)
     syms f(x);
     f(x) = func;
     
+    %Calculo de los xi
+    f_aux = '(x^2-1)^n';
+    fs_aux = sym(f_aux);
+    fsd_aux = diff(fs_aux, n);
+    %Falta resolver fsd_aux = 0 para determinar los xi
+    
+    %Calculo de los wi
+    g_aux = diff(fsd_aux);
+    
+    
+    
     
     
     xAprox = ((b - a)/(2))*((func(a)) + (func(b)));
