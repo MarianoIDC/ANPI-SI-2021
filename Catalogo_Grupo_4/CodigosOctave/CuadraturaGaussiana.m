@@ -15,6 +15,7 @@
 clc;
 clear;
 warning("off","all");
+pkg load miscellaneous;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Se utiliza el paquete miscellaneous, este se puede
 # instalar utilizando el comando:
