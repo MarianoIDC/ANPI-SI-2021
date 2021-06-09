@@ -28,7 +28,8 @@ tuple<ex, ex> secante(string funcion, ex x0, ex x1, ex MAXIT, ex TOL)
     while (iter < MAXIT)
     {
         xk1 = xk -
-              ((((xk - xkm1)) / ((evalf(subs(f, x == xk))))) - evalf(subs(f, x == xkm1))) * (evalf(subs(f, x == xk)));
+              ((((xk - xkm1)) / ((evalf(subs(f, x == xk))))) - 
+              evalf(subs(f, x == xkm1))) * (evalf(subs(f, x == xk)));
         xkm1 = xk;
         xk = xk1;
         err = abs(evalf(subs(f, x == xk)));

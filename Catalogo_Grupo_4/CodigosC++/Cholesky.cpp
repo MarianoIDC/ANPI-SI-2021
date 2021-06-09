@@ -59,7 +59,8 @@ colvec sust_atras(mat L, colvec y)
 }
 
 /**
- * @param L: Una matriz L que es la transpuesta de la factorizacion de Cholesky de otra matriz
+ * @param L: Una matriz L que es la transpuesta de la factorizacion 
+ * de Cholesky de otra matriz
  * @param b: Un vector y que es el vector de terminos independientes
  * @return colvec: Un vector x que es la solucion de este sistema de ecuaciones
  */

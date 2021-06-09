@@ -70,7 +70,7 @@ tuple<vec, double> jacobi(mat A, vec b, vec xInicial, int MAXIT, double TOL)
  */
 int main()
 {
-    tuple<vec, double> testJ = jacobi("5 1 1; 1 5 1; 1 1 5", "7 7 7", "0 0 0", 100, 0.000001);
+    tuple<vec,double> testJ=jacobi("5 1 1;1 5 1;1 1 5","7 7 7","0 0 0",100,0.000001);
     cout << "Aproximacion: \n"
          << get<0>(testJ) << endl;
     cout << "Error: " << get<1>(testJ) << endl;

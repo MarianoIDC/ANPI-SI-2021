@@ -39,8 +39,9 @@ def traz_cubico(xk, yk):
             A.append([0] * (k - 3) + [delta_hk[i - 1],
                      2 * (delta_hk[i - 1] + delta_hk[i])])
         else:
-            A.append(
-                [0] * (i - 2) + [delta_hk[i - 1], 2 * (delta_hk[i - 1] + delta_hk[i]), delta_hk[i]] + [0] * (k - 2 - i))
+            A.append([0] * (i - 2) + [delta_hk[i - 1], 
+            2 * (delta_hk[i - 1] + delta_hk[i]), 
+            delta_hk[i]] + [0] * (k - 2 - i))
         # Creando el vector u
         u.append(6 * (delta_yk[i] / delta_hk[i] -
                  delta_yk[i - 1] / delta_hk[i - 1]))
@@ -72,7 +73,8 @@ def traz_cubico(xk, yk):
     Sx_tabla = []
     for i in range(0, len(xk) - 1, 1):
         with evaluate(False):
-            pxtramo = a[i] * (x - xk[i]) ** 3 + b[i] * (x - xk[i]) ** 2 + c[i] * (x - xk[i]) + d[i]
+            pxtramo = a[i] * (x - xk[i]) ** 3 + b[i] * \
+                (x - xk[i]) ** 2 + c[i] * (x - xk[i]) + d[i]
             Sx_tabla.append(pxtramo)
 
     print('Trazadores cubicos por tramos \n')

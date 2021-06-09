@@ -8,7 +8,7 @@ def punto_fijo(funcion, valor_inicial, iteraciones_maximas):
     '''
     Metodo del punto fijo
     :param funcion: Funcion por aproximar - funcion lambda
-    :param valor_inicial: Valor por el cual se empezara a aproximar - int, float, double
+    :param valor_inicial: Valor por el cual se empezara a aproximar
     :param iteraciones_maximas: Numero maximo de itreaciones - int
     :return: aproximacion: aproximacion de la solucion
     '''
