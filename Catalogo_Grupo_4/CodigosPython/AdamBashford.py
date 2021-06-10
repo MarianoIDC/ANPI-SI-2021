@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 Adam bashford
 a 4 pasos
 @ param funcion: f(x,y)=dx/dy
-@ param intervalo: lista de dos números, rango de estudio
+@ param intervalo: lista de dos numeros, rango de estudio
 @ param paso_h: entero, cantidad de puntos por usar
 @ param y0: Valor de y0
 @ return: lista de tuplas de la forma {xk,yk}
