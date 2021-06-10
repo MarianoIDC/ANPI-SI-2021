@@ -8,8 +8,7 @@
         @param pasoh: paso h
     
     Parametros de Salida
-        @return x:
-        @return y:
+        @return paresXkYk: pares ordenados con los valores de xk yk
         @return polInter: polinomio de interpolacion
 %}
 
@@ -22,13 +21,13 @@ function [paresXkYk, polInter] = runge_kutta_4(func, a, b, y0, pasoh)
     sym 'x';
     sym 'y';
     x = [a : pasoh : b]';
-    m = size(x)(1);
-    y = zeros(1, m)';
+    n = size(x)(1);
+    y = zeros(1, n)';
     y(1) = y0;
-    paresXkYk = zeros(m, 2);
+    paresXkYk = zeros(n, 2);
     f = matlabFunction(sym(func));
 
-    for(i = 1 : m - 1)
+    for(i = 1 : n - 1)
         k1 = f(x(i), y(i));
         k2 = f(x(i) + pasoh/2, y(i) + pasoh * k1/2);
         k3 = f(x(i) + pasoh/2, y(i) + pasoh * k2/2);
@@ -36,11 +35,19 @@ function [paresXkYk, polInter] = runge_kutta_4(func, a, b, y0, pasoh)
         y(i+1) = y(i) + pasoh * (k1 + 2 * k2 + 2 * k3 + k4)/6;
     endfor
 
-    for (i = 1 : m)
-        paresXkYk(i,:) = [x(i) y(i)];
+    for (i = 1 : n)
+        paresXkYk(i, :) = [x(i) y(i)];
     endfor
+    
     paresXkYk;
     polInter = dd_newton(paresXkYk);
+
+    polGrafica = matlabFunction(polInter);
+    fplot(polGrafica, [a, b], 'b--');
+    grid on;
+    title('Grafica Polinomio de Interpolacion');
+    xlabel('Eje x');
+    ylabel('Eje y');
 endfunction
 
 
@@ -94,7 +101,7 @@ pasoh = 0.1;
 %Valor inicial de y0
 y0 = 1;
 %Funcion 
-funct = '-x*y+4*x/y';
+funct = '-x * y + 4 * x/y';
 printf("############################################ \n");
 printf("Metodo de Runge-Kutta \n");
 %Llamado de la funcion
