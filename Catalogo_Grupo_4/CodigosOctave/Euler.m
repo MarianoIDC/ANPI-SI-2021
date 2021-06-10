@@ -4,44 +4,40 @@
         @param func: funcion a la cual se le aplicara el algoritmo
         @param a: inicio del intervalo
         @param b: fin del intervalo  
+        @param y0: valor inicial
         @param h: paso de iteracion  
         
     Parametros de Salida
-        @return par: pares ordenados
-        @return pol: polinomio de interpolacion
-        @return error: porcentaje de error del resultado obtenido
+        @return paresXnYn: pares ordenados
+        @return polInter: polinomio de interpolacion
 %}
+
 clc;
 clear;
+pkg load symbolic;
+warning("off","all");
 
-function [paresXnYn, polInter] = euler(func,a,b,y0,h)
-  pkg load symbolic;
-  syms xy
-  fs = sym(func);
-  fe = matlabFunction(fs);
+function [paresXnYn, polInter] = euler(func, a, b, y0, h)
+    syms x y;
+    fs = sym(func);
+    fe = matlabFunction(fs);
+    xn = [a : h : b]';
+    n = size(xn)(1);
+    yn = zeros(1, n)';
+    yn(1) = y0;
+    paresXnYn = zeros(n, 2);
     
-  xn = [a:h:b]';
-  n = size(xn)(1);
-  yn = zeros(1,n)';
-  yn(1) = y0;
+    for (i = 1 : n - 1)
+        yn(i+1) = yn(i) + h * fe(xn(i), yn(i));
+    endfor
   
-  paresXnYn = zeros(n, 2);
-    
-  for i=1:n-1
-    yn(i+1)=yn(i)+h*fe(xn(i), yn(i));
-    plot(xn,yn);
-    grid on;
-    title('Grafica Polinomio de Interpolacion');
-    xlabel('Eje x');
-    ylabel('Eje y');
-  endfor
+    for (i = 1 : n)
+        paresXnYn(i, :) = [xn(i) yn(i)];
+    endfor
   
-  for (i = 1 : n)
-    paresXnYn(i, :) = [xn(i) yn(i)];
-  endfor
-  polInter = dd_newton(paresXnYn);
+    grafica(xn, yn);
+    polInter = dd_newton(paresXnYn);
 endfunction
-
 
 %{
     Metodo de Diferencias Divididas de Newton
@@ -51,6 +47,7 @@ endfunction
     Parametros de Salida
         @return polinomio: polinomio de interpolacion
 %}
+
 function polinomio = dd_newton(listaPO)
     [n, m] = size(listaPO);
 
@@ -84,13 +81,29 @@ function polinomio = dd_newton(listaPO)
     endif
 endfunction
 
+%{
+    Parametros de Entrada
+        @param listaValoresX: valores del eje 'x'
+        @param listaValoresY: valores del eje 'y'
+    
+    Parametros de Salida
+        @return: Grafico de los datos ingresados
+%}
+
+function grafica(listaValoresX, listaValoresY)
+    plot(listaValoresX, listaValoresY, 'b-');
+    title("Grafica Polinomio de Interpolacion");
+    xlabel("Eje x")
+    ylabel("Eje y");
+endfunction
+
 %Valores iniciales
 a = 0;
 b = 2;
 y0 = 0.5;
 %Numero de iteraciones 
-N=11;
-h = (b-a)/(N-1);
+N = 11;
+h = (b - a)/(N - 1);
 %Funcion 
 func = 'y-x^2+1';
 %Llamado de la funcion

@@ -18,8 +18,7 @@ pkg load symbolic;
 warning("off","all");
 
 function [paresXkYk, polInter] = runge_kutta_4(func, a, b, y0, pasoh)
-    sym 'x';
-    sym 'y';
+    syms x y;
     x = [a : pasoh : b]';
     n = size(x)(1);
     y = zeros(1, n)';
@@ -38,16 +37,10 @@ function [paresXkYk, polInter] = runge_kutta_4(func, a, b, y0, pasoh)
     for (i = 1 : n)
         paresXkYk(i, :) = [x(i) y(i)];
     endfor
-    
+
     paresXkYk;
     polInter = dd_newton(paresXkYk);
-
-    polGrafica = matlabFunction(polInter);
-    fplot(polGrafica, [a, b], 'b--');
-    grid on;
-    title('Grafica Polinomio de Interpolacion');
-    xlabel('Eje x');
-    ylabel('Eje y');
+    grafica(x, y);
 endfunction
 
 
@@ -90,6 +83,21 @@ function polinomio = dd_newton(listaPO)
         polinomio = expand(polinomio);
         return;
     endif
+endfunction
+
+%{
+    Parametros de Entrada
+        @param listaValoresX: valores del eje 'x'
+        @param listaValoresY: valores del eje 'y'
+    
+    Parametros de Salida
+        @return: Grafico de los datos ingresados
+%}
+function grafica(listaValoresX, listaValoresY)
+    plot(listaValoresX, listaValoresY, 'b-');
+    title("Grafica Polinomio de Interpolacion");
+    xlabel("Eje x")
+    ylabel("Eje y");
 endfunction
 
 %Intervalo inferior
