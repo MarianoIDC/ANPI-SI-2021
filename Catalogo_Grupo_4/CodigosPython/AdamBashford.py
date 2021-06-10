@@ -49,7 +49,17 @@ def adam_bashford_4(funcion, intervalo, paso_h, y0):
     for i in range(len(xn)):
         temp = {xn[i], yk[i]}
         pares_ordenados.append(temp)
-    return temp
+    polinomio_inter =0
+    for i in range(len(yk)):
+        temp=1
+        for j in range(len(xn)):
+            if i==j:
+                pass
+            else:
+                temp= sym.Mul(temp,sym.Mul((x-xn[j]),sym.Pow((xn[i]-xn[j]),-1)))
+        polinomio_inter = polinomio_inter + yk[i]*temp
+    print(polinomio_inter)
+    return temp, polinomio_inter
 
 
 if __name__ == '__main__':
